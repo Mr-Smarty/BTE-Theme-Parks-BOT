@@ -1,13 +1,17 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const config = require("./config.json");
-const ping = require('minecraft-server-util');
+const ping = require("minecraft-server-util");
 
 const ids = require("./ids.json");
 const info = require("./info.json");
 
 client.on("ready", () => {
     console.log("BTE: Theme Parks BOT is online!");
+    client.user.setActivity('for =help', { type: 'WATCHING'})
+    .then(console.log)
+    .catch(console.error);    
+
 });
 
 const prefix = config.prefix;
