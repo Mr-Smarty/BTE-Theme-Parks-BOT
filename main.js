@@ -122,6 +122,9 @@ client.on("message", (message) => {
             
             console.log(response);
         });
+    } else
+    if (command === 'rpitest') {
+        message.channel.send('success')
     }
 
 });
