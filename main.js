@@ -122,7 +122,14 @@ client.on("message", (message) => {
             
             console.log(response);
         });
-    } 
+    } else
+    if (command === 'say' && message.member.roles.cache.has(ids.modRoleID)) {
+        let channel = message.mentions.channels.first();
+        let userMessage = args.slice(1).join(" ");
+        console.log(userMessage + '\n' + channel)
+        channel.send(userMessage)
+        message.react('✅')
+    }
 });
  
 client.login(config.token);
