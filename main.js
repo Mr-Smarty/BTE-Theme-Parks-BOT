@@ -48,7 +48,8 @@ client.on("message", (message) => {
                 .setColor(info.embedHexcode)
                 .setDescription('Offline :pensive: Contact Cdub#5909')
                 .setTimestamp()
-                message.channel.send(errorEmbed);
+                message.channel.send(errorEmbed);   
+                return;        
             }
             
             const serverEmbed = new Discord.MessageEmbed()
@@ -83,6 +84,7 @@ client.on("message", (message) => {
                 .setDescription('Offline :pensive: Contact Cdub#5909')
                 .setTimestamp()
                 message.channel.send(errorEmbed);
+                return;
             }
             
             if (response.samplePlayers === null) {
@@ -124,11 +126,19 @@ client.on("message", (message) => {
         });
     } else
     if (command === 'say' && message.member.roles.cache.has(ids.modRoleID)) {
+        if (!message.mentions.channels.first()) {
+            message.channel.send('Please mention a channel.');
+            return;
+        }
         let channel = message.mentions.channels.first();
         let userMessage = args.slice(1).join(" ");
-        console.log(userMessage + '\n' + channel)
-        channel.send(userMessage)
-        message.react('✅')
+        if (!userMessage) {
+            message.channel.send('Please enter a message');
+            return;
+        }
+        console.log(userMessage + '\n' + channel);
+        channel.send(userMessage);
+        message.react('✅');
     }
 });
  
