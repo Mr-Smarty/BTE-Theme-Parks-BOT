@@ -70,7 +70,12 @@ client.on("message", (message) => {
         const commandEmbed = new Discord.MessageEmbed()
         .setTitle("Available Commands")
         .setColor(info.embedHexcode)
-        .setDescription("**=ping** \n **=DevCommand** (TEST) \n **=AdminCommand** (TEST) \n **=ModCommand** (TEST) \n **=server**  \n > =players \n **=commands**")
+        .addFields(
+            { name: '**`Visitor` Commands**', value: '=ping \n =server \n > =players \n =commands'},
+            { name: '**`Moderator` Commands**', value: '=modSay'},
+            { name: '**`Admin` Commands**', value: 'placeholder'},
+            { name: '**__Testing__** Commands', value: '=devCommand \n =adminCommand \n =modCommand'}
+        )
         .setTimestamp(info.commandUpdate)
         .setFooter("Last updated by MrSmarty#1732", info.devIconLink)
         message.channel.send(commandEmbed);
@@ -125,7 +130,7 @@ client.on("message", (message) => {
             console.log(response);
         });
     } else
-    if (command === 'say' && message.member.roles.cache.has(ids.modRoleID)) {
+    if (command === 'modsay' && message.member.roles.cache.has(ids.modRoleID)) {
         if (!message.mentions.channels.first()) {
             message.channel.send('Please mention a channel.');
             return;
@@ -139,7 +144,7 @@ client.on("message", (message) => {
         console.log(userMessage + '\n' + channel);
         channel.send(userMessage);
         message.react('✅');
-    }
+    } 
 });
  
 client.login(config.token);
