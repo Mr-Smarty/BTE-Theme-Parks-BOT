@@ -66,16 +66,51 @@ client.on("message", (message) => {
             console.log(response);
         });
     } else
+    if (command === 'commands' && message.author.id == config.ownerID) {
+        const commandEmbed = new Discord.MessageEmbed()
+        .setTitle("Available Commands: `DEV`")
+        .setColor(info.embedHexcode)
+        .setDescription('**=ping** \n **=server** \n > **=players** \n **=commands** \n **=modSay** \n **=devCommand** (TEST) \n **=modCommand** (TEST)')
+        .setTimestamp(info.commandUpdate)
+        .setFooter("Last updated by MrSmarty#1732", info.devIconLink)
+        message.channel.send(commandEmbed);
+        return;
+    } else
+    if (command === 'commands' && message.member.roles.cache.has(ids.adminRoleID)) {
+        const commandEmbed = new Discord.MessageEmbed()
+        .setTitle("Available Commands: `ADMIN`")
+        .setColor(info.embedHexcode)
+        .setDescription('**=ping** \n **=server** \n > **=players** \n **=commands** \n **=modSay** \n **=adminCommand** (TEST) \n **=modCommand** (TEST)')
+        .setTimestamp(info.commandUpdate)
+        .setFooter("Last updated by MrSmarty#1732", info.devIconLink)
+        message.channel.send(commandEmbed);
+        return;
+    } else
+    if (command === 'commands' && (message.member.roles.cache.has(ids.modRoleID))) {
+        const commandEmbed = new Discord.MessageEmbed()
+        .setTitle("Available Commands: `MOD`")
+        .setColor(info.embedHexcode)
+        .setDescription('**=ping** \n **=server** \n > **=players** \n **=commands** \n **=modSay** \n **=modCommand** (TEST)')
+        .setTimestamp(info.commandUpdate)
+        .setFooter("Last updated by MrSmarty#1732", info.devIconLink)
+        message.channel.send(commandEmbed);
+        return;
+    } else
+    if (command === 'commands' && (message.member.roles.cache.has(ids.trialModRoleID))) {
+        const commandEmbed = new Discord.MessageEmbed()
+        .setTitle("Available Commands: `TRIAL MOD`")
+        .setColor(info.embedHexcode)
+        .setDescription('**=ping** \n **=server** \n > **=players** \n **=commands** \n **=modSay** \n **=modCommand** (TEST)')
+        .setTimestamp(info.commandUpdate)
+        .setFooter("Last updated by MrSmarty#1732", info.devIconLink)
+        message.channel.send(commandEmbed);
+        return;
+    } else
     if (command === 'commands') {
         const commandEmbed = new Discord.MessageEmbed()
         .setTitle("Available Commands")
         .setColor(info.embedHexcode)
-        .addFields(
-            { name: '**`Visitor` Commands**', value: '=ping \n =server \n > =players \n =commands'},
-            { name: '**`Moderator` Commands**', value: '=modSay'},
-            { name: '**`Admin` Commands**', value: 'placeholder'},
-            { name: '**__Testing__** Commands', value: '=devCommand \n =adminCommand \n =modCommand'}
-        )
+        .setDescription('**=ping** \n **=server** \n > **=players** \n **=commands**')
         .setTimestamp(info.commandUpdate)
         .setFooter("Last updated by MrSmarty#1732", info.devIconLink)
         message.channel.send(commandEmbed);
@@ -131,6 +166,21 @@ client.on("message", (message) => {
         });
     } else
     if (command === 'modsay' && message.member.roles.cache.has(ids.modRoleID)) {
+        if (!message.mentions.channels.first()) {
+            message.channel.send('Please mention a channel.');
+            return;
+        }
+        let channel = message.mentions.channels.first();
+        let userMessage = args.slice(1).join(" ");
+        if (!userMessage) {
+            message.channel.send('Please enter a message');
+            return;
+        }
+        console.log(userMessage + '\n' + channel);
+        channel.send(userMessage);
+        message.react('✅');
+    } else
+    if (command === 'modsay' && message.member.roles.cache.has(ids.trialModRoleID)) {
         if (!message.mentions.channels.first()) {
             message.channel.send('Please mention a channel.');
             return;
