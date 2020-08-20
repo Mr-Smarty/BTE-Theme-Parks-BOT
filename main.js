@@ -1,22 +1,27 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const config = require("./config.json");
-const ping = require("minecraft-server-util");
 
+const config = require("./config.json");
 const ids = require("./ids.json");
 const info = require("./info.json");
+
+const ping = require("minecraft-server-util");
 
 client.on("ready", () => {
     console.log("BTE: Theme Parks BOT is online!");
     client.user.setActivity('for =help', { type: 'WATCHING'})
     .then(console.log)
-    .catch(console.error);    
-
+    .catch(console.error);
 });
 
 const prefix = config.prefix;
 
 client.on("message", (message) => {
+
+    if (message.author.id === '565177091361079296'){
+        message.react('728634297174720602')
+    }
+
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
     if (!message.content.startsWith(prefix) || message.author.bot) return;
