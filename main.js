@@ -1,12 +1,20 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const mysql = require('mysql');
+const mariadb = require('mariadb');
 
 const config = require("./config.json");
 const ids = require("./ids.json");
 const info = require("./info.json");
 
 const ping = require("minecraft-server-util");
+
+mariadb.createConnection({ socketpath: '/var/run/mysqld/mysqld.sock', user: 'admin', password: config.sqlPass, database: 'BTETP' })
+    .then(conn => {
+        console.log('Connected! Connection id is ' + conn.threadId);
+    })
+    .catch(err => {
+        console.log('not connected due to error: ' + err);
+    });
 
 client.on("ready", () => {
     console.log("BTE: Theme Parks BOT is online!");
