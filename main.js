@@ -8,13 +8,15 @@ const info = require("./info.json");
 
 const ping = require("minecraft-server-util");
 
-mariadb.createConnection({ socketpath: '/var/run/mysqld/mysqld.sock', user: 'admin', password: config.sqlPass, database: 'BTETP' })
-    .then(conn => {
-        console.log('Connected! Connection id is ' + conn.threadId);
-    })
-    .catch(err => {
-        console.log('not connected due to error: ' + err);
-    });
+if (config.onRpi) {
+    mariadb.createConnection({ socketpath: '/var/run/mysqld/mysqld.sock', user: 'admin', password: config.sqlPass, database: 'BTETP' })
+        .then(conn => {
+            console.log('Connected! Connection id is ' + conn.threadId);
+        })
+        .catch(err => {
+            console.log('not connected due to error: ' + err);
+        });
+}
 
 client.on("ready", () => {
     console.log("BTE: Theme Parks BOT is online!");
@@ -26,11 +28,6 @@ client.on("ready", () => {
 const prefix = config.prefix;
 
 client.on("message", (message) => {
-
-    if (message.author.id === '565177091361079296'){
-        message.react('728634297174720602')
-    }
-
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
     if (!message.content.startsWith(prefix) || message.author.bot) return;
