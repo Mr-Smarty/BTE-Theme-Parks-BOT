@@ -3,19 +3,39 @@ const client = new Discord.Client();
 const mariadb = require('mariadb');
 
 const config = require("./config.json");
+
+console.log('starting...')
+
 const ids = require("./ids.json");
 const info = require("./info.json");
 
 const ping = require("minecraft-server-util");
 
-if (config.onRpi) {
-    mariadb.createConnection({ socketpath: '/var/run/mysqld/mysqld.sock', user: 'admin', password: config.sqlPass, database: 'BTETP' })
-        .then(conn => {
-            console.log('Connected! Connection id is ' + conn.threadId);
-        })
-        .catch(err => {
-            console.log('not connected due to error: ' + err);
+if (onRpi) {
+    const pool = mariadb.createPool({
+        socketpath: '/var/run/mysqld/mysqld.sock', 
+        user: 'admin', 
+        password: config.sqlPass, 
+        database: 'BTETP'
+    });
+
+    let mdb = {};
+    mdb.query = function(query, params, callback) {
+        pool.getConnection(function(err, connection) {
+            if(err) { 
+                if (callback) callback(err, null, null); 
+                return; 
+            }
+            connection.query(query, params, function(error, results, fields) {
+                connection.release();
+                if(error) { 
+                    if (callback) callback(error, null, null); 
+                    return; 
+                }
+                if (callback) callback(false, results, fields);
+            });
         });
+    };
 }
 
 client.on("ready", () => {
@@ -23,6 +43,11 @@ client.on("ready", () => {
     client.user.setActivity('for =help', { type: 'WATCHING'})
     .then(console.log)
     .catch(console.error);
+    
+    mdb.query('SHOW TABLES', [], (err, res) => {
+        if (err) {console.log(err)};
+        console.log(res);
+    });
 });
 
 const prefix = config.prefix;
@@ -30,7 +55,17 @@ const prefix = config.prefix;
 client.on("message", (message) => {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+    if (message.author.id === '565177091361079296') {
+        message.react('728634297174720602')
+    }
+
+    if (message.author.bot) return;
+    
+    if (message.channel.id !== '715017068772196424') {
+        if (!message.content.startsWith(prefix)) return;
+    }
+
     if (message.channel.name == undefined) return;
     
     if (command === 'ping') {
@@ -205,7 +240,13 @@ client.on("message", (message) => {
         console.log(userMessage + '\n' + channel);
         channel.send(userMessage);
         message.react('✅');
-    } 
+    } else 
+    if (message.channel.id === '715017068772196424') {
+        message.react('730466277390417930')
+        .then(() => message.react('🤷‍♂️'))
+        .then(() => message.react('730466352430579813'))
+        .catch(() => console.error('One of the emojis failed to react.'));
+    };
 });
  
 client.login(config.token);
