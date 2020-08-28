@@ -250,36 +250,19 @@ client.on("message", async message => {
         .catch(() => console.error('One of the emojis failed to react.'));
     } else
     if (command === 'reactions' && message.channel.id === '717832342550610113') {
-        let reactionEmbed = new Discord.MessageEmbed()
-        .setTitle('Reaction Role Menu')
-        .setDescription('React below to get your park roles.')
-        .addFields(
-            { name: info.emojis.AltonTowers + ' : `Alton Towers`', value: '\u200B'},
-            { name: ':lion_face: : `Busch Gardens Tampa`', value: '\u200B'},
-            { name: info.emojis.Busch + ' : `Busch Gardens Williamsburg`', value: '\u200B'},
-            { name: info.emojis.Carowinds + ' : `Carowinds`', value: '\u200B'},
-            { name: ':horse: : `Chessington: World of Adventures`', value: '\u200B'},
-            { name: ':chocolate_bar: : `Hershey Park`', value: '\u200B'},
-            { name: ':crown: : `Kings Dominion`', value: '\u200B'},
-            { name: ':sailboat: : `PortAventura World`', value: '\u200B'},
-            { name: ':whale: : `SeaWorld Orlando`', value: '\u200B'},
-            { name: info.emojis.SixFlags + ' : `Six Flags Great Adventure`', value: '\u200B'},
-        )
-        .setColor(info.embedHexcode)
-        .setTimestamp(info.rolesUpdate)
-        .setFooter('Last updated ')
-
-        let msgEmbed = await message.channel.send(reactionEmbed);
-        msgEmbed.react('705550277339644017')
-        .then(() => msgEmbed.react('🦁'))
-        .then(() => msgEmbed.react('717839235788439572'))
-        .then(() => msgEmbed.react('748790956979126292'))
-        .then(() => msgEmbed.react('🐴'))
-        .then(() => msgEmbed.react('🍫'))
-        .then(() => msgEmbed.react('👑'))
-        .then(() => msgEmbed.react('⛵'))
-        .then(() => msgEmbed.react('🐋'))
-        .then(() => msgEmbed.react('731224218598899843'))
+        const reactionMessage = '**__Reaction Role Menu__** \nReact below to get your park roles. \n\n' + info.emojis.AltonTowers + ' : `Alton Towers` \n\n:lion_face: : `Busch Gardens Tampa` \n\n' + info.emojis.Busch + ' : `Busch Gardens Williamsburg` \n\n' + info.emojis.Carowinds + ' : `Carowinds` \n\n:horse: : `Chessington: World of Adventures` \n\n:chocolate_bar: : `Hershey Park` \n\n:crown: : `Kings Dominion` \n\n:sailboat: : `PortAventura World` \n\n:whale: : `SeaWorld Orlando` \n\n' + info.emojis.SixFlags + ' : `Six Flags Great Adventure` \n'
+        
+        let msg = await message.channel.send(reactionMessage);
+        msg.react('705550277339644017')
+        .then(() => msg.react('🦁'))
+        .then(() => msg.react('717839235788439572'))
+        .then(() => msg.react('748790956979126292'))
+        .then(() => msg.react('🐴'))
+        .then(() => msg.react('🍫'))
+        .then(() => msg.react('👑'))
+        .then(() => msg.react('⛵'))
+        .then(() => msg.react('🐋'))
+        .then(() => msg.react('731224218598899843'))
         .catch(() => console.error('One of the emojis failed to react.'));
     }
 });
