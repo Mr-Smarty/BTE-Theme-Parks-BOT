@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const client = new Discord.Client({ partials : ["MESSAGE", "CHANNEL", "REACTION"]});
 const mariadb = require('mariadb');
 
 const config = require("./config.json");
@@ -11,7 +11,7 @@ const info = require("./info.json");
 
 const ping = require("minecraft-server-util");
 
-if (onRpi) {
+if (config.onRpi) {
     const pool = mariadb.createPool({
         socketpath: '/var/run/mysqld/mysqld.sock', 
         user: 'admin', 
@@ -44,15 +44,17 @@ client.on("ready", () => {
     .then(console.log)
     .catch(console.error);
     
-    mdb.query('SHOW TABLES', [], (err, res) => {
-        if (err) {console.log(err)};
-        console.log(res);
-    });
+    if (config.onRpi) {
+        mdb.query('SHOW TABLES', [], (err, res) => {
+            if (err) {console.log(err)};
+            console.log(res);
+        });
+    }
 });
 
 const prefix = config.prefix;
 
-client.on("message", (message) => {
+client.on("message", async message => {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
 
@@ -246,7 +248,122 @@ client.on("message", (message) => {
         .then(() => message.react('🤷‍♂️'))
         .then(() => message.react('730466352430579813'))
         .catch(() => console.error('One of the emojis failed to react.'));
-    };
+    } else
+    if (command === 'reactions' && message.channel.id === '717832342550610113') {
+        let reactionEmbed = new Discord.MessageEmbed()
+        .setTitle('Reaction Role Menu')
+        .setDescription('React below to get your park roles.')
+        .addFields(
+            { name: info.emojis.AltonTowers + ' : `Alton Towers`', value: '\u200B'},
+            { name: ':lion_face: : `Busch Gardens Tampa`', value: '\u200B'},
+            { name: info.emojis.Busch + ' : `Busch Gardens Williamsburg`', value: '\u200B'},
+            { name: info.emojis.Carowinds + ' : `Carowinds`', value: '\u200B'},
+            { name: ':horse: : `Chessington: World of Adventures`', value: '\u200B'},
+            { name: ':chocolate_bar: : `Hershey Park`', value: '\u200B'},
+            { name: ':crown: : `Kings Dominion`', value: '\u200B'},
+            { name: ':sailboat: : `PortAventura World`', value: '\u200B'},
+            { name: ':whale: : `SeaWorld Orlando`', value: '\u200B'},
+            { name: info.emojis.SixFlags + ' : `Six Flags Great Adventure`', value: '\u200B'},
+        )
+        .setColor(info.embedHexcode)
+        .setTimestamp(info.rolesUpdate)
+        .setFooter('Last updated ')
+
+        let msgEmbed = await message.channel.send(reactionEmbed);
+        msgEmbed.react('705550277339644017')
+        .then(() => msgEmbed.react('🦁'))
+        .then(() => msgEmbed.react('717839235788439572'))
+        .then(() => msgEmbed.react('748790956979126292'))
+        .then(() => msgEmbed.react('🐴'))
+        .then(() => msgEmbed.react('🍫'))
+        .then(() => msgEmbed.react('👑'))
+        .then(() => msgEmbed.react('⛵'))
+        .then(() => msgEmbed.react('🐋'))
+        .then(() => msgEmbed.react('731224218598899843'))
+        .catch(() => console.error('One of the emojis failed to react.'));
+    }
 });
+
+client.on('messageReactionAdd', async (reaction, user) => {
+     if (reaction.message.partial) await reaction.message.fetch();
+     if (reaction.partial) await reaction.fetch();
+
+     if (user.bot) return;
+     if (!reaction.message.guild) return;
+
+     if (reaction.message.channel.id === '717832342550610113') {
+         if (reaction.emoji.id === '705550277339644017') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709950515470925835')
+         } else
+         if (reaction.emoji.name === '🦁') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('740307771085422672')
+         } else
+         if (reaction.emoji.id === '717839235788439572') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709951008436125856')
+         } else
+         if (reaction.emoji.id === '748790956979126292') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('744380828464840835')
+         } else
+         if (reaction.emoji.name === '🐴') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709951457570324491')
+         } else
+         if (reaction.emoji.name === '🍫') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('715301522526699602')
+         } else
+         if (reaction.emoji.name === '👑') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('713431350027485284')
+         } else
+         if (reaction.emoji.name === '⛵') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709950648862638161')
+         } else
+         if (reaction.emoji.name === '🐋') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709950659473965146')
+         } else
+         if (reaction.emoji.id === '731224218598899843') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709951358459183106')
+         }
+     }
+})
+
+client.on('messageReactionRemove', async (reaction, user) => {
+     if (reaction.message.partial) await reaction.message.fetch();
+     if (reaction.partial) await reaction.fetch();
+
+     if (user.bot) return;
+     if (!reaction.message.guild) return;
+
+     if (reaction.message.channel.id === '717832342550610113') {
+         if (reaction.emoji.id === '705550277339644017') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709950515470925835')
+         } else
+         if (reaction.emoji.name === '🦁') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('740307771085422672')
+         } else
+         if (reaction.emoji.id === '717839235788439572') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709951008436125856')
+         } else
+         if (reaction.emoji.id === '748790956979126292') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('744380828464840835')
+         } else
+         if (reaction.emoji.name === '🐴') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709951457570324491')
+         } else
+         if (reaction.emoji.name === '🍫') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('715301522526699602')
+         } else
+         if (reaction.emoji.name === '👑') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('713431350027485284')
+         } else
+         if (reaction.emoji.name === '⛵') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709950648862638161')
+         } else
+         if (reaction.emoji.name === '🐋') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709950659473965146')
+         } else
+         if (reaction.emoji.id === '731224218598899843') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709951358459183106')
+         }
+     }
+})
  
 client.login(config.token);
