@@ -226,7 +226,7 @@ client.on("message", async message => {
         .catch(() => console.error('One of the emojis failed to react.'));
     } else
     if (command === 'reactions' && message.channel.id === '717832342550610113') {
-        const reactionMessage = '**__Reaction Role Menu__** \nReact below to get your park roles. \n\n' + info.emojis.AltonTowers + ' : `Alton Towers` \n\n:lion_face: : `Busch Gardens Tampa` \n\n' + info.emojis.Busch + ' : `Busch Gardens Williamsburg` \n\n' + info.emojis.Carowinds + ' : `Carowinds` \n\n:horse: : `Chessington: World of Adventures` \n\n:chocolate_bar: : `Hershey Park` \n\n:crown: : `Kings Dominion` \n\n:sailboat: : `PortAventura World` \n\n:whale: : `SeaWorld Orlando` \n\n' + info.emojis.SixFlags + ' : `Six Flags Great Adventure` \n' + info.emojis.Canobie + ' : `Canobie Lake Park` \n'
+        const reactionMessage = '**__Reaction Role Menu__** \nReact below to get your park roles. \n\n' + info.emojis.AltonTowers + ' : `Alton Towers` \n\n:lion_face: : `Busch Gardens Tampa` \n\n' + info.emojis.Busch + ' : `Busch Gardens Williamsburg` \n\n' + info.emojis.Carowinds + ' : `Carowinds` \n\n:horse: : `Chessington: World of Adventures` \n\n:chocolate_bar: : `Hershey Park` \n\n:crown: : `Kings Dominion` \n\n:sailboat: : `PortAventura World` \n\n:whale: : `SeaWorld Orlando` \n\n' + info.emojis.SixFlags + ' : `Six Flags Great Adventure` \n\n' + info.emojis.Canobie + ' : `Canobie Lake Park` \n'
         
         let msg = await message.channel.send(reactionMessage);
         msg.react('705550277339644017')
