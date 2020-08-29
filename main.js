@@ -250,9 +250,46 @@ client.on("message", async message => {
             }
             if (score[userId]) {
                 const scoreInt = score[userId]
-                message.channel.send(`Score for <@${userId}>: \`${scoreInt}\``)
-            } else {
+                const scoreStr = `Score for <@${userId}>: \`${scoreInt}\``
+                message.channel.send(scoreStr)
+            }  else {
                 message.channel.send(`Score for <@${userId}>: \`0\``)
+            }
+
+            if (score[userId] >= 20 && !message.member.roles.cache.has(ids.sBuilder)) {
+                const role = message.guild.roles.cache.find(role => role.name === 'Senior Builder');
+                message.guild.members.cache.get(userId).roles.add(role)
+                message.channel.send('Congratulations! You have reached `Builder: Level 7` and are now a `Senior Builder`! Thank you for your activity and skill, we look forward to your builds in the future!')
+            }
+            if (score[userId] >= 15 && !message.member.roles.cache.has(ids.level6)) {
+                const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 6');
+                message.guild.members.cache.get(userId).roles.add(role)
+                message.channel.send('Congratulations! You have reached `Builder: Level 6`!')
+            }
+            if (score[userId] >= 10 && !message.member.roles.cache.has(ids.level5)) {
+                const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 5');
+                message.guild.members.cache.get(userId).roles.add(role)
+                message.channel.send('Congratulations! You have reached `Builder: Level 5` and have access to <#749376102299861052>!')
+            }
+            if (score[userId] >= 8 && !message.member.roles.cache.has(ids.level4)) {
+                const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 4');
+                message.guild.members.cache.get(userId).roles.add(role)
+                message.channel.send('Congratulations! You have reached `Builder: Level 4`!')
+            }
+            if (score[userId] >= 6 && !message.member.roles.cache.has(ids.level3)) {
+                const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 3');
+                message.guild.members.cache.get(userId).roles.add(role)
+                message.channel.send('Congratulations! You have reached `Builder: Level 3` and can post attachments and links in <#704350088843100160> and <#709971609389105244>!')
+            }
+            if (score[userId] >= 4 && !message.member.roles.cache.has(ids.level2)) {
+                const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 2');
+                message.guild.members.cache.get(userId).roles.add(role)
+                message.channel.send('Congratulations! You have reached `Builder: Level 2`!')
+            } 
+            if (score[userId] >= 2 && !message.member.roles.cache.has(ids.level1)) {
+                const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 1');
+                message.guild.members.cache.get(userId).roles.add(role)
+                message.channel.send('Congratulations! You have reached `Builder: Level 1` and can post in <#704355790127104010>!')
             }
         })
     }
