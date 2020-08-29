@@ -269,7 +269,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
      if (user.bot) return;
      if (!reaction.message.guild) return;
 
-     if (reaction.message.channel.id === '718967630169505883' && reaction.emoji.name === '✅') {
+     if (reaction.message.channel.id === '749302258239275069' && reaction.emoji.name === '✅') {
          const userId = await reaction.message.author.id
          jsonReader('./scores.json', (err, test) => {
             if (err) {
@@ -373,5 +373,3 @@ client.on('messageReactionRemove', async (reaction, user) => {
 })
  
 client.login(config.token);
-
-//add updates channel, change reaction channel id
