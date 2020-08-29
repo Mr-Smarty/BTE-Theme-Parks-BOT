@@ -239,7 +239,7 @@ client.on("message", async message => {
         .then(() => msg.react('⛵'))
         .then(() => msg.react('🐋'))
         .then(() => msg.react('731224218598899843'))
-        .then(() => msg.react('749376102299861052'))
+        .then(() => msg.react('749407387709997056'))
         .catch(() => console.error('One of the emojis failed to react.'));
     } else
     if (command === 'req') {
