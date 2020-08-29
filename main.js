@@ -38,10 +38,6 @@ client.on("message", async message => {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
 
-    if (message.author.id === '565177091361079296') {
-        message.react('728634297174720602')
-    }
-
     if (message.author.bot) return;
     
     if (message.channel.id !== '715017068772196424') {
@@ -69,7 +65,7 @@ client.on("message", async message => {
         message.channel.send("mod");
     } else
     if (command === 'server') {
-        ping('74.99.66.137', 25565, (error, response) => {
+        ping('themeparks.wither.host', 25650, (error, response) => {
             if (error) {
                 const errorEmbed = new Discord.MessageEmbed()
                 .setTitle('Server Status')
@@ -144,7 +140,7 @@ client.on("message", async message => {
         message.channel.send(commandEmbed);
     } else
     if (command === 'players') {
-        ping('74.99.66.137', 25565, (error, response) => {
+        ping('themeparks.wither.host', 25650, (error, response) => {
             if (error) {
                 const errorEmbed = new Discord.MessageEmbed()
                 .setTitle('Server Status')
