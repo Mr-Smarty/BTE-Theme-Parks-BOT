@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client({ partials : ["MESSAGE", "CHANNEL", "REACTION"]});
-const mariadb = require('mariadb');
+const fs = require('fs');
 
 const config = require("./config.json");
 
@@ -11,31 +11,18 @@ const info = require("./info.json");
 
 const ping = require("minecraft-server-util");
 
-if (config.onRpi) {
-    const pool = mariadb.createPool({
-        socketpath: '/var/run/mysqld/mysqld.sock', 
-        user: 'admin', 
-        password: config.sqlPass, 
-        database: 'BTETP'
-    });
-
-    let mdb = {};
-    mdb.query = function(query, params, callback) {
-        pool.getConnection(function(err, connection) {
-            if(err) { 
-                if (callback) callback(err, null, null); 
-                return; 
-            }
-            connection.query(query, params, function(error, results, fields) {
-                connection.release();
-                if(error) { 
-                    if (callback) callback(error, null, null); 
-                    return; 
-                }
-                if (callback) callback(false, results, fields);
-            });
-        });
-    };
+function jsonReader(filePath, cb) {
+    fs.readFile(filePath, (err, fileData) => {
+        if (err) {
+            return cb && cb(err)
+        }
+        try {
+            const object = JSON.parse(fileData)
+            return cb && cb(null, object)
+        } catch(err) {
+            return cb && cb(err)
+        }
+    })
 }
 
 client.on("ready", () => {
@@ -43,13 +30,6 @@ client.on("ready", () => {
     client.user.setActivity('for =help', { type: 'WATCHING'})
     .then(console.log)
     .catch(console.error);
-    
-    if (config.onRpi) {
-        mdb.query('SHOW TABLES', [], (err, res) => {
-            if (err) {console.log(err)};
-            console.log(res);
-        });
-    }
 });
 
 const prefix = config.prefix;
@@ -264,6 +244,21 @@ client.on("message", async message => {
         .then(() => msg.react('🐋'))
         .then(() => msg.react('731224218598899843'))
         .catch(() => console.error('One of the emojis failed to react.'));
+    } else
+    if (command === 'req') {
+        const userId = message.author.id
+        jsonReader('./scores.json', (err, score) => {
+            if (err) {
+                console.log(err)
+                return
+            }
+            if (score[userId]) {
+                const scoreInt = score[userId]
+                message.channel.send(`Score for <@${userId}>: \`${scoreInt}\``)
+            } else {
+                message.channel.send(`Score for <@${userId}>: \`0\``)
+            }
+        })
     }
 });
 
@@ -273,6 +268,34 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
      if (user.bot) return;
      if (!reaction.message.guild) return;
+
+     if (reaction.message.channel.id === '718967630169505883' && reaction.emoji.name === '✅') {
+         const userId = await reaction.message.author.id
+         jsonReader('./scores.json', (err, test) => {
+            if (err) {
+                console.log(err)
+                return
+            }
+            
+            if (!test[userId]) {
+                test[userId] = 1
+                fs.writeFile('./scores.json', JSON.stringify(test, null, 2), (err) => {
+                    if (err) console.log('Error writing file:', err)
+                    console.log(test)
+                })
+            } else {
+                test[userId] += 1
+        
+                fs.writeFile('./scores.json', JSON.stringify(test, null, 2), (err) => {
+                    if (err) console.log('Error writing file:', err)
+                    console.log(test)
+                })
+            }
+         })
+
+         reaction.message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error))
+         .then(() => reaction.message.react('☑️'))
+     } else
 
      if (reaction.message.channel.id === '717832342550610113') {
          if (reaction.emoji.id === '705550277339644017') {
@@ -350,3 +373,5 @@ client.on('messageReactionRemove', async (reaction, user) => {
 })
  
 client.login(config.token);
+
+//add updates channel, change reaction channel id

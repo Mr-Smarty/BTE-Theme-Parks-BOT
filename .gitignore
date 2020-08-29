@@ -1,3 +1,5 @@
 node_modules
 config.json
 link.txt
+scores.json
+json-read-write-ex
