@@ -361,6 +361,9 @@ client.on('messageReactionAdd', async (reaction, user) => {
          } else
          if (reaction.emoji.id === '731224218598899843') {
             await reaction.message.guild.members.cache.get(user.id).roles.add('709951358459183106')
+         } else
+         if (reaction.emoji.id === '749407387709997056') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add('749407113117171882')
          }
      }
 })
@@ -402,6 +405,9 @@ client.on('messageReactionRemove', async (reaction, user) => {
          } else
          if (reaction.emoji.id === '731224218598899843') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove('709951358459183106')
+         } else
+         if (reaction.emoji.id === '749407387709997056') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('749407113117171882')
          }
      }
 })
