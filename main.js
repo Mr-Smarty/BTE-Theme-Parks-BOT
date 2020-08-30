@@ -70,7 +70,7 @@ client.on("message", async message => {
                 const errorEmbed = new Discord.MessageEmbed()
                 .setTitle('Server Status')
                 .setColor(info.embedHexcode)
-                .setDescription('Offline :pensive: Contact Cdub#5909')
+                .setDescription('Offline :pensive: Contact AdamW#0451')
                 .setTimestamp()
                 message.channel.send(errorEmbed);   
                 return;        
@@ -80,7 +80,7 @@ client.on("message", async message => {
             .setTitle('Server Status')
             .setColor(info.embedHexcode)
             .setDescription('Online! :thumbsup:')
-            .addField('Server IP', response.host)
+            .addField('Server IP', response.host + ':' + response.port)
             .addField('Server Version', response.version)
             .addField('Online Players', response.onlinePlayers + '\n' + '\n Use `=players` to view online players')
             .addField('Server Description', response.descriptionText)
@@ -145,7 +145,7 @@ client.on("message", async message => {
                 const errorEmbed = new Discord.MessageEmbed()
                 .setTitle('Server Status')
                 .setColor(info.embedHexcode)
-                .setDescription('Offline :pensive: Contact Cdub#5909')
+                .setDescription('Offline :pensive: Contact AdamW#0451')
                 .setTimestamp()
                 message.channel.send(errorEmbed);
                 return;
