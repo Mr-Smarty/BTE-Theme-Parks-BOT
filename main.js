@@ -265,7 +265,7 @@ client.on("message", async message => {
             if (score[userId] >= 15 && !message.member.roles.cache.has(ids.level6)) {
                 const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 6');
                 message.guild.members.cache.get(userId).roles.add(role)
-                message.channel.send('Congratulations! You have reached `Builder: Level 6`!')
+                message.channel.send('Congratulations! You have reached `Builder: Level 6` and can place your head in the Hall of Fame on the BTE: Theme Parks server!')
             }
             if (score[userId] >= 10 && !message.member.roles.cache.has(ids.level5)) {
                 const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 5');
@@ -280,12 +280,12 @@ client.on("message", async message => {
             if (score[userId] >= 6 && !message.member.roles.cache.has(ids.level3)) {
                 const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 3');
                 message.guild.members.cache.get(userId).roles.add(role)
-                message.channel.send('Congratulations! You have reached `Builder: Level 3` and can post attachments and links in <#704350088843100160> and <#709971609389105244>!')
+                message.channel.send('Congratulations! You have reached `Builder: Level 3`!')
             }
             if (score[userId] >= 4 && !message.member.roles.cache.has(ids.level2)) {
                 const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 2');
                 message.guild.members.cache.get(userId).roles.add(role)
-                message.channel.send('Congratulations! You have reached `Builder: Level 2`!')
+                message.channel.send('Congratulations! You have reached `Builder: Level 2` and can post attachments and links in <#704350088843100160> and <#709971609389105244>!')
             } 
             if (score[userId] >= 2 && !message.member.roles.cache.has(ids.level1)) {
                 const role = message.guild.roles.cache.find(role => role.name === 'Builder: Level 1');
