@@ -3,8 +3,26 @@ const client = new Discord.Client({ partials : ["MESSAGE", "CHANNEL", "REACTION"
 const fs = require('fs');
 const ping = require("minecraft-server-util");
 const Enmap = require("enmap");
+const googleSpreadsheet = require('google-spreadsheet');
+const { promisify } = require('util');
 
 console.log('starting...')
+
+client.Discord = Discord;
+client.ping = ping;
+client.googleSpreadsheet = googleSpreadsheet;
+
+const config = require("./config.json");
+client.config = config;
+const ids = require("./ids.json");
+client.ids = ids;
+const info = require("./info.json");
+client.info = info;
+const creds = require("./client_secret.json");
+client.creds = creds
+
+const prefix = config.prefix;
+client.prefix = prefix;
 
 function jsonReader(filePath, cb) {
    fs.readFile(filePath, (err, fileData) => {
@@ -20,18 +38,20 @@ function jsonReader(filePath, cb) {
    })
 }
 
-client.Discord = Discord;
-client.ping = ping;
+async function accessSpreadsheet(google, credentials, message) {
+   const doc = new google.GoogleSpreadsheet('1zcJgw_hUiewoMU8wDslTMHNdt-PvIuUJwfsMyH5E1Ho');
+   await doc.useServiceAccountAuth({
+         client_email: credentials.client_email,
+         private_key: credentials.private_key,
+      })
+   
+   await doc.loadInfo();
+   console.log(doc.title)
+   const sheet = doc.sheetsByIndex[0];
+   message.channel.send(`Title: ${sheet.title}, Rows: ${sheet.rowCount}`);
+};
 
-const config = require("./config.json");
-client.config = config;
-const ids = require("./ids.json");
-client.ids = ids;
-const info = require("./info.json");
-client.info = info;
-
-const prefix = config.prefix;
-client.prefix = prefix;
+client.accessSpreadsheet = accessSpreadsheet;
 
 fs.readdir("./events/", (err, files) => {
     if (err) return console.error(err);
@@ -181,3 +201,5 @@ client.on('messageReactionRemove', async (reaction, user) => {
 })
  
 client.login(config.token);
+
+//reminder: load client secret onto rpi
