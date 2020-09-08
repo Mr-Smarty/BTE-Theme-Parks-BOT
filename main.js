@@ -11,6 +11,7 @@ console.log('starting...')
 client.Discord = Discord;
 client.ping = ping;
 client.googleSpreadsheet = googleSpreadsheet;
+client.promisify = promisify;
 
 const config = require("./config.json");
 client.config = config;
@@ -38,7 +39,7 @@ function jsonReader(filePath, cb) {
    })
 }
 
-async function accessSpreadsheet(google, credentials, message) {
+async function accessSpreadsheet(google, credentials) {
    const doc = new google.GoogleSpreadsheet('1zcJgw_hUiewoMU8wDslTMHNdt-PvIuUJwfsMyH5E1Ho');
    await doc.useServiceAccountAuth({
          client_email: credentials.client_email,
@@ -46,9 +47,8 @@ async function accessSpreadsheet(google, credentials, message) {
       })
    
    await doc.loadInfo();
-   console.log(doc.title)
    const sheet = doc.sheetsByIndex[0];
-   message.channel.send(`Title: ${sheet.title}, Rows: ${sheet.rowCount}`);
+   return sheet
 };
 
 client.accessSpreadsheet = accessSpreadsheet;
