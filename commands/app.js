@@ -96,8 +96,6 @@ exports.run = async (client, message, args) => {
                     const row = apps.pop()
                     rows1[row].result = true
                     await rows1[row].save();
-                    message.channel.send(`**${args[1]}** was accepted!`)
-                    await client.users.cache.get(userID).send('Your application for builder has been accepted!')
                     if (apps.length > 0) {
                         apps.forEach(async r => {
                             rows1[r].result = false
