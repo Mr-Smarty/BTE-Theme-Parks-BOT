@@ -3,7 +3,7 @@ exports.run = (client, message, args) => {
         const commandEmbed = new client.Discord.MessageEmbed()
         .setTitle("Available Commands: `DEV`")
         .setColor(client.info.embedHexcode)
-        .setDescription('**=ping** \n **=server** \n > **=players** \n **=score** \n **=commands** \n **=modSay** \n **=devCommand** (TEST) \n **=modCommand** (TEST) \n **=reload** \n **=app** (TEST)')
+        .setDescription('**=ping** \n **=server** \n > **=players** \n **=score** \n **=commands** \n **=modSay** \n **=devCommand** (TEST) \n **=modCommand** (TEST) \n **=reload** \n **=app**')
         .setTimestamp(client.info.commandUpdate)
         .setFooter("Last updated by MrSmarty#1732", client.info.devIconLink)
         message.channel.send(commandEmbed);
