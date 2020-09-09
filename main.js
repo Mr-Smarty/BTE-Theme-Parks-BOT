@@ -201,5 +201,3 @@ client.on('messageReactionRemove', async (reaction, user) => {
 })
  
 client.login(config.token);
-
-//reminder: load client secret onto rpi

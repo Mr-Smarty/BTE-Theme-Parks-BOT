@@ -7,6 +7,17 @@ async function ifAppExists(rows, arg) {
     return apps;
 }
 
+async function ifUAppExists(rows, arg) {
+    const rowCount = await rows.length;
+    let apps = [];
+    for (let i = 0; i < rowCount; i++) {
+        if (rows[i].Username == arg) {
+            if (!rows[i].result) apps.push(i);
+        }
+    }
+    return apps;
+}
+
 exports.run = async (client, message, args) => {
     if (!message.member.roles.cache.has(client.ids.modRoleID) && !message.member.roles.cache.has(client.ids.trialModRoleID)) {
         message.channel.send('You must have the `Trial Moderator` or `Moderator` role to use application commands.');
@@ -19,6 +30,7 @@ exports.run = async (client, message, args) => {
     if (args) {
         switch (args[0]) {
             case 'review':
+                message.channel.send('Getting data...')
                 sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
                 const rows = await sheet.getRows({
                     offset: 0
@@ -43,9 +55,9 @@ exports.run = async (client, message, args) => {
                     .setDescription(unreviewed)
                     message.channel.send(reviewEmbed)
                 } else {
-                    const apps = await ifAppExists(rows, args[1]);
-                    if (!apps.length > 0) {
-                        message.channel.send("An application for that user doesn't exist!");
+                    const apps = await ifUAppExists(rows, args[1]);
+                    if (apps.length === 0) {
+                        message.channel.send("An unreviewed application for that user doesn't exist!");
                         return;
                     } else {
                         if (apps.length > 1) message.channel.send('There are multiple unreviewed applications from this user. Here is the latest:')
@@ -79,15 +91,16 @@ exports.run = async (client, message, args) => {
                     return;
                 }
                 const userID = user.id
-
+                
+                await message.channel.send('Getting data...')
                 sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
                 const rows1 = await sheet.getRows({
                     offset: 0
                 });
                 
-                const apps = await ifAppExists(rows1, args[1])
+                const apps = await ifUAppExists(rows1, args[1])
                 if (!apps.length > 0) {
-                    message.channel.send("An application for that user doesn't exist!");
+                    message.channel.send("An unreviewed application for that user doesn't exist!");
                     return;
                 } else {
                     message.channel.send('Uploading updated data...')
@@ -122,15 +135,16 @@ exports.run = async (client, message, args) => {
                     return;
                 }
                 const userID1 = user1.id
-
+                
+                await message.channel.send('Getting data...')
                 sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
                 const rows2 = await sheet.getRows({
                     offset: 0
                 });
                 
-                const apps2 = await ifAppExists(rows2, args[1])
+                const apps2 = await ifUAppExists(rows2, args[1])
                 if (!apps2.length > 0) {
-                    message.channel.send("An application for that user doesn't exist!");
+                    message.channel.send("An unreviewed application for that user doesn't exist!");
                     return;
                 } else {
                     message.channel.send('Uploading updated data...')
@@ -147,6 +161,73 @@ exports.run = async (client, message, args) => {
                     }
                     message.channel.send(`**${args[1]}** was denied. \n**Reason:** ${reason}`)
                     client.users.cache.get(userID1).send(`Your application for builder has been denied. \n**Reason:** ${reason}`)
+                }
+                break;
+            case 'history':
+                const type = await parseInt(args[1]) || args[1]
+                switch (typeof type) {
+                    case 'string':
+                        message.channel.send('Getting data...')
+                        sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
+                        const rows = await sheet.getRows({
+                            offset: 0
+                        });
+                        const apps = await ifAppExists(rows, args[1])
+                        if (apps.length == 0) {
+                            message.channel.send('There are no applications for this user!')
+                            return
+                        }
+                        let names = await []
+                        names = await apps.map(r => {
+                            let time = rows[r].Timestamp
+                            let status = rows[r].result
+                            let appID = r
+                            return {'time': time, 'status': status, 'ID': appID}
+                        })
+                        const fields = await names.map(r => {
+                            let time = r.time
+                            let ID = r.ID
+                            var status
+                            let statusString = r.status
+                            var statusBoolean
+                            if (statusString) {
+                                switch (statusString.toLowerCase()) {
+                                    case 'true':
+                                        statusBoolean = true
+                                        break;
+                                    case 'false':
+                                        statusBoolean = false
+                                        break;
+                                    default:
+                                        statusBoolean = null
+                                        break;
+                                }
+                            }
+                            switch (statusBoolean) {
+                                case true:
+                                    status = 'Accepted';
+                                    break;
+                                case false:
+                                    status = 'Denied';
+                                    break;
+                                default:
+                                    status = 'Unreviewed';
+                                    break;
+                            }
+                            return {'name': `Time: \`${time}\` | Status: \`${status}\` | Application ID: \`${ID}\``, 'value': '\u200B'}
+                        })
+                        const embed = new client.Discord.MessageEmbed()
+                        .setTitle(`All applications for ${args[1]}`)
+                        .addFields(fields)
+                        .setColor(client.info.embedHexcode)
+                        message.channel.send(embed)
+                        break;
+                    case 'number':
+                        message.channel.send('Page number')
+                        break;
+                    default:
+                        message.channel.send('Please give a valid argument.')
+                        break;
                 }
                 break;
             default:
