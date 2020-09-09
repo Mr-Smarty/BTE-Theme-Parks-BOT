@@ -90,6 +90,7 @@ exports.run = async (client, message, args) => {
                     message.channel.send("An application for that user doesn't exist!");
                     return;
                 } else {
+                    message.channel.send('Uploading updated data...')
                     const userToMember = message.guild.member(user)
                     userToMember.roles.add('704354906450034708')
                     const row = apps.pop()
@@ -103,6 +104,8 @@ exports.run = async (client, message, args) => {
                             await rows1[r].save()
                         })
                     }
+                    message.channel.send(`**${args[1]}** was accepted!`)
+                    client.users.cache.get(userID).send('Your application for builder has been accepted!')
                 }
                 break;
             case 'deny':
@@ -132,19 +135,20 @@ exports.run = async (client, message, args) => {
                     message.channel.send("An application for that user doesn't exist!");
                     return;
                 } else {
+                    message.channel.send('Uploading updated data...')
                     const userToMember = message.guild.member(user1)
                     userToMember.roles.remove('704354906450034708')
                     const row = apps2.pop()
                     rows2[row].result = false
                     await rows2[row].save();
-                    message.channel.send(`**${args[1]}** was denied. \n**Reason:** ${reason}`)
-                    await client.users.cache.get(userID1).send(`Your application for builder has been denied. \n**Reason:** ${reason}`)
                     if (apps2.length > 0) {
                         apps2.forEach(async r => {
                             rows2[r].result = false
                             await rows2[r].save()
                         })
                     }
+                    message.channel.send(`**${args[1]}** was denied. \n**Reason:** ${reason}`)
+                    client.users.cache.get(userID1).send(`Your application for builder has been denied. \n**Reason:** ${reason}`)
                 }
                 break;
             default:
