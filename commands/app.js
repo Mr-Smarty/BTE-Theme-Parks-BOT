@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
     if (args) {
         switch (args[0]) {
             case 'review':
-                message.channel.send('Getting data...')
+                let msgGet = await message.channel.send('Getting data...')
                 sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
                 const rows = await sheet.getRows({
                     offset: 0
@@ -41,11 +41,12 @@ exports.run = async (client, message, args) => {
                     let minus = 0;
                     for (let n = 0; n < rowCount; n++) {
                         if (rows[n].Username == undefined) return;
-                        if (rows[n].result == undefined) {
+                        if (rows[n].result == undefined && !unreviewed.includes(rows[n].Username)) {
                             unreviewed[n-minus] = rows[n].Username
                         } else minus++
                     }
                     if (unreviewed[0] == undefined) {
+                        msgGet.delete()
                         message.channel.send('No unreviewed applications!')
                         return;
                     }
@@ -53,10 +54,12 @@ exports.run = async (client, message, args) => {
                     .setTitle('Unreviewed applicants')
                     .setColor(client.info.embedHexcode)
                     .setDescription(unreviewed)
+                    msgGet.delete()
                     message.channel.send(reviewEmbed)
                 } else {
                     const apps = await ifUAppExists(rows, args[1]);
                     if (apps.length === 0) {
+                        msgGet.delete()
                         message.channel.send("An unreviewed application for that user doesn't exist!");
                         return;
                     } else {
@@ -76,6 +79,7 @@ exports.run = async (client, message, args) => {
                         .addField('Please give a link or multiple links to screenshots of 3+ buildings you have built with the BuildTheEarth modpack.', ans2)
                         .addField('How many hours per week can you dedicate towards building?', ans3)
                         .setFooter(`Submitted ${timestamp}`)
+                        msgGet.delete()
                         message.channel.send(embed)
                     }
                 }
@@ -92,7 +96,7 @@ exports.run = async (client, message, args) => {
                 }
                 const userID = user.id
                 
-                await message.channel.send('Getting data...')
+                let msgGet1 = await message.channel.send('Getting data...')
                 sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
                 const rows1 = await sheet.getRows({
                     offset: 0
@@ -100,10 +104,12 @@ exports.run = async (client, message, args) => {
                 
                 const apps = await ifUAppExists(rows1, args[1])
                 if (!apps.length > 0) {
+                    msgGet1.delete()
                     message.channel.send("An unreviewed application for that user doesn't exist!");
                     return;
                 } else {
-                    message.channel.send('Uploading updated data...')
+                    msgGet1.delete()
+                    let msg = await message.channel.send('Uploading updated data...')
                     const userToMember = message.guild.member(user)
                     userToMember.roles.add('704354906450034708')
                     const row = apps.pop()
@@ -115,6 +121,7 @@ exports.run = async (client, message, args) => {
                             await rows1[r].save()
                         })
                     }
+                    msg.delete()
                     message.channel.send(`**${args[1]}** was accepted!`)
                     client.users.cache.get(userID).send('Your application for builder has been accepted!')
                 }
@@ -136,7 +143,7 @@ exports.run = async (client, message, args) => {
                 }
                 const userID1 = user1.id
                 
-                await message.channel.send('Getting data...')
+                let msgGet2 = await message.channel.send('Getting data...')
                 sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
                 const rows2 = await sheet.getRows({
                     offset: 0
@@ -144,10 +151,12 @@ exports.run = async (client, message, args) => {
                 
                 const apps2 = await ifUAppExists(rows2, args[1])
                 if (!apps2.length > 0) {
+                    msgGet2.delete
                     message.channel.send("An unreviewed application for that user doesn't exist!");
                     return;
                 } else {
-                    message.channel.send('Uploading updated data...')
+                    msgGet2.delete()
+                    let msg = await message.channel.send('Uploading updated data...')
                     const userToMember = message.guild.member(user1)
                     userToMember.roles.remove('704354906450034708')
                     const row = apps2.pop()
@@ -159,6 +168,7 @@ exports.run = async (client, message, args) => {
                             await rows2[r].save()
                         })
                     }
+                    msg.delete()
                     message.channel.send(`**${args[1]}** was denied. \n**Reason:** ${reason}`)
                     client.users.cache.get(userID1).send(`Your application for builder has been denied. \n**Reason:** ${reason}`)
                 }
@@ -167,13 +177,14 @@ exports.run = async (client, message, args) => {
                 const type = await parseInt(args[1]) || args[1]
                 switch (typeof type) {
                     case 'string':
-                        message.channel.send('Getting data...')
+                        let msg = await message.channel.send('Getting data...')
                         sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
                         const rows = await sheet.getRows({
                             offset: 0
                         });
                         const apps = await ifAppExists(rows, args[1])
                         if (apps.length == 0) {
+                            msg.delete()
                             message.channel.send('There are no applications for this user!')
                             return
                         }
@@ -214,19 +225,147 @@ exports.run = async (client, message, args) => {
                                     status = 'Unreviewed';
                                     break;
                             }
-                            return {'name': `Time: \`${time}\` | Status: \`${status}\` | Application ID: \`${ID}\``, 'value': '\u200B'}
+                            return {'name': `Time: \`${time}\` \nStatus: \`${status}\` \nApplication ID: \`${ID}\``, 'value': '\u200B'}
                         })
                         const embed = new client.Discord.MessageEmbed()
                         .setTitle(`All applications for ${args[1]}`)
                         .addFields(fields)
                         .setColor(client.info.embedHexcode)
+                        msg.delete()
                         message.channel.send(embed)
                         break;
                     case 'number':
-                        message.channel.send('Page number')
+                        let msg2 = await message.channel.send('Getting data...')
+                        sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
+                        const rows2 = await sheet.getRows({
+                            offset: 0
+                        });
+                        const pageNumber = args[1]
+                        let filledRows1 = await rows2.map(r => {
+                            if (r.Timestamp !== 'undefined') return r
+                            else return;
+                        })
+                        const checkRow = pageNumber * 10 - 10
+                        if (filledRows1[checkRow] == undefined) {
+                            msg2.delete()
+                            message.channel.send(`The application page \`${pageNumber}\` doesn't exist!`)
+                        }
+                        let pageRows = filledRows1.slice(checkRow, checkRow + 10)
+                        let names2 = await []
+                        names2 = await pageRows.map(r => {
+                            let time = r.Timestamp
+                            let status = r.result
+                            let appID = r._rowNumber - 1
+                            let tag = r.Username
+                            return {'time': time, 'tag': tag, 'status': status, 'ID': appID}
+                        })
+                        const fields2 = await names2.map(r => {
+                            let time = r.time
+                            let ID = r.ID
+                            let tag = r.tag
+                            var status
+                            let statusString = r.status
+                            var statusBoolean
+                            if (statusString) {
+                                switch (statusString.toLowerCase()) {
+                                    case 'true':
+                                        statusBoolean = true
+                                        break;
+                                    case 'false':
+                                        statusBoolean = false
+                                        break;
+                                    default:
+                                        statusBoolean = null
+                                        break;
+                                }
+                            }
+                            switch (statusBoolean) {
+                                case true:
+                                    status = 'Accepted';
+                                    break;
+                                case false:
+                                    status = 'Denied';
+                                    break;
+                                default:
+                                    status = 'Unreviewed';
+                                    break;
+                            }
+                            return {'name': `Time: \`${time}\` \nName: \`${tag}\` \nStatus: \`${status}\` \nApplication ID: \`${ID}\``, 'value': '\u200B'}
+                        })
+                        const pageEmbed = new client.Discord.MessageEmbed()
+                        .setTitle(`Application history: Page \`${pageNumber}\``)
+                        .addFields(fields2)
+                        .setColor(client.info.embedHexcode)
+                        msg2.delete()
+                        message.channel.send(pageEmbed)
+                        break;
+                    case 'undefined':
+                        let msg1 = await message.channel.send('Getting data...')
+                        sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
+                        const rows1 = await sheet.getRows({
+                            offset: 0
+                        });
+                        let filledRows = await rows1.map(r => {
+                            if (r.Timestamp !== 'undefined') return r
+                            else return;
+                        })
+                        let page1 = []
+                        var page1Length
+                        if (filledRows.length < 10) page1Length = filledRows.length
+                        else page1Length = 10
+                        for (let a = 0; a < page1Length; a++) {
+                            page1[a] = filledRows.pop()
+                        }
+                        let names1 = await []
+                        names1 = await page1.map(r => {
+                            let time = r.Timestamp
+                            let status = r.result
+                            let appID = r._rowNumber - 1
+                            let tag = r.Username
+                            return {'time': time, 'tag': tag, 'status': status, 'ID': appID}
+                        })
+                        const fields1 = await names1.map(r => {
+                            let time = r.time
+                            let ID = r.ID
+                            let tag = r.tag
+                            var status
+                            let statusString = r.status
+                            var statusBoolean
+                            if (statusString) {
+                                switch (statusString.toLowerCase()) {
+                                    case 'true':
+                                        statusBoolean = true
+                                        break;
+                                    case 'false':
+                                        statusBoolean = false
+                                        break;
+                                    default:
+                                        statusBoolean = null
+                                        break;
+                                }
+                            }
+                            switch (statusBoolean) {
+                                case true:
+                                    status = 'Accepted';
+                                    break;
+                                case false:
+                                    status = 'Denied';
+                                    break;
+                                default:
+                                    status = 'Unreviewed';
+                                    break;
+                            }
+                            return {'name': `Time: \`${time}\` \nName: \`${tag}\` \nStatus: \`${status}\` \nApplication ID: \`${ID}\``, 'value': '\u200B'}
+                        })
+                        const page1Embed = new client.Discord.MessageEmbed()
+                        .setTitle(`Recent application history`)
+                        .addFields(fields1)
+                        .setColor(client.info.embedHexcode)
+                        msg1.delete()
+                        message.channel.send(page1Embed)
                         break;
                     default:
-                        message.channel.send('Please give a valid argument.')
+                        message.channel.send('Please give a valid argument, or leave argument blank')
                         break;
                 }
                 break;
