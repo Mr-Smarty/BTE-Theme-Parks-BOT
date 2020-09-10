@@ -249,6 +249,7 @@ exports.run = async (client, message, args) => {
                         if (filledRows1[checkRow] == undefined) {
                             msg2.delete()
                             message.channel.send(`The application page \`${pageNumber}\` doesn't exist!`)
+                            return;
                         }
                         let pageRows = filledRows1.slice(checkRow, checkRow + 10)
                         let names2 = await []
