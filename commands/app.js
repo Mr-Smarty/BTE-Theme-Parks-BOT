@@ -51,8 +51,8 @@ function fieldsFunc(namesParam, ifTag) {
                 break;
         }
         if (ifTag) {
-            return {'name': `Time: \`${time}\` \nName: \`${tag}\` \nStatus: ${status} \nApplication ID: \`${ID}\``, 'value': '\u200B'}
-        } else return {'name': `Time: \`${time}\` \nStatus: ${status} \nApplication ID: \`${ID}\``, 'value': '\u200B'}
+            return {'name': `Date: \`${time}\` | Name: \`${tag}\` | Status: ${status} | Application ID: \`${ID}\``, 'value': '\u200B'}
+        } else return {'name': `Date: \`${time}\` | Status: ${status} | Application ID: \`${ID}\``, 'value': '\u200B'}
     })
     return returns
 }
@@ -97,6 +97,7 @@ exports.run = async (client, message, args) => {
                     message.channel.send(reviewEmbed)
                 } else {
                     const apps = await ifUAppExists(rows, args[1]);
+                    const user = await client.users.cache.find(u => u.tag === args[1])
                     if (apps.length === 0) {
                         msgGet.delete()
                         message.channel.send("An unreviewed application for that user doesn't exist!");
@@ -105,15 +106,20 @@ exports.run = async (client, message, args) => {
                         if (apps.length > 1) message.channel.send('There are multiple unreviewed applications from this user. Here is the latest:')
                         const row = apps.pop()
                         const applicant = rows[row].Username
+                        var avatar
+                        if (user) {
+                            avatar = user.displayAvatarURL()
+                        } else avatar = 'https://media.discordapp.net/attachments/745371249785700492/753860231666335754/notdiscord.png'
                         
                         const ans1 = rows[row].Minecraft_Username
                         const ans2 = rows[row].Links
                         const ans3 = rows[row].Hours
-                        const timestamp = rows[row].Timestamp
+                        const timestamp = rows[row].Timestamp.split(/ +/g)[0]
                         
                         const embed = new client.Discord.MessageEmbed()
                         .setTitle(`Builder application for ${applicant}:`)
                         .setColor(client.info.embedHexcode)
+                        .setThumbnail(avatar)
                         .addField('What is your Minecraft username?', ans1)
                         .addField('Please give a link or multiple links to screenshots of 3+ buildings you have built with the BuildTheEarth modpack.', ans2)
                         .addField('How many hours per week can you dedicate towards building?', ans3)
@@ -232,14 +238,21 @@ exports.run = async (client, message, args) => {
                         }
                         let names = await []
                         names = await apps.map(r => {
-                            let time = rows[r].Timestamp
+                            let time = rows[r].Timestamp.split(/ +/g)[0]
                             let status = rows[r].result
                             let appID = r
                             return {'time': time, 'status': status, 'ID': appID}
                         })
+                        const user = await client.users.cache.find(u => u.tag === args[1])
+                        var avatar
+                        if (user) {
+                            avatar = user.displayAvatarURL()
+                        } else avatar = 'https://media.discordapp.net/attachments/745371249785700492/753860231666335754/notdiscord.png'
+
                         const fields = await fieldsFunc(names, false)
                         const embed = new client.Discord.MessageEmbed()
                         .setTitle(`All applications for ${args[1]}`)
+                        .setThumbnail(avatar)
                         .addFields(fields)
                         .setColor(client.info.embedHexcode)
                         msg.delete()
@@ -257,6 +270,7 @@ exports.run = async (client, message, args) => {
                             if (r.Timestamp !== 'undefined') return r
                             else return;
                         })
+                        let lastPage = Math.ceil(filledRows.length / 10)
                         const checkRow = pageNumber * 10 - 10
                         if (filledRows[checkRow] == undefined) {
                             msg.delete()
@@ -266,7 +280,7 @@ exports.run = async (client, message, args) => {
                         let pageRows = filledRows.slice(checkRow, checkRow + 10)
                         let names = await []
                         names = await pageRows.map(r => {
-                            let time = r.Timestamp
+                            let time = r.Timestamp.split(/ +/g)[0]
                             let status = r.result
                             let appID = r._rowNumber - 1
                             let tag = r.Username
@@ -274,7 +288,7 @@ exports.run = async (client, message, args) => {
                         })
                         const fields = await fieldsFunc(names, true)
                         const pageEmbed = new client.Discord.MessageEmbed()
-                        .setTitle(`Application history: Page \`${pageNumber}\``)
+                        .setTitle(`Application history: Page \`${pageNumber}\`/${lastPage}`)
                         .addFields(fields)
                         .setColor(client.info.embedHexcode)
                         msg.delete()
@@ -300,7 +314,7 @@ exports.run = async (client, message, args) => {
                         }
                         let names = await []
                         names = await page1.map(r => {
-                            let time = r.Timestamp
+                            let time = r.Timestamp.split(/ +/g)[0]
                             let status = r.result
                             let appID = r._rowNumber - 1
                             let tag = r.Username
