@@ -1,5 +1,6 @@
 exports.run = (client, message, args) => {
     if (!message.member.roles.cache.has(client.ids.modRoleID) && !message.member.roles.cache.has(client.ids.trialModRoleID)) return;
+    if (message.channel.parent.id !== ('718967444294860873' || '704382526902501376')) return message.channel.send(':eyes:')    
 
     if (!message.mentions.channels.first()) {
         message.channel.send('Please mention a channel.');

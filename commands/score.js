@@ -15,8 +15,10 @@ function jsonReader(filePath, cb) {
 }
 
 function scoreEmbed(messageObject, idArgument, int, client) {
+    const userAvatar = client.users.cache.get(idArgument).displayAvatarURL();
     const scoreEmbed = new client.Discord.MessageEmbed()
     .setDescription(`Score for <@${idArgument.toString()}>: \`${int}\``)
+    .setFooter('\u200b', userAvatar)
     .setTimestamp()
     .setColor(client.info.embedHexcode);
     messageObject.channel.send(scoreEmbed);

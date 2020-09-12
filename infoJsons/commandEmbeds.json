@@ -1,0 +1,67 @@
+{
+    "ping": {
+        "color": "#60b0f4",
+        "title": "Commands: `=ping`",
+        "description": "**Usage:** `=ping`\n**Description:** Test command to see if the bot is running or if you are bored \n**Requirements:** none"
+    },
+    "commands": {
+        "color": "#60b0f4",
+        "title": "Commands: `=commands`",
+        "description": "**Usage:** `=commands [command name]`\n**Description:** List commands available to you. When given the argument of a command name, gives info about that command. \"Usage:\" tells how to use the command. Arguments inside `<>` are required. Arguments inside `[]` are optional. \"Description:\" gives a discription of the command and what it does. \"Requirements:\" gives the requirements necesary to execute the command. \n**Requirements:** none" 
+    },
+    "server": {
+        "color": "#60b0f4",
+        "title": "Commands: `=server`",
+        "description": "**Usage:** `=server`\n**Description:** Gives information and status of the BTE: Theme Parks Minecraft server. \n**Requirements:** none"
+    },
+    "players": {
+        "color": "#60b0f4",
+        "title": "Commands: `=players`",
+        "description": "**Usage:** `=players`\n**Description:** Lists online players in the BTE: Theme Parks Minecraft server. \n**Requirements:** none"
+    },
+    "score": {
+        "color": "#60b0f4",
+        "title": "Commands: `=score`",
+        "description": "**Usage:** `=score [Member Mention OR User ID]`\n**Description:** Shows your score for the Builder Progress Updates system. Also levels you up and gives rewards when you reach a certain number of points. You will ONLY level up when you yourself uses this command. If a valid argument is given, it will give the score for the indicated user, this will not level them up. Use `(placeholder)` to learn more. \n**Requirements:** none"
+    },
+    "modsay": {
+        "color": "#60b0f4",
+        "title": "Commands: `=modSay`",
+        "description":"**Usage:** `=modSay <Channel Mention> <Message>`\n**Description:** Sends a the specified message in the specified channel. Confirmed by reaction with :white_check_mark:  \n**Requirements:** Moderator OR Trial Moderator, \"MODERATION\" OR \"ADMIN\" channel category"
+    },
+    "nomodsay": {
+        "color": "#60b0f4",
+        "title": "Commands: `=modSay`",
+        "description": "This command's information is a secret :eyes: Please get this command's information in either the \"MODERATION\" or \"ADMIN\" channel categories."
+    },
+    "devcommand": {
+        "color": "#60b0f4",
+        "title": "Commands: `=devCommand`",
+        "description": "**Usage:** `=devCommand`\n**Description:** Test command. Used to test commands usable only by the bot developer. \n**Requirements:** Be the bot developer \\:|"
+    }, 
+    "modcommand": {
+        "color": "#60b0f4",
+        "title": "Commands: `=modCommand`",
+        "description": "**Usage:** `=modCommand`\n**Description:** Test command. Used to test commands usable only by moderators and trial moderators. \n**Requirements:** Moderator OR Trial Moderator"
+    },
+    "admincommand": {
+        "color": "#60b0f4",
+        "title": "Commands: `=adminCommand`",
+        "description": "**Usage:** `=adminCommand`\n**Description:** Test command. Used to test commands usable only by admins. \n**Requirements:** Admin"
+    },
+    "reload": {
+        "color": "#60b0f4",
+        "title": "Commands: `=reload`",
+        "description": "**Usage:** `=reload <command name>`\n**Description:** Reloads the specified command after an edit without need to restart the bot. \n**Requirements:** Be the bot developer \\:|"
+    },
+    "app": {
+        "color": "#60b0f4",
+        "title": "Commands: `=app`",
+        "description": "**Usage:** `=app <option>` \n> `=app review [user tag]` \n> `=app accept <user tag>` \n> `=app deny <user tag> <reason>` \n> `=app history [user tag OR page number]`\n**Description:** =app commands are used to review, deny, accept, view, and edit applications and their statuses. See (placeholder) for more information. \n**Requirements:** Moderator OR Trial Moderator, <#739239527431798805>"
+    },
+    "smarty": {
+        "color": "#60b0f4",
+        "title": "Commands: `=smarty`",
+        "description": "**Usage:** `=smarty` \n**Description:** ¯\\_(ツ)_/¯ \n**Requirements:** none"
+    }
+}
