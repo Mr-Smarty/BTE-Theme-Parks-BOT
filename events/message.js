@@ -3,7 +3,7 @@ module.exports = (client, message) => {
 
     if (message.channel.id !== '715017068772196424') {
         if (!message.content.startsWith(client.prefix)) return;
-    }
+    };
 
     if (message.channel.id === '715017068772196424') {
         message.react('730466277390417930')

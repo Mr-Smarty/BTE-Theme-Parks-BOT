@@ -6,21 +6,23 @@ const Enmap = require("enmap");
 const googleSpreadsheet = require('google-spreadsheet');
 const { promisify } = require('util');
 
-console.log('starting...')
+console.log('starting...');
 
 client.Discord = Discord;
 client.ping = ping;
 client.googleSpreadsheet = googleSpreadsheet;
 client.promisify = promisify;
 
-const config = require("./config.json");
+const config = require(String.raw`.\infoJsons\config.json`);
 client.config = config;
-const ids = require("./ids.json");
+const ids = require(String.raw`.\infoJsons\ids.json`);
 client.ids = ids;
-const info = require("./info.json");
+const info = require(String.raw`.\infoJsons\info.json`);
 client.info = info;
-const creds = require("./client_secret.json");
-client.creds = creds
+const creds = require(String.raw`.\infoJsons\client_secret.json`);
+client.creds = creds;
+const commandEmbeds = require(String.raw`.\infoJsons\commandEmbeds.json`);
+client.commandEmbeds = commandEmbeds;
 
 const prefix = config.prefix;
 client.prefix = prefix;
@@ -28,15 +30,15 @@ client.prefix = prefix;
 function jsonReader(filePath, cb) {
    fs.readFile(filePath, (err, fileData) => {
        if (err) {
-           return cb && cb(err)
+           return cb && cb(err);
        }
        try {
-           const object = JSON.parse(fileData)
-           return cb && cb(null, object)
+           const object = JSON.parse(fileData);
+           return cb && cb(null, object);
        } catch(err) {
-           return cb && cb(err)
+           return cb && cb(err);
        }
-   })
+   });
 }
 
 async function accessSpreadsheet(google, credentials) {
@@ -44,12 +46,12 @@ async function accessSpreadsheet(google, credentials) {
    await doc.useServiceAccountAuth({
          client_email: credentials.client_email,
          private_key: credentials.private_key,
-      })
+      });
    
    await doc.loadInfo();
    const sheet = doc.sheetsByIndex[0];
-   return sheet
-};
+   return sheet;
+}
 
 client.accessSpreadsheet = accessSpreadsheet;
 
@@ -92,69 +94,69 @@ client.on('messageReactionAdd', async (reaction, user) => {
      if (!reaction.message.guild) return;
 
      if (reaction.message.channel.id === '749302258239275069' && reaction.emoji.name === '✅') {
-         const userId = await reaction.message.author.id
+         const userId = await reaction.message.author.id;
          jsonReader('./scores.json', (err, test) => {
             if (err) {
-                console.log(err)
-                return
+                console.log(err);
+                return;
             }
             
             if (!test[userId]) {
-                test[userId] = 1
+                test[userId] = 1;
                 fs.writeFile('./scores.json', JSON.stringify(test, null, 2), (err) => {
-                    if (err) console.log('Error writing file:', err)
-                    console.log(test)
-                })
+                    if (err) console.log('Error writing file:', err);
+                    console.log(test);
+                });
             } else {
-                test[userId] += 1
+                test[userId] += 1;
         
                 fs.writeFile('./scores.json', JSON.stringify(test, null, 2), (err) => {
-                    if (err) console.log('Error writing file:', err)
-                    console.log(test)
-                })
+                    if (err) console.log('Error writing file:', err);
+                    console.log(test);
+                });
             }
-         })
+         });
 
          reaction.message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error))
-         .then(() => reaction.message.react('☑️'))
+         .then(() => reaction.message.react('☑️'));
      } else
 
      if (reaction.message.channel.id === '717832342550610113') {
          if (reaction.emoji.id === '705550277339644017') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('709950515470925835')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709950515470925835');
          } else
          if (reaction.emoji.name === '🦁') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('740307771085422672')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('740307771085422672');
          } else
          if (reaction.emoji.id === '717839235788439572') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('709951008436125856')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709951008436125856');
          } else
          if (reaction.emoji.id === '748790956979126292') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('744380828464840835')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('744380828464840835');
          } else
          if (reaction.emoji.name === '🐴') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('709951457570324491')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709951457570324491');
          } else
          if (reaction.emoji.name === '🍫') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('715301522526699602')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('715301522526699602');
          } else
          if (reaction.emoji.name === '👑') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('713431350027485284')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('713431350027485284');
          } else
          if (reaction.emoji.name === '⛵') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('709950648862638161')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709950648862638161');
          } else
          if (reaction.emoji.name === '🐋') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('709950659473965146')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709950659473965146');
          } else
          if (reaction.emoji.id === '731224218598899843') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('709951358459183106')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('709951358459183106');
          } else
          if (reaction.emoji.id === '749407387709997056') {
-            await reaction.message.guild.members.cache.get(user.id).roles.add('749407113117171882')
+            await reaction.message.guild.members.cache.get(user.id).roles.add('749407113117171882');
          }
      }
-})
+});
 
 client.on('messageReactionRemove', async (reaction, user) => {
      if (reaction.message.partial) await reaction.message.fetch();
@@ -165,39 +167,41 @@ client.on('messageReactionRemove', async (reaction, user) => {
 
      if (reaction.message.channel.id === '717832342550610113') {
          if (reaction.emoji.id === '705550277339644017') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('709950515470925835')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709950515470925835');
          } else
          if (reaction.emoji.name === '🦁') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('740307771085422672')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('740307771085422672');
          } else
          if (reaction.emoji.id === '717839235788439572') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('709951008436125856')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709951008436125856');
          } else
          if (reaction.emoji.id === '748790956979126292') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('744380828464840835')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('744380828464840835');
          } else
          if (reaction.emoji.name === '🐴') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('709951457570324491')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709951457570324491');
          } else
          if (reaction.emoji.name === '🍫') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('715301522526699602')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('715301522526699602');
          } else
          if (reaction.emoji.name === '👑') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('713431350027485284')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('713431350027485284');
          } else
          if (reaction.emoji.name === '⛵') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('709950648862638161')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709950648862638161');
          } else
          if (reaction.emoji.name === '🐋') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('709950659473965146')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709950659473965146');
          } else
          if (reaction.emoji.id === '731224218598899843') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('709951358459183106')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('709951358459183106');
          } else
          if (reaction.emoji.id === '749407387709997056') {
-            await reaction.message.guild.members.cache.get(user.id).roles.remove('749407113117171882')
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('749407113117171882');
          }
      }
-})
+});
  
 client.login(config.token);
+
+//move client_secret.json and config.json into infoJsons

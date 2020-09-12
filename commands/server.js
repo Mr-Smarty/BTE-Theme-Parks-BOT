@@ -5,7 +5,7 @@ exports.run = (client, message, args) => {
             .setTitle('Server Status')
             .setColor(client.info.embedHexcode)
             .setDescription('Offline :pensive: Contact AdamW#0451')
-            .setTimestamp()
+            .setTimestamp();
             message.channel.send(errorEmbed);   
             return;        
         }
@@ -18,9 +18,9 @@ exports.run = (client, message, args) => {
         .addField('Server Version', response.version)
         .addField('Online Players', response.onlinePlayers + '\n' + '\n Use `=players` to view online players')
         .addField('Server Description', response.descriptionText)
-        .setTimestamp()
+        .setTimestamp();
         message.channel.send(serverEmbed);
      
         console.log(response);
     });
-}
+};

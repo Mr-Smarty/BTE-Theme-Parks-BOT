@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
     if (message.author.id !== client.config.ownerID) {
-        message.channel.send('Only the bot developer can reload commands.')
+        message.channel.send('Only the bot developer can reload commands.');
         return;
     }
 

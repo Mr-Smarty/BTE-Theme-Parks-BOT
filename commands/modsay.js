@@ -14,4 +14,4 @@ exports.run = (client, message, args) => {
     console.log(userMessage + '\n' + channel);
     channel.send(userMessage);
     message.react('✅');
-}
+};
