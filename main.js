@@ -13,15 +13,15 @@ client.ping = ping;
 client.googleSpreadsheet = googleSpreadsheet;
 client.promisify = promisify;
 
-const config = require(String.raw`.\infoJsons\config.json`);
+const config = require('./infoJsons/config.json');
 client.config = config;
-const ids = require(String.raw`.\infoJsons\ids.json`);
+const ids = require('./infoJsons/ids.json');
 client.ids = ids;
-const info = require(String.raw`.\infoJsons\info.json`);
+const info = require('./infoJsons/info.json');
 client.info = info;
-const creds = require(String.raw`.\infoJsons\client_secret.json`);
+const creds = require('./infoJsons/client_secret.json');
 client.creds = creds;
-const commandEmbeds = require(String.raw`.\infoJsons\commandEmbeds.json`);
+const commandEmbeds = require('./infoJsons/commandEmbeds.json');
 client.commandEmbeds = commandEmbeds;
 
 const prefix = config.prefix;
