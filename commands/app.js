@@ -47,7 +47,7 @@ function fieldsFunc(namesParam, ifTag) {
                 status = ':x:';
                 break;
             default:
-                status = ':grey_question"';
+                status = ':grey_question:';
                 break;
         }
         if (ifTag) {
@@ -335,8 +335,75 @@ exports.run = async (client, message, args) => {
                 }
                 break;
             }
+            case 'info': {
+                if (!args[1]) return message.channel.send('Please give a valid application ID.');
+                if (await isNaN(parseInt(args[1]))) return message.channel.send('Please give a valid application ID');
+                if (args[1] < 1) return message.channel.send('1 is the lowest application ID.');
+                if (args[1] > 39999) return message.channel.send('39999 is the highest application ID.');
+                let msg = await message.channel.send('Getting data...');
+                sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
+                if (args[1] > (sheet.rowCount - 1)) {
+                    msg.delete();
+                    message.channel.send(`An application with the ID of \`${args[1]}\` doesn't exist!`);
+                    return;
+                }
+                const row = await sheet.getRows({
+                    offset: (args[1] - 1),
+                    limit: 1
+                });
+                if (row.length == 0) {
+                    msg.delete();
+                    message.channel.send(`An application with the ID of \`${args[1]}\` doesn't exist!`);
+                    return;
+                }
+                let time = row[0].Timestamp.split(/ +/g)[0];
+                let ID = row[0]._rowNumber - 1;
+                let tag = row[0].Username;
+                var status;
+                let statusString = row[0].result;
+                var statusBoolean;
+                if (statusString) {
+                    switch (statusString.toLowerCase()) {
+                        case 'true':
+                            statusBoolean = true;
+                            break;
+                        case 'false':
+                            statusBoolean = false;
+                            break;
+                        default:
+                            statusBoolean = null;
+                            break;
+                    }
+                }
+                switch (statusBoolean) {
+                    case true:
+                        status = ':white_check_mark:';
+                        break;
+                    case false:
+                        status = ':x:';
+                        break;
+                    default:
+                        status = ':grey_question:';
+                        break;
+                }
+                const ans1 = row[0].Minecraft_Username;
+                const ans2 = row[0].Links;
+                const ans3 = row[0].Hours;
+                const embed = new client.Discord.MessageEmbed()
+                .setTitle(`Information for Application \`${args[1]}\``)
+                .setColor(client.info.embedHexcode)
+                .addField(`Date: \`${time}\` | Name: \`${tag}\` | Status: ${status} | Application ID: \`${ID}\``, '\u200B')
+                .addField('What is your Minecraft username?', ans1)
+                .addField('Please give a link or multiple links to screenshots of 3+ buildings you have built with the BuildTheEarth modpack.', ans2)
+                .addField('How many hours per week can you dedicate towards building?', ans3)
+                .setFooter(`Submitted ${row[0].Timestamp}`);
+                msg.delete();
+                message.channel.send(embed);
+                }
+                break;
             default:
                 message.channel.send('Please give a valid argument.');
+                break;
         }
     } else message.channel.send('Please give a valid argument.');
 };
