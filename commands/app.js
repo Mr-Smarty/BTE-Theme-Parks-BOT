@@ -161,12 +161,6 @@ exports.run = async (client, message, args) => {
                     const row = apps.pop();
                     rows[row].result = true;
                     await rows[row].save();
-                    if (apps.length > 0) {
-                        apps.forEach(async r => {
-                            rows[r].result = false;
-                            await rows[r].save();
-                        })
-                    }
                     msg.delete();
                     message.channel.send(`**${args[1]}** was accepted!`);
                     client.users.cache.get(userID).send('Your application for builder has been accepted!');
@@ -204,17 +198,9 @@ exports.run = async (client, message, args) => {
                 } else {
                     msgGet.delete();
                     let msg = await message.channel.send('Uploading updated data...');
-                    const userToMember = message.guild.member(user1);
-                    userToMember.roles.remove('704354906450034708');
                     const row = apps.pop();
                     rows[row].result = false;
                     await rows[row].save();
-                    if (apps.length > 0) {
-                        apps.forEach(async r => {
-                            rows[r].result = false;
-                            await rows[r].save();
-                        });
-                    }
                     msg.delete();
                     message.channel.send(`**${args[1]}** was denied. \n**Reason:** ${reason}`);
                     client.users.cache.get(userID).send(`Your application for builder has been denied. \n**Reason:** ${reason}`);

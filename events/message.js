@@ -1,4 +1,5 @@
 module.exports = (client, message) => {
+    if(message.webhookID && message.channel.id === '739239527431798805') return client.autoApp.run(client, message);
     if (message.author.bot) return;
 
     if (message.channel.id !== '715017068772196424') {
