@@ -11,7 +11,7 @@ exports.run = (client, message, args) => {
         const commandEmbed = new client.Discord.MessageEmbed()
         .setTitle("Available Commands: `DEV`")
         .setColor(client.info.embedHexcode)
-        .setDescription('**=ping** \n **=commands** \n **=server** \n **=players** \n **=score** \n **=modSay** \n **=devCommand** (TEST) \n **=modCommand** (TEST) \n **=reload** \n **=app**')
+        .setDescription('**=help** \n**=ping** \n **=commands** \n **=server** \n **=players** \n **=score** \n **=modSay** \n **=devCommand** (TEST) \n **=modCommand** (TEST) \n **=reload** \n **=app**')
         .setTimestamp(client.info.commandUpdate)
         .setFooter("Last updated by MrSmarty#1732", client.info.devIconLink);
         message.channel.send(commandEmbed);
@@ -21,7 +21,7 @@ exports.run = (client, message, args) => {
         const commandEmbed = new client.Discord.MessageEmbed()
         .setTitle("Available Commands: `ADMIN`")
         .setColor(client.info.embedHexcode)
-        .setDescription('**=ping** \n **=commands** \n **=server** \n **=players** \n **=score** \n **=modSay** \n **=adminCommand** (TEST) \n **=modCommand** (TEST) \n **=reactions** \n **=app**')
+        .setDescription('**=help** \n**=ping** \n **=commands** \n **=server** \n **=players** \n **=score** \n **=modSay** \n **=adminCommand** (TEST) \n **=modCommand** (TEST) \n **=reactions** \n **=app**')
         .setTimestamp(client.info.commandUpdate)
         .setFooter("Last updated by MrSmarty#1732", client.info.devIconLink);
         message.channel.send(commandEmbed);
@@ -31,7 +31,7 @@ exports.run = (client, message, args) => {
         const commandEmbed = new client.Discord.MessageEmbed()
         .setTitle("Available Commands: `MOD | TRIAL MOD`")
         .setColor(client.info.embedHexcode)
-        .setDescription('**=ping** \n **=commands** \n **=server** \n **=players** \n **=score** \n **=modSay** \n **=modCommand** (TEST) \n **=app**')
+        .setDescription('**=help** \n**=ping** \n **=commands** \n **=server** \n **=players** \n **=score** \n **=modSay** \n **=modCommand** (TEST) \n **=app**')
         .setTimestamp(client.info.commandUpdate)
         .setFooter("Last updated by MrSmarty#1732", client.info.devIconLink);
         message.channel.send(commandEmbed);
@@ -40,7 +40,7 @@ exports.run = (client, message, args) => {
         const commandEmbed = new client.Discord.MessageEmbed()
         .setTitle("Available Commands")
         .setColor(client.info.embedHexcode)
-        .setDescription('**=ping** \n **=commands** \n **=server** \n **=players** \n **=score**')
+        .setDescription('**=help** \n**=ping** \n **=commands** \n **=server** \n **=players** \n **=score**')
         .setTimestamp(client.info.commandUpdate)
         .setFooter("Last updated by MrSmarty#1732", client.info.devIconLink);
         message.channel.send(commandEmbed);
