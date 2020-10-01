@@ -1,4 +1,10 @@
 exports.run = (client, message, args) => {
+    if(args[0].toLowerCase() == 'count' && message.member.roles.cache.has(client.ids.modRoleID)) {
+        const memberCount = message.guild.members.cache.filter(member => !member.user.bot).size;
+        client.channels.cache.get('760516446585094194').setName(`Member Count: ${memberCount}`);
+        message.channel.send('Member count reloaded. :white_check_mark:')
+        return;
+    }
     if (message.author.id !== client.config.ownerID) {
         message.channel.send('Only the bot developer can reload commands.');
         return;
@@ -8,7 +14,7 @@ exports.run = (client, message, args) => {
     const commandName = args[0].toLowerCase();
 
     if(!client.commands.has(commandName)) {
-      return message.reply("That command does not exist");
+        return message.reply("That command does not exist");
     }
     
     delete require.cache[require.resolve(`./${commandName}.js`)];

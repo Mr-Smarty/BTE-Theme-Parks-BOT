@@ -1,5 +1,7 @@
 module.exports = async (client, member) => {
-    client.channels.cache.get('739239527431798805').send('success')
+    const guild = member.guild;
+    const memberCount = guild.members.cache.filter(member => !member.user.bot).size;
+    client.channels.cache.get('760516446585094194').setName(`Member Count: ${memberCount}`);
     const user = member.user
     sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
     const rows = await sheet.getRows({
