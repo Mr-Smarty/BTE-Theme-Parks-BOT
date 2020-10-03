@@ -4,7 +4,7 @@ exports.run = (client, message, args) => {
         .setTitle('BuildTheEarth Theme Parks: Help')
         .setColor(client.info.embedHexcode)
         .setThumbnail('https://images-ext-1.discordapp.net/external/PmiQn1CRhOs7fO1gh4t5AgduvuPjgQAJCicYQWHfku4/%3Fsize%3D128/https/cdn.discordapp.com/icons/704350087739867208/30a3ff8e2f0eb5df722c6d6fe3607892.png')
-        .setDescription('Waiting for Adam to give me a short, simple discription. :eyes: For now you\'ll get a rainbow blob: <a:RainbowBlob:753714356939784202>')
+        .setDescription('The BuildTheEarth: Theme Parks team is an official BuildTheEarth team that builds theme parks and resorts internationally. We are a skilled group of builders whose final goal is to complete all the theme parks and connected resorts on Earth in Minecraft. To get started, please read <#714569270356475964> and <#704382947821748244>. For the latest news, check out <#704381561092571148>. Never hesitate to contact a staff team member if you have any questions, and have fun!')
         .addField('Use a command below to get more specific information:', '`=help apply` \n`=help progress-updates` \n`=help server`');
         return message.channel.send(embed);
     }
@@ -38,7 +38,7 @@ exports.run = (client, message, args) => {
             .setTitle('Help: Progress-Updates Score System')
             .setColor(client.info.embedHexcode)
             .setDescription(`The Progress-Updates point system's purpose is to give active, skilled builders rewards for their work.`)
-            .addField('How it Works:', 'Any builder can post an progress update in <#749302258239275069>. Anything other than an update will result in a warn. Once a staff member checks off on your update by reacting with a :white_check_mark:, you get a point which is confirmed with a :ballot_box_with_check: reaction. You can view your score by using the command `=score`. To level up, you must use this command. you will not level up automatically.')
+            .addField('How it Works:', 'Any builder can post an progress update in <#749302258239275069>. Anything other than an update that contributes to the team will result in a warn. Once a staff member checks off on your update by reacting with a :white_check_mark:, you get a point which is confirmed with a :ballot_box_with_check: reaction. You can view your score by using the command `=score`. To level up, you must use this command. you will not level up automatically.')
             .addField('Levels:', `<@&${client.ids.level1}> 2 points \n<@&${client.ids.level2}> 4 points \n<@&${client.ids.level3}> 6 points \n<@&${client.ids.level4}> 8 points \n<@&${client.ids.level5}> 10 points \n<@&${client.ids.level6}> 15 points \n<@&${client.ids.sBuilder}> 20 points`)
             .addField('Rewards:', '**Level 1:** Post in <#704355790127104010> \n**Level 2:** Post attachments and link embeds in <#704350088843100160> and <#709971609389105244> \n**Level 5:** Access to <#749376102299861052> \n**Level 6:** Place your head in the Hall of Fame on the BTE: Theme Parks server \n**Senior Builder**')
             .addField('Format:', `\`\`\`1. What I did \n2. What I plan to do\`\`\``)

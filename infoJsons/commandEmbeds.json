@@ -52,7 +52,7 @@
     "reload": {
         "color": "#60b0f4",
         "title": "Commands: `=reload`",
-        "description": "**Usage:** `=reload <command name>`\n**Description:** Reloads the specified command after an edit without need to restart the bot. \n**Requirements:** Be the bot developer \\:|"
+        "description": "**Usage:** `=reload <command name>` OR `=reload count`\n**Description:** Reloads the specified command after an edit without need to restart the bot. Can also reload the member counter. \n**Requirements:** Be the bot developer \\:|"
     },
     "app": {
         "color": "#60b0f4",
