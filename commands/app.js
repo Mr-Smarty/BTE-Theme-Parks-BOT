@@ -96,8 +96,8 @@ exports.run = async (client, message, args) => {
                     msgGet.delete();
                     message.channel.send(reviewEmbed);
                 } else {
-                    const apps = await ifUAppExists(rows, args[1]);
-                    const user = await client.users.cache.find(u => u.tag === args[1]);
+                    const apps = await ifUAppExists(rows, args.slice(1).join(" ").trim());
+                    const user = await client.users.cache.find(u => u.tag === args.slice(1).join(" ").trim());
                     if (apps.length === 0) {
                         msgGet.delete();
                         message.channel.send("An unreviewed application for that user doesn't exist!");
@@ -135,7 +135,7 @@ exports.run = async (client, message, args) => {
                     message.channel.send('Please give a user to accept in this format: name#1234');
                     return;
                 }
-                let name = args.slice(1).join(" ")
+                let name = args.slice(1).join(" ").trim()
                 const user = await client.users.cache.find(u => u.tag === name)
                 if (user == undefined) {
                     message.channel.send('The user argument format is incorrect, or the user is not in this server!');
@@ -149,7 +149,7 @@ exports.run = async (client, message, args) => {
                     offset: 0
                 });
                 
-                const apps = await ifUAppExists(rows, args[1]);
+                const apps = await ifUAppExists(rows, name);
                 if (!apps.length > 0) {
                     msgGet1.delete();
                     message.channel.send("An unreviewed application for that user doesn't exist!");
@@ -163,7 +163,7 @@ exports.run = async (client, message, args) => {
                     rows[row].result = true;
                     await rows[row].save();
                     msg.delete();
-                    message.channel.send(`**${args[1]}** was accepted!`);
+                    message.channel.send(`**${name}** was accepted!`);
                     client.users.cache.get(userID).send('Your application for builder has been accepted!');
                 }
                 break;
@@ -174,7 +174,7 @@ exports.run = async (client, message, args) => {
                     return;
                 }
 
-                let lastArgs = (args.slice(1).join(" "));
+                let lastArgs = args.slice(1).join(" ").trim();
                 let username = lastArgs.substring(0, (lastArgs.indexOf('#') + 5));
                 let reason = lastArgs.slice(username.length).trim();
                 
@@ -182,7 +182,7 @@ exports.run = async (client, message, args) => {
                     message.channel.send('Please give a reason for denial.');
                     return;
                 }
-                const user = await client.users.cache.find(u => u.tag === args[1]);
+                const user = await client.users.cache.find(u => u.tag === username);
                 if (user == undefined) {
                     message.channel.send('The user argument format is incorrect, or the user is not in this server!');
                     return;
@@ -195,7 +195,7 @@ exports.run = async (client, message, args) => {
                     offset: 0
                 });
                 
-                const apps = await ifUAppExists(rows, args[1]);
+                const apps = await ifUAppExists(rows, username);
                 if (!apps.length > 0) {
                     msgGet.delete();
                     message.channel.send("An unreviewed application for that user doesn't exist!");
@@ -207,7 +207,7 @@ exports.run = async (client, message, args) => {
                     rows[row].result = false;
                     await rows[row].save();
                     msg.delete();
-                    message.channel.send(`**${args[1]}** was denied. \n**Reason:** ${reason}`);
+                    message.channel.send(`**${username}** was denied. \n**Reason:** ${reason}`);
                     client.users.cache.get(userID).send(`Your application for builder has been denied. \n**Reason:** ${reason}`);
                 }
                 break;
@@ -221,7 +221,7 @@ exports.run = async (client, message, args) => {
                         const rows = await sheet.getRows({
                             offset: 0
                         });
-                        const apps = await ifAppExists(rows, args[1]);
+                        const apps = await ifAppExists(rows, args.slice(1).join(" ").trim());
                         if (apps.length == 0) {
                             msg.delete();
                             message.channel.send('There are no applications for this user!');
@@ -234,7 +234,7 @@ exports.run = async (client, message, args) => {
                             let appID = r;
                             return {'time': time, 'status': status, 'ID': appID};
                         })
-                        const user = await client.users.cache.find(u => u.tag === args[1]);
+                        const user = await client.users.cache.find(u => u.tag === args.slice(1).join(" ").trim());
                         var avatar;
                         if (user) {
                             avatar = user.displayAvatarURL();
@@ -242,7 +242,7 @@ exports.run = async (client, message, args) => {
 
                         const fields = await fieldsFunc(names, false);
                         const embed = new client.Discord.MessageEmbed()
-                        .setTitle(`All applications for ${args[1]}`)
+                        .setTitle(`All applications for ${args.slice(1).join(" ").trim()}`)
                         .setThumbnail(avatar)
                         .addFields(fields)
                         .setColor(client.info.embedHexcode);
