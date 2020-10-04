@@ -23,7 +23,7 @@ const creds = require('./infoJsons/client_secret.json');
 client.creds = creds;
 const commandEmbeds = require('./infoJsons/commandEmbeds.json');
 client.commandEmbeds = commandEmbeds;
-const autoApp = require('./autoApp.js');
+const autoApp = require('./helpers/autoApp.js');
 client.autoApp = autoApp;
 
 const prefix = config.prefix;

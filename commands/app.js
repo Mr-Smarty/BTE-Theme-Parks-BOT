@@ -135,7 +135,8 @@ exports.run = async (client, message, args) => {
                     message.channel.send('Please give a user to accept in this format: name#1234');
                     return;
                 }
-                const user = await client.users.cache.find(u => u.tag === args[1])
+                let name = args.slice(1).join(" ")
+                const user = await client.users.cache.find(u => u.tag === name)
                 if (user == undefined) {
                     message.channel.send('The user argument format is incorrect, or the user is not in this server!');
                     return;
@@ -172,7 +173,11 @@ exports.run = async (client, message, args) => {
                     message.channel.send('Please give a user to deny in this format: name#1234');
                     return;
                 }
-                let reason = args.slice(2).join(" ");
+
+                let lastArgs = (args.slice(1).join(" "));
+                let username = lastArgs.substring(0, (lastArgs.indexOf('#') + 5));
+                let reason = lastArgs.slice(username.length).trim();
+                
                 if (reason.length < 1) {
                     message.channel.send('Please give a reason for denial.');
                     return;
