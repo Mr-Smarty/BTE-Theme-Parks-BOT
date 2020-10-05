@@ -13,9 +13,7 @@
     "discord.js": "^12.2.0",
     "enmap": "^5.7.1",
     "google-spreadsheet": "^3.0.13",
-    "mariadb": "^2.4.2",
     "minecraft-server-util": "^1.3.0",
-    "mysql": "^2.18.1",
     "node-gyp": "^7.1.0"
   }
 }
