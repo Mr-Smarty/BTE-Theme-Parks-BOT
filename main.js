@@ -8,6 +8,7 @@ const { promisify } = require('util');
 
 console.log('starting...');
 
+client.scores = new Enmap({name: "scores"})
 client.Discord = Discord;
 client.ping = ping;
 client.googleSpreadsheet = googleSpreadsheet;

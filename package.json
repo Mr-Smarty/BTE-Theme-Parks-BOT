@@ -9,6 +9,7 @@
   "author": "MrSmarty",
   "license": "ISC",
   "dependencies": {
+    "better-sqlite-pool": "^0.3.0",
     "better-sqlite3": "^7.1.0",
     "discord.js": "^12.2.0",
     "enmap": "^5.7.1",

@@ -23,28 +23,8 @@ module.exports = async (client, reaction, user) => {
 
     if (reaction.message.channel.id === '749302258239275069' && reaction.emoji.name === '✅') {
         const userId = await reaction.message.author.id;
-        jsonReader('./scores.json', (err, test) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            
-            if (!test[userId]) {
-                test[userId] = 1;
-                fs.writeFile('./scores.json', JSON.stringify(test, null, 2), (err) => {
-                    if (err) console.log('Error writing file:', err);
-                    console.log(test);
-                });
-            } else {
-                test[userId] += 1;
-        
-                fs.writeFile('./scores.json', JSON.stringify(test, null, 2), (err) => {
-                    if (err) console.log('Error writing file:', err);
-                    console.log(test);
-                });
-            }
-        });
-
+        await client.scores.ensure(`${userId}`, 0);
+        await client.scores.inc(`${userId}`)
         reaction.message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error))
         .then(() => reaction.message.react('☑️'));
     } else
