@@ -17,16 +17,20 @@ exports.run = (client, message, args) => {
     if (args[0] == 'give') {
         if (!message.member.roles.cache.has(client.ids.modRoleID) && !message.member.roles.cache.has(client.ids.trialModRoleID)) return;
         if (!args[2]) return message.channel.send('Please give a valid user ID and an integer.');
+        
         const userId = args[1];
         if (!message.guild.members.fetch(userId)) return message.channel.send('Please give a valid user ID.');
+        
         const pointsGiven = parseInt(args[2]);
         if (typeof pointsGiven !== 'number') return message.channel.send('Please give an integer')
         if (pointsGiven > 10 || pointsGiven < -10) return message.channel.send('Cannot give or take more than 10 points at a time.')
+        
         client.scores.ensure(`${userId}`, 0)
         if ((client.scores.get(`${userId}`) + pointsGiven) < 0) return message.channel.send(`A user can not have less than 0 points. They currently have \`${client.scores.get(`${userId}`)}\` points.`)
         client.scores.math(`${userId}`, '+', pointsGiven)
+        
         const embed = new client.Discord.MessageEmbed()
-        .setDescription(`<@${userId}> now has \`${client.scores.get(`${userId}`)} points.\``)
+        .setDescription(`<@${userId}> now has \`${client.scores.get(`${userId}`)}\` points.`)
         .setColor(client.info.embedHexcode)
         message.channel.send(embed);
         return;

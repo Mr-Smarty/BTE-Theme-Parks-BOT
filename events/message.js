@@ -7,6 +7,9 @@ module.exports = (client, message) => {
     };
 
     if (message.channel.id === '715017068772196424') {
+        if (!message.content.startsWith('#')) {
+            return message.delete().then(() => message.channel.send('Please Number your suggestion in the format `#number suggestion content`.').then(msg => {msg.delete({ timeout: 7500 })}))
+        }
         message.react('730466277390417930')
         .then(() => message.react('🤷‍♂️'))
         .then(() => message.react('730466352430579813'))

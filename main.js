@@ -30,20 +30,6 @@ client.autoApp = autoApp;
 const prefix = config.prefix;
 client.prefix = prefix;
 
-function jsonReader(filePath, cb) {
-   fs.readFile(filePath, (err, fileData) => {
-       if (err) {
-           return cb && cb(err);
-       }
-       try {
-           const object = JSON.parse(fileData);
-           return cb && cb(null, object);
-       } catch(err) {
-           return cb && cb(err);
-       }
-   });
-}
-
 async function accessSpreadsheet(google, credentials) {
    const doc = new google.GoogleSpreadsheet('1zcJgw_hUiewoMU8wDslTMHNdt-PvIuUJwfsMyH5E1Ho');
    await doc.useServiceAccountAuth({
