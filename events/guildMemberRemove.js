@@ -1,8 +1,15 @@
+const message = require("./message");
+
 module.exports = async (client, member) => {
     const guild = member.guild;
     const memberCount = guild.members.cache.filter(member => !member.user.bot).size;
     client.channels.cache.get('760516446585094194').setName(`Member Count: ${memberCount}`);
     const user = member.user
+    client.scores.ensure(`${user.id}`, 0)
+    if (client.scores.get(`${user.id}`) > 0) {
+        client.channels.cache.get('704382590039097395').send(`**${user.tag}** has left the server, \`${client.scores.get(`${user.id}`)}\` points removed.`)
+    }
+    client.scores.delete(`${user.id}`)
     sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
     const rows = await sheet.getRows({
         offset: 0
