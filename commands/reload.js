@@ -1,4 +1,5 @@
 exports.run = (client, message, args) => {
+    if(!args[0]) return;
     if(args[0].toLowerCase() == 'count' && message.member.roles.cache.has(client.ids.modRoleID)) {
         const memberCount = message.guild.members.cache.filter(member => !member.user.bot).size;
         client.channels.cache.get('760516446585094194').setName(`Member Count: ${memberCount}`);

@@ -8,11 +8,12 @@ const { promisify } = require('util');
 
 console.log('starting...');
 
-client.scores = new Enmap({name: "scores"})
+client.scores = new Enmap({name: "scores"});
 client.Discord = Discord;
 client.ping = ping;
 client.googleSpreadsheet = googleSpreadsheet;
 client.promisify = promisify;
+client.lastRestart = new Enmap({name: "lastRestart"});
 
 const config = require('./infoJsons/config.json');
 client.config = config;
@@ -73,6 +74,15 @@ client.on("ready", () => {
     client.user.setActivity('for =help', { type: 'WATCHING'})
     .then(console.log)
     .catch(console.error);
+    client.lastRestart.ensure('id', '0')
+    if (client.lastRestart.get('id') !== '0') {
+        const server = client.guilds.cache.get('704350087739867208');
+        const channel = server.channels.cache.get('704382150450872430')
+        channel.messages.fetch(client.lastRestart.get('id')).then(message => {
+            message.edit('Bot restarted! :white_check_mark:')
+        })
+    }
+    client.lastRestart.clear();
 });
  
 client.login(config.token);
