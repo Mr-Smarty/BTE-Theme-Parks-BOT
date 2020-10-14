@@ -38,6 +38,9 @@ module.exports = async (client, reaction, user) => {
         } else
         if (reaction.emoji.id === '749407387709997056') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove('749407113117171882');
+        } else
+        if (reaction.emoji.name === '🌴') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove('765996829539565658');
         }
     }
 }
