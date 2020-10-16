@@ -22,7 +22,7 @@
     "score": {
         "color": "#60b0f4",
         "title": "Commands: `=score`",
-        "description": "**Usage:** `=score [Member Mention OR User ID]`\n**Description:** Shows your score for the Builder Progress Updates system. Also levels you up and gives rewards when you reach a certain number of points. You will ONLY level up when you yourself uses this command. If a valid argument is given, it will give the score for the indicated user, this will not level them up. Use `(placeholder)` to learn more. \n**Requirements:** none"
+        "description": "**Usage:** `=score [Member Mention OR User ID]` OR `=score give <User ID> <Integer>`\n**Description:** Shows your score for the Builder Progress Updates system. Also levels you up and gives rewards when you reach a certain number of points. You will ONLY level up when you yourself uses this command. If a valid argument is given, it will give the score for the indicated user, this will not level them up. Use `=help progress` to learn more. To give or take points, give a user ID and an amount of points to give. (or use a negative number to take points) \n**Requirements:** none \n**Requirements for `=score give`:** Moderator"
     },
     "modsay": {
         "color": "#60b0f4",
@@ -68,5 +68,10 @@
         "color": "#60b0f4",
         "title": "Commands: `=help`",
         "description": "**Usage:** `=help [option]` \n**Description:** Gives information on the team and how it functions. Will give in-depth information on sepcified topic if option argument is given. \n**Requirements:** none"
+    },
+    "restart": {
+        "color": "#60b0f4",
+        "title": "commands: `=restart`",
+        "description": "**Usage:** `=restart0`\n**Description:** Restarts the bot. Clears all cache and variables in memory. \n**Requirements:** Be the bot developer \\:|"
     }
 }
