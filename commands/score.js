@@ -35,6 +35,17 @@ exports.run = (client, message, args) => {
         message.channel.send(embed);
         return;
     }
+
+    if (args[0] == 'reset') {
+        if (!message.member.roles.cache.has(client.ids.modRoleID) && !message.member.roles.cache.has(client.ids.trialModRoleID)) return;
+        if (!args[1]) return message.channel.send('Please give valid user ID.')
+        client.users.fetch(args[1]).then(user => {
+            client.updateCooldowns.ensure(user.id, false);
+            client.updateCooldowns.set(user.id, false);
+            message.react('✅');
+        }).catch(() => message.channel.send('A user with that ID does not exist!'))
+        return;
+    }
     let messageMentions = 0;
     if (message.mentions.members.first()) {
         messageMentions = message.mentions.members.first().id;

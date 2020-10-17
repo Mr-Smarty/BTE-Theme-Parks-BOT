@@ -14,6 +14,7 @@ client.ping = ping;
 client.googleSpreadsheet = googleSpreadsheet;
 client.promisify = promisify;
 client.lastRestart = new Enmap({name: "lastRestart"});
+client.updateCooldowns = new Enmap({name: "updateCooldowns"});
 
 const config = require('./infoJsons/config.json');
 client.config = config;
@@ -68,6 +69,11 @@ fs.readdir("./commands/", (err, files) => {
         client.commands.set(commandName, props);
     });
 });
+
+setInterval(() => {
+    let now = new Date();
+    if (now.getMinutes == 0 && now.getHours() == 20) client.updateCooldowns.clear();
+}, 60000)
 
 client.on("ready", () => {
     console.log("BTE: Theme Parks BOT is online!");
