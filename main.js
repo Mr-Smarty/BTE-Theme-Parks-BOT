@@ -72,7 +72,7 @@ fs.readdir("./commands/", (err, files) => {
 
 setInterval(() => {
     let now = new Date();
-    if (now.getMinutes == 0 && now.getHours() == 20) client.updateCooldowns.clear();
+    if (now.getMinutes() == 0 && now.getHours() == 20) client.updateCooldowns.clear();
 }, 60000)
 
 client.on("ready", () => {
