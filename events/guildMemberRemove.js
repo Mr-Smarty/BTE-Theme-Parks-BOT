@@ -1,8 +1,7 @@
 const message = require("./message");
 
 module.exports = async (client, member) => {
-    const guild = member.guild;
-    const memberCount = guild.members.cache.filter(member => !member.user.bot).size;
+    const memberCount = member.guild.memberCount - 3
     client.channels.cache.get('760516446585094194').setName(`Member Count: ${memberCount}`);
     const user = member.user
     client.scores.ensure(`${user.id}`, 0)

@@ -28,6 +28,8 @@ const commandEmbeds = require('./infoJsons/commandEmbeds.json');
 client.commandEmbeds = commandEmbeds;
 const autoApp = require('./helpers/autoApp.js');
 client.autoApp = autoApp;
+//const verify = require('./helpers/verify.js');
+//client.verify = verify;
 
 const prefix = config.prefix;
 client.prefix = prefix;
