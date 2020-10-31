@@ -19,26 +19,27 @@ exports.run = async (client, message) => {
         if (r.Timestamp !== 'undefined') return r
         else return;
     });
-    
+
     let appSubmitted = filledRows[filledRows.length - 1];
-    const user = await client.users.cache.find(u => u.tag === appSubmitted.Username);
-    if (user == undefined) {
+    console.log('NEW APP: ', appSubmitted.Username.substring(appSubmitted.Username.length - 4, appSubmitted.Username.length), appSubmitted.Username.substring(appSubmitted.Username.length - 5, 0))
+    const member = await message.guild.members.cache.find(member => member.user.discriminator == appSubmitted.Username.substring(appSubmitted.Username.length - 4, appSubmitted.Username.length) && member.user.username == appSubmitted.Username.substring(appSubmitted.Username.length - 5, 0));
+    if (member == undefined) {
         rows[filledRows.length - 1].result = false;
         await rows[filledRows.length - 1].save();
         return message.channel.send('The username format is incorrect, or the user is not in this server! Application denied.');
     }
     
-    const userToMember = message.guild.member(user)
-    if(userToMember.roles.cache.has('704354906450034708')) {
+    const user = member.user
+    if(member.roles.cache.has('704354906450034708')) {
         rows[filledRows.length - 1].result = true;
         await rows[filledRows.length - 1].save();
         return message.channel.send('The user is already is a builder! Application accepted.');
     }
     
-    if (!userToMember.roles.cache.has('769353222078332928')) {
+    if (!member.roles.cache.has('769353222078332928')) {
         client.verify.run().then(async r =>  {
             if (r.includes(user.tag)) {
-                userToMember.roles.add(message.guild.roles.cache.find(r => r.name === "Verified"))
+                member.roles.add(message.guild.roles.cache.find(r => r.name === "Verified"))
             } else {
                 rows[filledRows.length - 1].result = false;
                 await rows[filledRows.length - 1].save();

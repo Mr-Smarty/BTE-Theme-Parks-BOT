@@ -80,7 +80,7 @@ setInterval(() => {
 client.on("ready", () => {
     console.log("BTE: Theme Parks BOT is online!");
     client.user.setActivity('for =help', { type: 'WATCHING'})
-    .then(console.log)
+    .then(console.log('Status set.'))
     .catch(console.error);
     client.lastRestart.ensure('id', '0')
     if (client.lastRestart.get('id') !== '0') {
@@ -91,6 +91,7 @@ client.on("ready", () => {
         })
     }
     client.lastRestart.clear();
+    client.guilds.cache.get('704350087739867208').members.fetch().then(members => console.log(`Cached ${members.size} members.`))
 });
  
 client.login(config.token).catch(err => console.error("\x1b[31m", 'ERROR CONNECTING TO DISCORD:\n' + err + '\n Fix connection and restart.'));
