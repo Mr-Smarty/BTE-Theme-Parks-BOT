@@ -6,7 +6,7 @@ const Enmap = require("enmap");
 const googleSpreadsheet = require('google-spreadsheet');
 const { promisify } = require('util');
 
-console.log('starting...');
+console.log("\x1b[0m", 'starting...');
 
 client.scores = new Enmap({name: "scores"});
 client.Discord = Discord;
@@ -28,8 +28,8 @@ const commandEmbeds = require('./infoJsons/commandEmbeds.json');
 client.commandEmbeds = commandEmbeds;
 const autoApp = require('./helpers/autoApp.js');
 client.autoApp = autoApp;
-//const verify = require('./helpers/verify.js');
-//client.verify = verify;
+const verify = require('./helpers/verify.js');
+client.verify = verify;
 
 const prefix = config.prefix;
 client.prefix = prefix;
@@ -93,4 +93,4 @@ client.on("ready", () => {
     client.lastRestart.clear();
 });
  
-client.login(config.token);
+client.login(config.token).catch(err => console.error("\x1b[31m", 'ERROR CONNECTING TO DISCORD:\n' + err + '\n Fix connection and restart.'));

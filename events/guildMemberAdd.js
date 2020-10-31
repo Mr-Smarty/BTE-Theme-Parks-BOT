@@ -1,4 +1,8 @@
 module.exports = async (client, member) => {
     const memberCount = member.guild.memberCount - 3
     client.channels.cache.get('760516446585094194').setName(`Member Count: ${memberCount}`);
+
+    client.verify.run().then(r => {
+        if (r.includes(member.user.tag)) member.roles.add(message.guild.roles.cache.find(r => r.name === "Verified"))
+    })
 }
