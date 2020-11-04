@@ -1,22 +1,22 @@
 async function ifAppExists(rows, arg) {
     const rowCount = await rows.length;
     let apps = [];
-    for (let i = 0; i < rowCount; i++) {
-        if (rows[i].Username == arg) apps.push(i);
+    for(let i = 0; i < rowCount; i++) {
+        if(rows[i].Username == arg) apps.push(i);
     }
     return apps;
-}
+};
 
 async function ifUAppExists(rows, arg) {
     const rowCount = await rows.length;
     let apps = [];
-    for (let i = 0; i < rowCount; i++) {
-        if (rows[i].Username == arg) {
-            if (!rows[i].result) apps.push(i);
+    for(let i = 0; i < rowCount; i++) {
+        if(rows[i].Username == arg) {
+            if(!rows[i].result) apps.push(i);
         }
     }
     return apps;
-}
+};
 
 function fieldsFunc(namesParam, ifTag) {
     let returns = namesParam.map(r => {
@@ -26,8 +26,8 @@ function fieldsFunc(namesParam, ifTag) {
         var status;
         let statusString = r.status;
         var statusBoolean;
-        if (statusString) {
-            switch (statusString.toLowerCase()) {
+        if(statusString) {
+            switch(statusString.toLowerCase()) {
                 case 'true':
                     statusBoolean = true;
                     break;
@@ -50,41 +50,39 @@ function fieldsFunc(namesParam, ifTag) {
                 status = ':grey_question:';
                 break;
         }
-        if (ifTag) {
+        if(ifTag) {
             return {'name': `Date: \`${time}\` | Name: \`${tag}\` | Status: ${status} | Application ID: \`${ID}\``, 'value': '\u200B'};
-        } else return {'name': `Date: \`${time}\` | Status: ${status} | Application ID: \`${ID}\``, 'value': '\u200B'};
+        } else {
+            return {'name': `Date: \`${time}\` | Status: ${status} | Application ID: \`${ID}\``, 'value': '\u200B'};
+        }
     });
     return returns;
-}
+};
 
 exports.run = async (client, message, args) => {
-    if (!message.member.roles.cache.has(client.ids.modRoleID) && !message.member.roles.cache.has(client.ids.trialModRoleID)) {
-        message.channel.send('You must have the `Trial Moderator` or `Moderator` role to use application commands.');
-        return;
+    if(!message.member.roles.cache.has(client.ids.modRoleID) && !message.member.roles.cache.has(client.ids.trialModRoleID)) {
+        return message.channel.send('You must have the `Trial Moderator` or `Moderator` role to use application commands.');
     } else
-    if (message.channel.id !== '739239527431798805') {
-        message.channel.send('Please use <#739239527431798805> for application commands.');
-        return;
+    if(message.channel.id !== '739239527431798805') {
+        return message.channel.send('Please use <#739239527431798805> for application commands.');
     }
-    if (args) {
-        switch (args[0]) {
+    if(args) {
+        switch(args[0]) {
             case 'review': {
                 let msgGet = await message.channel.send('Getting data...');
                 sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
-                const rows = await sheet.getRows({
-                    offset: 0
-                });
-                if (!args[1]) {
+                const rows = await sheet.getRows( {offset: 0} );
+                if(!args[1]) {
                     const rowCount = await rows.length;
                     let unreviewed = [];
                     let minus = 0;
-                    for (let n = 0; n < rowCount; n++) {
-                        if (rows[n].Username == undefined) return;
-                        if (rows[n].result == undefined && !unreviewed.includes(rows[n].Username)) {
-                            unreviewed[n-minus] = rows[n].Username;
-                        } else minus++
+                    for(let n = 0; n < rowCount; n++) {
+                        if(rows[n].Username == undefined) return;
+                        if(rows[n].result == undefined && !unreviewed.includes(rows[n].Username)) {
+                            unreviewed[n - minus] = rows[n].Username;
+                        } else minus++;
                     }
-                    if (unreviewed[0] == undefined) {
+                    if(unreviewed[0] == undefined) {
                         msgGet.delete();
                         message.channel.send('No unreviewed applications!');
                         return;
@@ -98,16 +96,16 @@ exports.run = async (client, message, args) => {
                 } else {
                     const apps = await ifUAppExists(rows, args.slice(1).join(" ").trim());
                     const user = await client.users.cache.find(u => u.tag === args.slice(1).join(" ").trim());
-                    if (apps.length === 0) {
+                    if(apps.length === 0) {
                         msgGet.delete();
                         message.channel.send("An unreviewed application for that user doesn't exist!");
                         return;
                     } else {
-                        if (apps.length > 1) message.channel.send('There are multiple unreviewed applications from this user. Here is the latest:');
+                        if(apps.length > 1) message.channel.send('There are multiple unreviewed applications from this user. Here is the latest:');
                         const row = apps.pop();
                         const applicant = rows[row].Username;
                         var avatar;
-                        if (user) {
+                        if(user) {
                             avatar = user.displayAvatarURL();
                         } else avatar = 'https://media.discordapp.net/attachments/745371249785700492/753860231666335754/notdiscord.png';
                         
@@ -131,13 +129,13 @@ exports.run = async (client, message, args) => {
                 break;
             }
             case 'accept': {
-                if (!args[1]) {
+                if(!args[1]) {
                     message.channel.send('Please give a user to accept in this format: name#1234');
                     return;
                 }
                 let name = args.slice(1).join(" ").trim()
                 const user = await client.users.cache.find(u => u.tag === name)
-                if (user == undefined) {
+                if(user == undefined) {
                     message.channel.send('The user argument format is incorrect, or the user is not in this server!');
                     return;
                 }
@@ -150,7 +148,7 @@ exports.run = async (client, message, args) => {
                 });
                 
                 const apps = await ifUAppExists(rows, name);
-                if (!apps.length > 0) {
+                if(!apps.length > 0) {
                     msgGet1.delete();
                     message.channel.send("An unreviewed application for that user doesn't exist!");
                     return;
@@ -169,7 +167,7 @@ exports.run = async (client, message, args) => {
                 break;
             }
             case 'deny': {
-                if (!args[1]) {
+                if(!args[1]) {
                     message.channel.send('Please give a user to deny in this format: name#1234');
                     return;
                 }
@@ -178,12 +176,12 @@ exports.run = async (client, message, args) => {
                 let username = lastArgs.substring(0, (lastArgs.indexOf('#') + 5));
                 let reason = lastArgs.slice(username.length).trim();
                 
-                if (reason.length < 1) {
+                if(reason.length < 1) {
                     message.channel.send('Please give a reason for denial.');
                     return;
                 }
                 const user = await client.users.cache.find(u => u.tag === username);
-                if (user == undefined) {
+                if(user == undefined) {
                     message.channel.send('The user argument format is incorrect, or the user is not in this server!');
                     return;
                 }
@@ -196,7 +194,7 @@ exports.run = async (client, message, args) => {
                 });
                 
                 const apps = await ifUAppExists(rows, username);
-                if (!apps.length > 0) {
+                if(!apps.length > 0) {
                     msgGet.delete();
                     message.channel.send("An unreviewed application for that user doesn't exist!");
                     return;
@@ -214,7 +212,7 @@ exports.run = async (client, message, args) => {
             }
             case 'history': {
                 const type = await parseInt(args[1]) || args[1];
-                switch (typeof type) {
+                switch(typeof type) {
                     case 'string': {
                         let msg = await message.channel.send('Getting data...');
                         sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
@@ -222,7 +220,7 @@ exports.run = async (client, message, args) => {
                             offset: 0
                         });
                         const apps = await ifAppExists(rows, args.slice(1).join(" ").trim());
-                        if (apps.length == 0) {
+                        if(apps.length == 0) {
                             msg.delete();
                             message.channel.send('There are no applications for this user!');
                             return;
@@ -236,7 +234,7 @@ exports.run = async (client, message, args) => {
                         })
                         const user = await client.users.cache.find(u => u.tag === args.slice(1).join(" ").trim());
                         var avatar;
-                        if (user) {
+                        if(user) {
                             avatar = user.displayAvatarURL();
                         } else avatar = 'https://media.discordapp.net/attachments/745371249785700492/753860231666335754/notdiscord.png';
 
@@ -258,12 +256,12 @@ exports.run = async (client, message, args) => {
                         });
                         const pageNumber = args[1];
                         let filledRows = await rows.map(r => {
-                            if (r.Timestamp !== 'undefined') return r
+                            if(r.Timestamp !== 'undefined') return r
                             else return;
                         });
                         let lastPage = Math.ceil(filledRows.length / 10);
                         const checkRow = pageNumber * 10 - 10;
-                        if (filledRows[checkRow] == undefined) {
+                        if(filledRows[checkRow] == undefined) {
                             msg.delete();
                             message.channel.send(`The application page \`${pageNumber}\` doesn't exist!`);
                             return;
@@ -293,14 +291,14 @@ exports.run = async (client, message, args) => {
                             offset: 0
                         });
                         let filledRows = await rows.map(r => {
-                            if (r.Timestamp !== 'undefined') return r
+                            if(r.Timestamp !== 'undefined') return r
                             else return;
                         });
                         let page1 = [];
                         var page1Length;
-                        if (filledRows.length < 10) page1Length = filledRows.length
+                        if(filledRows.length < 10) page1Length = filledRows.length
                         else page1Length = 10
-                        for (let a = 0; a < page1Length; a++) {
+                        for(let a = 0; a < page1Length; a++) {
                             page1[a] = filledRows.pop();
                         }
                         let names = await [];
@@ -327,13 +325,13 @@ exports.run = async (client, message, args) => {
                 break;
             }
             case 'info': {
-                if (!args[1]) return message.channel.send('Please give a valid application ID.');
-                if (await isNaN(parseInt(args[1]))) return message.channel.send('Please give a valid application ID');
-                if (args[1] < 1) return message.channel.send('1 is the lowest application ID.');
-                if (args[1] > 39999) return message.channel.send('39999 is the highest application ID.');
+                if(!args[1]) return message.channel.send('Please give a valid application ID.');
+                if(await isNaN(parseInt(args[1]))) return message.channel.send('Please give a valid application ID');
+                if(args[1] < 1) return message.channel.send('1 is the lowest application ID.');
+                if(args[1] > 39999) return message.channel.send('39999 is the highest application ID.');
                 let msg = await message.channel.send('Getting data...');
                 sheet = await client.accessSpreadsheet(client.googleSpreadsheet, client.creds);
-                if (args[1] > (sheet.rowCount - 1)) {
+                if(args[1] > (sheet.rowCount - 1)) {
                     msg.delete();
                     message.channel.send(`An application with the ID of \`${args[1]}\` doesn't exist!`);
                     return;
@@ -342,7 +340,7 @@ exports.run = async (client, message, args) => {
                     offset: (args[1] - 1),
                     limit: 1
                 });
-                if (row.length == 0) {
+                if(row.length == 0) {
                     msg.delete();
                     message.channel.send(`An application with the ID of \`${args[1]}\` doesn't exist!`);
                     return;
@@ -353,8 +351,8 @@ exports.run = async (client, message, args) => {
                 var status;
                 let statusString = row[0].result;
                 var statusBoolean;
-                if (statusString) {
-                    switch (statusString.toLowerCase()) {
+                if(statusString) {
+                    switch(statusString.toLowerCase()) {
                         case 'true':
                             statusBoolean = true;
                             break;
@@ -366,7 +364,7 @@ exports.run = async (client, message, args) => {
                             break;
                     }
                 }
-                switch (statusBoolean) {
+                switch(statusBoolean) {
                     case true:
                         status = ':white_check_mark:';
                         break;

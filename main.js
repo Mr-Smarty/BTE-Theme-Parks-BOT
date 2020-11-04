@@ -1,12 +1,21 @@
+console.log("\x1b[0m", 'starting...');
+
 const Discord = require("discord.js");
-const client = new Discord.Client({ partials : ["MESSAGE", "CHANNEL", "REACTION"]});
 const fs = require('fs');
 const ping = require("minecraft-server-util");
 const Enmap = require("enmap");
 const googleSpreadsheet = require('google-spreadsheet');
 const { promisify } = require('util');
+const config = require('./infoJsons/config.json');
+const ids = require('./infoJsons/ids.json');
+const info = require('./infoJsons/info.json');
+const creds = require('./infoJsons/client_secret.json');
+const commandEmbeds = require('./infoJsons/commandEmbeds.json');
+const autoApp = require('./helpers/autoApp.js');
+const verify = require('./helpers/verify.js');
 
-console.log("\x1b[0m", 'starting...');
+const client = new Discord.Client({ partials : ["MESSAGE", "CHANNEL", "REACTION"]});
+const prefix = config.prefix;
 
 client.scores = new Enmap({name: "scores"});
 client.Discord = Discord;
@@ -15,24 +24,16 @@ client.googleSpreadsheet = googleSpreadsheet;
 client.promisify = promisify;
 client.lastRestart = new Enmap({name: "lastRestart"});
 client.updateCooldowns = new Enmap({name: "updateCooldowns"});
-
-const config = require('./infoJsons/config.json');
 client.config = config;
-const ids = require('./infoJsons/ids.json');
 client.ids = ids;
-const info = require('./infoJsons/info.json');
 client.info = info;
-const creds = require('./infoJsons/client_secret.json');
 client.creds = creds;
-const commandEmbeds = require('./infoJsons/commandEmbeds.json');
 client.commandEmbeds = commandEmbeds;
-const autoApp = require('./helpers/autoApp.js');
 client.autoApp = autoApp;
-const verify = require('./helpers/verify.js');
 client.verify = verify;
-
-const prefix = config.prefix;
 client.prefix = prefix;
+client.commands = new Enmap();
+client.accessSpreadsheet = accessSpreadsheet;
 
 async function accessSpreadsheet(google, credentials) {
    const doc = new google.GoogleSpreadsheet('1zcJgw_hUiewoMU8wDslTMHNdt-PvIuUJwfsMyH5E1Ho');
@@ -46,8 +47,6 @@ async function accessSpreadsheet(google, credentials) {
    return sheet;
 }
 
-client.accessSpreadsheet = accessSpreadsheet;
-
 fs.readdir("./events/", (err, files) => {
     if (err) return console.error(err);
     files.forEach(file => {
@@ -58,8 +57,6 @@ fs.readdir("./events/", (err, files) => {
         delete require.cache[require.resolve(`./events/${file}`)];
     });
 });
-
-client.commands = new Enmap();
 
 fs.readdir("./commands/", (err, files) => {
     if (err) return console.error(err);

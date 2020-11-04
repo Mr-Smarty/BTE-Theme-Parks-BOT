@@ -23,7 +23,7 @@ exports.run = async (client, message) => {
     let appSubmitted = filledRows[filledRows.length - 1];
     console.log('NEW APP: ', appSubmitted.Username.substring(appSubmitted.Username.length - 4, appSubmitted.Username.length), appSubmitted.Username.substring(appSubmitted.Username.length - 5, 0))
     const member = await message.guild.members.cache.find(member => member.user.discriminator == appSubmitted.Username.substring(appSubmitted.Username.length - 4, appSubmitted.Username.length) && member.user.username == appSubmitted.Username.substring(appSubmitted.Username.length - 5, 0));
-    if (member == undefined) {
+    if(member == undefined) {
         rows[filledRows.length - 1].result = false;
         await rows[filledRows.length - 1].save();
         return message.channel.send('The username format is incorrect, or the user is not in this server! Application denied.');
@@ -36,25 +36,25 @@ exports.run = async (client, message) => {
         return message.channel.send('The user is already is a builder! Application accepted.');
     }
     
-    if (!member.roles.cache.has('769353222078332928')) {
+    if(!member.roles.cache.has('769353222078332928')) {
         client.verify.run().then(async r =>  {
-            if (r.includes(user.tag)) {
-                member.roles.add(message.guild.roles.cache.find(r => r.name === "Verified"))
+            if(r.includes(user.tag)) {
+                member.roles.add(message.guild.roles.cache.find(r => r.name === "Verified")).catch(err => console.error('ERROR GIVING VERFIED ROLE:\n' + err));
             } else {
                 rows[filledRows.length - 1].result = false;
                 await rows[filledRows.length - 1].save();
                 await message.channel.send('The user is not verified! Application denied.');
-                return user.send('Please join the **BTE: Theme Parks** team at https://buildtheearth.net/buildteams/121/join before applying for the team. \nOnce you have joined, use the command `=verify` in the server, then reapply.').catch(() => message.channel.send('Error alerting user.'))
+                return user.send('Please join the **BTE: Theme Parks** team at https://buildtheearth.net/buildteams/121/join before applying for the team. \nOnce you have joined, use the command `=verify` in the server, then reapply.').catch(() => message.channel.send('Error alerting user.'));
             }
-        })
+        });
     }
 
-    let all = await ifUAppExists(filledRows, appSubmitted.Username)
-    all.pop()
+    let all = await ifUAppExists(filledRows, appSubmitted.Username);
+    all.pop();
     if(all.length >= 1) {
         all.forEach(async r => {
             rows[r].result = false;
             await rows[r].save();
-        })
+        });
     }
 }
