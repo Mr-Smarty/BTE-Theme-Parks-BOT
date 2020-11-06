@@ -67,6 +67,7 @@ exports.run = async (client, message) => {
             rows[filledRows.length - 1].result = true;
             await rows[filledRows.length - 1].save();
             await member.roles.add(message.guild.roles.cache.find(r => r.name === "Builder")).catch(err => console.error('ERROR GIVING VERFIED ROLE:\n' + err));
+            return;
         }
     }));
 }
