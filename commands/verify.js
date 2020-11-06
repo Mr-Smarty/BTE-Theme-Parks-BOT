@@ -1,7 +1,7 @@
 exports.run = (client, message, args) => {
     let msg = undefined
     message.channel.send('Getting data...').then(message => msg = message)
-    client.verify.run().then(r => {
+    client.verify.run('https://buildtheearth.net/buildteams/121/members').then(r => {
         if (r.includes(message.author.tag)) {
             if (!message.member.roles.cache.has('769353222078332928')) {
                 message.member.roles.add(message.guild.roles.cache.find(r => r.name === "Verified")).then(() => {

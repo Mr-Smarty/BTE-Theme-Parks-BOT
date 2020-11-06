@@ -1,7 +1,7 @@
 const http = require('http');
 const https = require('https');
 
-const getData = async (url) => {
+const getData = async url => {
     const lib = url.startsWith('https://') ? https : http;
   
     return new Promise((resolve, reject) => {
@@ -19,9 +19,9 @@ const getData = async (url) => {
     });
 };
 
-const pages = async () => {
+const pages = async url => {
     try {
-        let html = await getData('https://buildtheearth.net/buildteams/121/members',);
+        let html = await getData(url);
         let pages = await (html = (html = html.substring(html.indexOf('<div class="pagination">'))).substring(0, html.indexOf("</div>"))).match(/<a(.+)>(.+)<\/a>/g);
         let pageCount = await parseInt(pages[pages.length - 1].match(/(\d+)(?!.*\d)/g));
         return pageCount;
@@ -30,12 +30,12 @@ const pages = async () => {
     }
 };
 
-const getPages = async pageCount => {
+const getPages = async (pageCount, url) => {
     let returns = [];
     try {
         for(page = 1; page <= pageCount; page++) {
             try {
-                let pageData = await getData('https://buildtheearth.net/buildteams/121/members?page=' + page)
+                let pageData = await getData(url + '?page=' + page)
                 returns.push(pageData)
             } catch (error) {
                 return error
@@ -62,8 +62,8 @@ const iteratePages = async pages => {
     }   
 };
 
-exports.run = () => {
+exports.run = url => {
     return new Promise((resolve, reject) => {
-        pages().then(pageCount => getPages(pageCount)).then(pages => iteratePages(pages)).then(data => resolve(data)).catch(err => reject(err));
+        pages(url).then(pageCount => getPages(pageCount, url)).then(pages => iteratePages(pages)).then(data => resolve(data)).catch(err => reject(err));
     });
 };

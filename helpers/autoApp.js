@@ -1,3 +1,5 @@
+let collabURLs = ['https://buildtheearth.net/buildteams/179/members'];
+
 async function ifUAppExists(rows, arg) {
     const rowCount = await rows.length;
     let apps = [];
@@ -37,7 +39,7 @@ exports.run = async (client, message) => {
     }
     
     if(!member.roles.cache.has('769353222078332928')) {
-        client.verify.run().then(async r =>  {
+        client.verify.run('https://buildtheearth.net/buildteams/121/members').then(async r =>  {
             if(r.includes(user.tag)) {
                 member.roles.add(message.guild.roles.cache.find(r => r.name === "Verified")).catch(err => console.error('ERROR GIVING VERFIED ROLE:\n' + err));
             } else {
@@ -57,4 +59,14 @@ exports.run = async (client, message) => {
             await rows[r].save();
         });
     }
+
+    collabURLs.forEach(url => client.verify.run(url).then(async r => {
+        if(r.includes(user.tag)) {
+            message.channel.send('The user is part of a collaborating build team. Application Accepted.');
+            user.send('Your application for builder has been accepted!');
+            rows[filledRows.length - 1].result = true;
+            await rows[filledRows.length - 1].save();
+            await member.roles.add(message.guild.roles.cache.find(r => r.name === "Builder")).catch(err => console.error('ERROR GIVING VERFIED ROLE:\n' + err));
+        }
+    }));
 }
