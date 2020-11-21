@@ -1,8 +1,10 @@
 module.exports = (client, message) => {
-    if (message.webhookID && message.channel.id === '739239527431798805') return client.autoApp.run(client, message);
+    //=========Check Applications, ignore bots=========//
+    if (message.webhookID && message.channel.id === client.ids.builderApplications) return client.autoApp.run(client, message);
     if (message.author.bot) return;
-
-    if (message.channel.id == '749302258239275069') {
+    
+    //=========Progress Update Cooldown=========//
+    if (message.channel.id == client.ids.progressUpdates) {
         client.updateCooldowns.ensure(`${message.author.id}`, false)
         if (client.updateCooldowns.get(`${message.author.id}`)) {
             let now = new Date()
@@ -13,11 +15,8 @@ module.exports = (client, message) => {
         client.updateCooldowns.set(`${message.author.id}`, true)
     }
 
-    if (message.channel.id !== '715017068772196424') {
-        if (!message.content.startsWith(client.prefix)) return;
-    };
-
-    if (message.channel.id === '715017068772196424') {
+    //=========Verify and react to suggestions=========//
+    if (message.channel.id === client.ids.suggestions) {
         if (!message.content.startsWith('#')) {
             return message.delete().then(() => message.channel.send('Please Number your suggestion in the format `#number suggestion content`.').then(msg => {msg.delete({ timeout: 7500 })}))
         }
@@ -28,8 +27,13 @@ module.exports = (client, message) => {
         return;
     }
 
+    //=========Ignore of message does not start with prefix=========//
+    if (!message.content.startsWith(client.prefix)) return;
+
+    //=========Ignore DM's=========//
     if (message.channel.name == undefined) return;
 
+    //=========Get command and arguments=========//
     const args = message.content.slice(1).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
 
