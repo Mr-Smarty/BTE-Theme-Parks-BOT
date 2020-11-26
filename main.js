@@ -6,17 +6,20 @@ const ping = require("minecraft-server-util");
 const Enmap = require("enmap");
 const googleSpreadsheet = require('google-spreadsheet');
 const { promisify } = require('util');
+
 const config = require('./infoJsons/config.json');
 const ids = require('./infoJsons/ids.json');
 const info = require('./infoJsons/info.json');
 const creds = require('./infoJsons/client_secret.json');
 const commandEmbeds = require('./infoJsons/commandEmbeds.json');
+
 const autoApp = require('./helpers/autoApp.js');
 const verify = require('./helpers/verify.js');
 
 const client = new Discord.Client({ partials : ["MESSAGE", "CHANNEL", "REACTION"]});
 const prefix = config.prefix;
 
+client.responses = new Enmap({name: "responses"});
 client.scores = new Enmap({name: "scores"});
 client.Discord = Discord;
 client.ping = ping;
