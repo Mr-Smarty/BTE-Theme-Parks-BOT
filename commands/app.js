@@ -396,3 +396,12 @@ exports.run = async (client, message, args) => {
         }
     } else message.channel.send('Please give a valid argument.');
 };
+
+exports.help = {embed: {
+    color: "#60b0f4",
+    title: "Commands: `=app`",
+    description: "**Usage:** `=app <option>` \n> `=app review [user tag]` \n> `=app accept <user tag>` \n> `=app deny <user tag> <reason>` \n> `=app history [user tag OR page number]`\n> `=app info <application ID>` \n**Description:** =app commands are used to review, deny, accept, view, and edit applications and their statuses. See `=reviewer` for more information. \n**Requirements:** Moderator OR Trial Moderator, <#739239527431798805>"
+}};
+
+exports.permLevel = 3;
+exports.name = 'app';

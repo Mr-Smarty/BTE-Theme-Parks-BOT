@@ -11,7 +11,6 @@ const config = require('./infoJsons/config.json');
 const ids = require('./infoJsons/ids.json');
 const info = require('./infoJsons/info.json');
 const creds = require('./infoJsons/client_secret.json');
-const commandEmbeds = require('./infoJsons/commandEmbeds.json');
 
 const autoApp = require('./helpers/autoApp.js');
 const verify = require('./helpers/verify.js');
@@ -31,7 +30,6 @@ client.config = config;
 client.ids = ids;
 client.info = info;
 client.creds = creds;
-client.commandEmbeds = commandEmbeds;
 client.autoApp = autoApp;
 client.verify = verify;
 client.prefix = prefix;

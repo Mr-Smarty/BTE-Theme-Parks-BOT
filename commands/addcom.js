@@ -38,3 +38,12 @@ exports.run = (client, message, args) => {
         message.react('✅');
     }
 };
+
+exports.help = {embed: {  
+    color: "#60b0f4",
+    title: "Commands: `=addcom`",
+    description: "**Usage:** `=addCom <command name> <response type: text OR embed> <response data>` \n**Description:** Creates a new, simple call-and-response command. The response can be either plain text or an embed. If an embed, the response must be input as JSON data. Here is more info on [embeds](https://discordjs.guide/popular-topics/embeds.html#using-an-embed-object) and [JSON](https://www.w3schools.com/js/js_json_syntax.asp). \n**Requirements:** Admin"  
+}};
+
+exports.permLevel = 5;
+exports.name = 'addcom';

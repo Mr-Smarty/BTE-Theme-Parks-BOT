@@ -7,3 +7,12 @@ exports.run = (client, message, args) => {
         process.exit()
     })
 }
+
+exports.help = {embed: {
+    color: "#60b0f4",
+    title: "commands: `=restart`",
+    description: "**Usage:** `=restart`\n**Description:** Restarts the bot. Clears all cache and variables in memory. \n**Requirements:** Be the bot developer \\:|"
+}};
+
+exports.permLevel = -1;
+exports.name = 'restart';

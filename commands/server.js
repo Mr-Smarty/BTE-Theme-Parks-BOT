@@ -24,3 +24,12 @@ exports.run = (client, message, args) => {
         console.log(response);
     });
 };
+
+exports.help = {embed: {
+    color: "#60b0f4",
+    title: "Commands: `=server`",
+    description: "**Usage:** `=server`\n**Description:** Gives information and status of the BTE: Theme Parks Minecraft server. \n**Requirements:** none"
+}};
+
+exports.permLevel = 0;
+exports.name = 'server';

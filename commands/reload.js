@@ -25,3 +25,12 @@ exports.run = (client, message, args) => {
     client.commands.set(commandName, props);
     message.reply(`The command ${commandName} has been reloaded`);
 };
+
+exports.help = {embed: {
+    color: "#60b0f4",
+    title: "Commands: `=reload`",
+    description: "**Usage:** `=reload <command name>` OR `=reload count`\n**Description:** Reloads the specified command after an edit without need to restart the bot. Can also reload the member counter. \n**Requirements:** Be the bot developer \\:|"
+}};
+
+exports.permLevel = -1;
+exports.name = 'reload';

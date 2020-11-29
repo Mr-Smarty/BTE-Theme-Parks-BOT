@@ -13,3 +13,12 @@ exports.run = async (client, message, args) => {
         message.react('❌');
     }
 }
+
+exports.help = {embed: {  
+    color: "#60b0f4",
+    title: "Commands: `=eval`",
+    description: "**Usage:** `=eval <javascript function, method, or statement>` \n**Description:** Executes specified code, method, or statement. \n**Requirements:** Be the bot developer \\:|"  
+}};
+
+exports.permLevel = -1
+exports.name = 'eval';

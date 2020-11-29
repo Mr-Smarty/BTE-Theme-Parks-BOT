@@ -25,3 +25,12 @@ exports.run = (client, message, args) => {
         });
     });
 };
+
+exports.help = {embed: {
+    color: "#60b0f4",
+    title: "Commands: `=delcom`",
+    description: "**Usage:** `=delCom <command name>` \n**Description:** Deletes a created, simple call-and-response command. To confirm command deletion, type `yes` when prompted or type `no` to cancel. If one of these is not typed in 16 seconds, the operation will be canceled. \n**Requirements:** Admin"  
+}};
+
+exports.permLevel = 5;
+exports.name = 'delcom';

@@ -18,3 +18,12 @@ exports.run = async (client, message, args) => {
     .then(() => msg.react('🌴'))
     .catch(() => console.error('One of the emojis failed to react.'));
 };
+
+exports.help = {embed: {
+    color: "#60b0f4",
+    title: "Commands: `=reactions`",
+    description: "**Usage:** `=reactions` \n**Description:** Sets up reaction roles for parks. \n**Requirements:** <#717832342550610113>"
+}};
+
+exports.permLevel = 5;
+exports.name = 'reactions';

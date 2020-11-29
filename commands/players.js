@@ -45,3 +45,12 @@ exports.run = (client, message, args) => {
         console.log(response);
     });
 };
+
+exports.help = {embed: {
+    color: "#60b0f4",
+    title: "Commands: `=players`",
+    description: "**Usage:** `=players`\n**Description:** Lists online players in the BTE: Theme Parks Minecraft server. \n**Requirements:** none"
+}};
+
+exports.permLevel = 0;
+exports.name = 'players';

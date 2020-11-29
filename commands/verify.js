@@ -23,7 +23,7 @@ exports.run = (client, message, args) => {
             const embed = new client.Discord.MessageEmbed()
             .setColor(client.info.embedHexcode)
             .setTitle('Verification failed :x:')
-            .setDescription('Please apply for the team [here](https://buildtheearth.net/buildteams/121/join).\nOnce accepted, use `=apply` again.')
+            .setDescription('Please apply for the team [here](https://buildtheearth.net/buildteams/121/join).\nOnce accepted, use `=verify` again.')
             msg.delete()
             message.channel.send(embed)
         }
@@ -32,4 +32,13 @@ exports.run = (client, message, args) => {
         message.channel.send('There was an error fetching data :x:')
         console.error('VERIFICATION ERROR:\n' + err);
     })
-}
+};
+
+exports.help = {embed: {
+    color: "#60b0f4",
+    title: "Commands: `=verify`",
+    description: "**Usage:** `=verify` \n**Description:** Verifies member after joining the Theme Parks team on the website. Needed to become a builder. \n**Requirements:** none"
+}};
+
+exports.permLevel = 0;
+exports.name = 'verify';
