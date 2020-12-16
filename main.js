@@ -5,6 +5,7 @@ const fs = require('fs');
 const ping = require("minecraft-server-util");
 const Enmap = require("enmap");
 const googleSpreadsheet = require('google-spreadsheet');
+const fetch = require('node-fetch');
 const { promisify } = require('util');
 
 const config = require('./infoJsons/config.json');
@@ -23,6 +24,7 @@ client.scores = new Enmap({name: "scores"});
 client.Discord = Discord;
 client.ping = ping;
 client.googleSpreadsheet = googleSpreadsheet;
+client.fetch = fetch;
 client.promisify = promisify;
 client.lastRestart = new Enmap({name: "lastRestart"});
 client.updateCooldowns = new Enmap({name: "updateCooldowns"});
