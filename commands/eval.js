@@ -4,10 +4,11 @@ exports.run = async (client, message, args) => {
     try {
         const code = args.join(" ");
         let response = eval(code);
-        Promise.resolve(response).then(() => message.react('✅')).catch(err => {
-            message.channel.send(`Error executing code:\n\`\`\`${err}\`\`\``);
-            message.react('❌');
-        })
+        Promise.resolve(response).then(res => {
+            message.react('✅'), message.channel.send({embed: {title: 'Response:', color: client.info.embedHexcode, description: String(res) || "\u200b"}})
+        }).catch(err => {
+            message.react('❌'), message.channel.send(`Error executing code:\n\`\`\`${err}\`\`\``)
+        });
     } catch (err) {
         message.channel.send(`Error executing code:\n\`\`\`${err}\`\`\``);
         message.react('❌');
