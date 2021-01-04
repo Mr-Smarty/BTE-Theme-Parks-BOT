@@ -24,6 +24,7 @@ exports.run = (client, message, args) => {
     const props = require(`./${commandName}.js`);
     client.commands.set(commandName, props);
     message.reply(`The command ${commandName} has been reloaded`);
+    client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** (${message.author.tag}) used the command \`=reload\` to reload the command \`=${commandName}\`.**`, null, {"Author ID": message.author.id});
 };
 
 exports.help = {embed: {

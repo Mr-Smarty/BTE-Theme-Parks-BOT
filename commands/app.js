@@ -163,6 +163,7 @@ exports.run = async (client, message, args) => {
                     msg.delete();
                     message.channel.send(`**${name}** was accepted!`);
                     client.users.cache.get(userID).send('Your application for builder has been accepted!');
+                    client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** has accepted **<@!${userID}>**'s (${user.tag}'s) application for builder.**\n[Click here for context.](${message.url})`, undefined, {"Reviewer ID": message.author.id, "Applicant ID": userID}, 'POSITIVE');
                 }
                 break;
             }
@@ -207,6 +208,7 @@ exports.run = async (client, message, args) => {
                     msg.delete();
                     message.channel.send(`**${username}** was denied. \n**Reason:** ${reason}`);
                     client.users.cache.get(userID).send(`Your application for builder has been denied. \n**Reason:** ${reason}`);
+                    client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** has denied **<@!${userID}>**'s (${user.tag}'s) application for builder.**\n**Reason: **${reason}\n[Click here for context.](${message.url})`, undefined, {"Reviewer ID": message.author.id, "Applicant ID": userID}, 'NEGATIVE');
                 }
                 break;
             }

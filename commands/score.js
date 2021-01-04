@@ -1,5 +1,5 @@
 async function scoreEmbed(messageObject, idArgument, int, client) {
-    const userAvatar = await messageObject.guild.members.fetch(idArgument).then(m => m.user.displayAvatarURL())
+    const userAvatar = await messageObject.guild.members.fetch(idArgument).then(m => m.user.displayAvatarURL({format: 'png', dynamic: true}))
     const tag = await client.users.fetch(idArgument).then(u => u.username)
     const scoreEmbed = new client.Discord.MessageEmbed()
     .setDescription(`Score for <@${idArgument.toString()}>: \`${int}\``)
@@ -31,6 +31,8 @@ exports.run = (client, message, args) => {
             .setDescription(`<@${userId}> now has \`${client.scores.get(`${userId}`)}\` points.`)
             .setColor(client.info.embedHexcode)
             message.channel.send(embed);
+
+            client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** (${message.author.tag}) gave \`${pointsGiven}\` point(s) to **<@!${userId}>** (${client.users.cache.get(userId).tag}).**\nThey now have \`${client.scores.get(`${userId}`)}\` point(s).\n[Click here for context.](${message.url})`, null, {"Staff ID": message.author.id, "Subject ID": userId}, pointsGiven < 0 ? 'NEGATIVE' : 'POSITIVE');
             return;
         }).catch(() => {return message.channel.send('Please give a valid user ID.')}).finally(() => {return})
     } else
@@ -42,6 +44,7 @@ exports.run = (client, message, args) => {
         client.scores.ensure(`${userId}`, 0)
         client.scores.delete(`${userId}`)
         message.channel.send(`Data for \`${userId}\` deleted.`)
+        client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** (${message.author.tag}) deleted data for **<@!${userId}>** (${client.users.cache.get(userId).tag}) from the score database.**\n[Click here for context.](${message.url})`, null, {"Admin ID": message.author.id, "Subject ID": userId}, 'NEGATIVE');
     } else
     if (args[0] == 'reset') {
         if (!message.member.roles.cache.has(client.ids.modRoleID) && !message.member.roles.cache.has(client.ids.trialModRoleID)) return;
@@ -50,6 +53,7 @@ exports.run = (client, message, args) => {
             client.updateCooldowns.ensure(user.id, false);
             client.updateCooldowns.set(user.id, false);
             message.react('✅');
+            client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** (${message.author.tag}) reset the progress-update cooldown for **<@!${user.id}>** (${client.users.cache.get(userId).tag}).**\n[Click here for context.](${message.url})`, null, {"Staff ID": message.author.id, "Subject ID": user.id});
         }).catch(() => message.channel.send('A user with that ID does not exist!'))
         return;
     } else {

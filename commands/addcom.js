@@ -14,6 +14,7 @@ exports.run = (client, message, args) => {
         client.responses.set(args[0].toLowerCase(), false, 'isEmbed');
 
         message.react('✅');
+        client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** (${message.author.tag}) created a new command:**\n\`=${args[0].toLowerCase()}\`: ${res}`, undefined, {"User ID": message.author.id}, 'POSITIVE');
     } else {
         if(!res.startsWith('{') || !res.endsWith('}')) return message.channel.send('An embed response must be input as JSON data.');
         
@@ -36,6 +37,7 @@ exports.run = (client, message, args) => {
         client.responses.set(args[0].toLowerCase(), true, 'isEmbed');
 
         message.react('✅');
+        client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}> **created a new command:**\n\`=${args[0].toLowerCase()}\` It responds with an embed.`, undefined, {"User ID": message.author.id}, 'POSITIVE');
     }
 };
 

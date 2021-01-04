@@ -10,6 +10,7 @@ exports.run = (client, message, args) => {
                     .setColor(client.info.embedHexcode)
                     .setTitle('Verified! :white_check_mark:')
                     message.channel.send(embed)
+                    client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** (${message.author.tag}) verified themselves with the command \`=verify\`.**`, null, {"User ID": message.author.id}, 'POSITIVE');
                 })
             } else {
                 msg.delete()

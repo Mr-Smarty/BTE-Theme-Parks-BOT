@@ -15,6 +15,7 @@ const creds = require('./infoJsons/client_secret.json');
 
 const autoApp = require('./helpers/autoApp.js');
 const verify = require('./helpers/verify.js');
+const sendLog = require('./helpers/sendLog.js');
 
 const client = new Discord.Client({ partials : ["MESSAGE", "CHANNEL", "REACTION"]});
 const prefix = config.prefix;
@@ -34,6 +35,7 @@ client.info = info;
 client.creds = creds;
 client.autoApp = autoApp;
 client.verify = verify;
+client.sendLog = sendLog
 client.prefix = prefix;
 client.commands = new Enmap();
 client.accessSpreadsheet = accessSpreadsheet;
@@ -93,5 +95,5 @@ client.on("ready", () => {
     client.lastRestart.clear();
     client.guilds.cache.get('704350087739867208').members.fetch().then(members => console.log(`Cached ${members.size} members.`))
 });
- 
+
 client.login(config.token).catch(err => console.error("\x1b[31m", 'ERROR CONNECTING TO DISCORD:\n' + err + '\n Fix connection and restart.'));

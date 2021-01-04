@@ -12,9 +12,9 @@ exports.run = (client, message, args) => {
         message.channel.send('Please enter a message');
         return;
     }
-    console.log(userMessage + '\n' + channel);
     channel.send(userMessage);
     message.react('✅');
+    client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** (${message.author.tag}) used the command \`=modSay\` to **<#${channel.id}>** with the following message:**\n${userMessage}`, null, {"Sender ID": message.author.id});
 };
 
 exports.help = {embed: {

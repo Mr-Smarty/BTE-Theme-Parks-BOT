@@ -17,6 +17,8 @@ exports.run = async (client, message, args) => {
     .then(() => msg.react('749407387709997056'))
     .then(() => msg.react('🌴'))
     .catch(() => console.error('One of the emojis failed to react.'));
+
+    client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** (${message.author.tag}) created the park reaction role menu.`, null, {"Sender ID": message.author.id});
 };
 
 exports.help = {embed: {
