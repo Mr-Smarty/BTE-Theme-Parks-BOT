@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-    client.ping('themeparks.wither.host', 25650, (error, response) => {
+    client.ping(client.config.server.IP, client.config.server.port, (error, response) => {
         if (error) {
             const errorEmbed = new client.Discord.MessageEmbed()
             .setTitle('Server Status')
@@ -33,7 +33,6 @@ exports.run = (client, message, args) => {
             for (x = 0; x < max; x++) {
                 players[x] = response.samplePlayers[x].name;
             }
-            console.log(players);
 
             const playerEmbed = new client.Discord.MessageEmbed()
             .setTitle('Online Players')
@@ -42,7 +41,6 @@ exports.run = (client, message, args) => {
             .setTimestamp();
             message.channel.send(playerEmbed);
         }
-        console.log(response);
     });
 };
 
