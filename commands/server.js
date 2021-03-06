@@ -1,15 +1,5 @@
 exports.run = (client, message, args) => {
-    client.ping(client.config.server.IP, client.config.server.port, (error, response) => {
-        if (error) {
-            const errorEmbed = new client.Discord.MessageEmbed()
-            .setTitle('Server Status')
-            .setColor(client.info.embedHexcode)
-            .setDescription('Offline :pensive: Contact AdamW#0451')
-            .setTimestamp();
-            message.channel.send(errorEmbed);   
-            return;        
-        }
-        
+    client.ping.status(client.config.server.IP, { port: client.config.server.port, enableSRV: true, timeout: 5000, protocolVersion: 47 }).then(response => {
         const serverEmbed = new client.Discord.MessageEmbed()
         .setTitle('Server Status')
         .setColor(client.info.embedHexcode)
@@ -17,10 +7,17 @@ exports.run = (client, message, args) => {
         .addField('Server IP', response.host + ':' + response.port)
         .addField('Server Version', response.version)
         .addField('Online Players', response.onlinePlayers + '\n' + '\n Use `=players` to view online players')
-        .addField('Server Description', response.descriptionText.replace(/§./g, ""))
+        .addField('Server Description', response.description.descriptionText.replace(/§./g, ""))
         .setTimestamp();
         message.channel.send(serverEmbed);
-    });
+    }).catch(() => {
+        const errorEmbed = new client.Discord.MessageEmbed()
+        .setTitle('Server Status')
+        .setColor(client.info.embedHexcode)
+        .setDescription('Offline :pensive: Contact AdamW#0451')
+        .setTimestamp();
+        message.channel.send(errorEmbed);
+    });   
 };
 
 exports.help = {embed: {
