@@ -1,15 +1,5 @@
 exports.run = (client, message, args) => {
-    client.ping(client.config.server.IP, client.config.server.port, (error, response) => {
-        if (error) {
-            const errorEmbed = new client.Discord.MessageEmbed()
-            .setTitle('Server Status')
-            .setColor(client.info.embedHexcode)
-            .setDescription('Offline :pensive: Contact AdamW#0451')
-            .setTimestamp();
-            message.channel.send(errorEmbed);
-            return;
-        }
-        
+    client.ping.status(client.config.server.IP, { port: client.config.server.port, enableSRV: true, timeout: 5000, protocolVersion: 47 }).then(response => {        
         if (response.samplePlayers === null) {
             if (response.onlinePlayers === 0) {
                 const noPlayerEmbed = new client.Discord.MessageEmbed()
@@ -41,6 +31,13 @@ exports.run = (client, message, args) => {
             .setTimestamp();
             message.channel.send(playerEmbed);
         }
+    }).catch(() => {
+        const errorEmbed = new client.Discord.MessageEmbed()
+        .setTitle('Server Status')
+        .setColor(client.info.embedHexcode)
+        .setDescription('Offline :pensive: Contact AdamW#0451')
+        .setTimestamp();
+        return message.channel.send(errorEmbed);
     });
 };
 
