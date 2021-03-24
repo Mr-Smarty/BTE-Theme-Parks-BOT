@@ -6,15 +6,17 @@ exports.run = async (client, message, args) => {
         const code = args.join(" ");
         let response = eval(code);
         await Promise.resolve(response).then(res => {
-            message.react('✅'), message.channel.send({embed: {title: 'Response:', color: client.info.embedHexcode, description: String(res) || "\u200b"}})
+            message.react('✅').catch(()=>{}); 
+            message.channel.send({embed: {title: 'Response:', color: client.info.embedHexcode, description: String(res) || "\u200b"}}).catch(()=>{});
             status = 'Success';
         }).catch(err => {
-            message.react('❌'), message.channel.send(`Error executing code:\n\`\`\`${err}\`\`\``)
+            message.react('❌').catch(()=>{}); 
+            message.channel.send(`Error executing code:\n\`\`\`${err.stack}\`\`\``).catch(()=>{}); 
             status = 'Failed';
         });
     } catch (err) {
-        await message.channel.send(`Error executing code:\n\`\`\`${err}\`\`\``);
-        await message.react('❌');
+        await message.channel.send(`Error executing code:\n\`\`\`${err.stack}\`\`\``).catch(()=>{}); 
+        await message.react('❌').catch(()=>{}); 
         status = 'Failed';
     } finally {
         client.sendLog.run(client, message.author, undefined, `<@!${message.author.id}>** (${message.author.tag}) attempted to eval the following code:**\n\`\`\`${args.join(" ")}\`\`\`\n[Click here for context.](${message.url})`, null, {"Author ID": message.author.id, Outcome: status});
