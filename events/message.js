@@ -27,6 +27,30 @@ module.exports = (client, message) => {
         return;
     }
 
+    //=========#hi=========//
+    if(message.channel.id == '714328084920402020') {
+        message.channel.messages.fetch({ limit: 2}).then(messages => {
+            if(/^hi #\d+$/g.test(message.content.trim())) {
+                let lower = parseInt(messages.last().content.match(/\d+/g)[0]);
+                if(parseInt(messages.first().content.match(/\d+/g)[0]) !== (lower + 1)) {
+                    message.channel.send(`${message.member.toString()} broke the chain at hi #${parseInt(messages.last().content.match(/\d+/g)[0]) + 1}.`).then(() => {
+                        message.channel.send('hi #1');
+                    });
+                }
+                if(messages.last().author.id == message.author.id){
+                    message.channel.send(`${message.member.toString()} broke the chain at hi #${parseInt(messages.last().content.match(/\d+/g)[0]) + 1} by sending multiple in a row.`).then(() => {
+                        message.channel.send('hi #1');
+                    });
+                }
+            }
+            else {
+                message.channel.send(`${message.member.toString()} broke the chain at hi #${parseInt(messages.last().content.match(/\d+/g)[0]) + 1}.`).then(() => {
+                    message.channel.send('hi #1');
+                });
+            }
+        })
+    }
+
     //=========Ignore of message does not start with prefix=========//
     if(!message.content.startsWith(client.prefix)) return;
 
