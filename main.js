@@ -16,10 +16,12 @@ const creds = require('./infoJsons/client_secret.json');
 const autoApp = require('./helpers/autoApp.js');
 const verify = require('./helpers/verify.js');
 const sendLog = require('./helpers/sendLog.js');
+const Park = require('./helpers/Park/Park.js');
 
 const client = new Discord.Client({ partials : ["MESSAGE", "CHANNEL", "REACTION"]});
 const prefix = config.prefix;
 
+client.Park = Park;
 client.responses = new Enmap({name: "responses"});
 client.scores = new Enmap({name: "scores"});
 client.Discord = Discord;
@@ -35,7 +37,7 @@ client.info = info;
 client.creds = creds;
 client.autoApp = autoApp;
 client.verify = verify;
-client.sendLog = sendLog
+client.sendLog = sendLog;
 client.prefix = prefix;
 client.commands = new Enmap();
 client.accessSpreadsheet = accessSpreadsheet;
@@ -94,6 +96,37 @@ client.on("ready", () => {
     }
     client.lastRestart.clear();
     client.guilds.cache.get('704350087739867208').members.fetch().then(members => console.log(`Cached ${members.size} members.`))
+
+    function serialize(data) {
+        return {
+            ...data,
+            _role: data._role ? data._role.id : undefined,
+            _channel: data._channel ? data._channel.id : undefined,
+            _pinMessage: data._pinMessage ? data._pinMessage.id : undefined,
+        }
+    }
+    function deserialize(data) {
+        let obj = {
+            ...data,
+            _role: data._role ? client.guilds.cache.get(ids.guildID).roles.cache.get(data._role) : undefined,
+            _channel: data._channel ? client.channels.cache.get(data._channel) : undefined,
+        }
+        obj._pinMessage && obj._channel ? obj._channel.messages.fetch(data._pinMessage).then(msg => obj._pinMessage = msg) : undefined;
+        return Object.setPrototypeOf(obj, client.Park.prototype);
+    }
+
+    client.parks = new Enmap({
+        name: "parks",
+        serializer: serialize,
+        deserializer: deserialize
+    });
 });
+
+process.on('unhandledRejection', async err => {
+    let sendLog = require('./helpers/sendLog.js');
+    try {
+        sendLog.run(client, client.user, 'Unhandled Promise Rejection', `\`\`\`\n${err.stack}\n\`\`\``, null, null, 'NEGATIVE')
+    } catch(e) {}
+})
 
 client.login(config.token).catch(err => console.error("\x1b[31m", 'ERROR CONNECTING TO DISCORD:\n' + err + '\n Fix connection and restart.'));
