@@ -97,29 +97,7 @@ client.on("ready", () => {
     client.lastRestart.clear();
     client.guilds.cache.get('704350087739867208').members.fetch().then(members => console.log(`Cached ${members.size} members.`))
 
-    function serialize(data) {
-        return {
-            ...data,
-            _role: data._role ? data._role.id : undefined,
-            _channel: data._channel ? data._channel.id : undefined,
-            _pinMessage: data._pinMessage ? data._pinMessage.id : undefined,
-        }
-    }
-    function deserialize(data) {
-        let obj = {
-            ...data,
-            _role: data._role ? client.guilds.cache.get(ids.guildID).roles.cache.get(data._role) : undefined,
-            _channel: data._channel ? client.channels.cache.get(data._channel) : undefined,
-        }
-        obj._pinMessage && obj._channel ? obj._channel.messages.fetch(data._pinMessage).then(msg => obj._pinMessage = msg) : undefined;
-        return Object.setPrototypeOf(obj, client.Park.prototype);
-    }
-
-    client.parks = new Enmap({
-        name: "parks",
-        serializer: serialize,
-        deserializer: deserialize
-    });
+    client.parks = new Enmap({name: "parks"});
 });
 
 process.on('unhandledRejection', async err => {

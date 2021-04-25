@@ -217,13 +217,50 @@ module.exports = class Park extends Object {
     save(enmap) {
         return new Promise((resolve, reject) => {
             try {
-                enmap.set(this._name, this);
+                enmap.set(this._name, {
+                    ...this,
+                    _role: this._role ? this._role.id : undefined,
+                    _channel: this._channel ? this._channel.id : undefined,
+                    _pinMessage: this._pinMessage ? this._pinMessage.id : undefined
+                });
                 return resolve(enmap); 
             } catch (error) {
                 return reject(error);
             }
         });
     }
+
+    /**
+     * @param {Discord.Client} client
+     * @param {Enmap} enmap 
+     * @param {string} name
+     * @returns {Park} 
+     */
+    static async get(client, enmap, name) {
+        let raw = enmap.get(name);
+        if(!raw) return undefined;
+        let park = new Park('', {});
+        park._name = raw._name;
+        park._hasReactionRole = raw._hasReactionRole;
+        park._role = raw._role ? client.guilds.cache.get(client.ids.guildID).roles.cache.get(raw._role) : undefined;
+        park._hasChannel = raw._hasChannel;
+        park._channel = raw._channel ? client.channels.cache.get(raw._channel) : undefined;
+        park._visibility = raw._visibility;
+        park._hidden = raw._hidden;
+        park._emoji = raw._emoji;
+        park._status = raw._status;
+        park._projects = raw._projects;
+        park._init = raw._init;
+        if(raw._pinMessage && raw._channel) {
+            await park._channel.messages.fetch(raw._pinMessage)
+            .then(msg => park._pinMessage = msg)
+            .catch(() => park._pinMessage = undefined)
+            return park;
+        } else {
+            park._pinMessage = undefined;
+            return park;
+        };
+    };
 
     /**
      * Reloads the reaction role menu.
@@ -285,15 +322,15 @@ module.exports = class Park extends Object {
      * @param {string} extraMessage Extra message at the end of the list
      */
     static reloadProjectList(enmap, client, extraMessage) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             let message = '**__Project List:__**';
             let messages = [''];
             let overflow = 0;
 
-            enmap.forEach((park, parkName) => {
+            await enmap.forEach(async (park, parkName) => {
                 if(!park._hidden) {
                     let str = `​\n**${parkName}** `;
-                    park._hasChannel ? str += enmap.get(parkName).channel.toString() : str += '(no channel)';
+                    park._hasChannel ? str += await Park.get(client, enmap, parkName).then(park => park.channel.toString()) : str += '(no channel)';
                     switch(park._visibility) {
                         case 'private':
                             str += ' (private)\n'
@@ -316,11 +353,11 @@ module.exports = class Park extends Object {
             });
 
             let channel = client.channels.cache.get(client.ids.projectList);
-            channel.messages.fetch({ limit: 27 }).then(messages => messages.each(msg => msg.delete())).catch(err => {return reject(err);});
+            await channel.messages.fetch({ limit: 27 }).then(messages => messages.each(msg => msg.delete())).catch(err => {return reject(err);});
 
-            channel.send(message).catch(err => {return reject(err);});
-            messages.forEach(message => {
-                channel.send(message).catch(err => {return reject(err);});
+            await channel.send(message).catch(err => {return reject(err);});
+            await messages.forEach(async message => {
+                await channel.send(message).catch(err => {return reject(err);});
             });
             channel.send(extraMessage).then(() => {return resolve();}).catch(err => {return reject(err);});
         });
