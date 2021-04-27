@@ -67,7 +67,8 @@ module.exports = async (client, reaction, user) => {
     } else
 
     if (reaction.message.channel.id === client.ids.getRoles) {
-        let role = client.parks.find(park => park.options.emoji == reaction.emoji.toString()).role;
+        let park = await client.Park.get(client, client.parks, client.parks.find(park => park._emoji == reaction.emoji.toString())._name);
+        let role = park._role;
         let member = reaction.message.guild.members.cache.get(user.id);
         if(member.roles.cache.has(role.id)) {
             member.roles.remove(role);
