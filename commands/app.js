@@ -231,7 +231,7 @@ exports.run = async (client, message, args) => {
                         names = await apps.map(r => {
                             let time = rows[r].Timestamp.split(/ +/g)[0];
                             let status = rows[r].result;
-                            let appID = r;
+                            let appID = r + 1;
                             return {'time': time, 'status': status, 'ID': appID};
                         })
                         const user = await client.users.cache.find(u => u.tag === args.slice(1).join(" ").trim());
