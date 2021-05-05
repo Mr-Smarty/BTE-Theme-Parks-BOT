@@ -58,6 +58,18 @@ export default class Client extends Discord.Client {
         this.db = await createConnection();
     }
 
+    /**
+     * Sends a log to the log channel
+     * @example
+     * client.sendLog({
+     *     user: Discord.User,
+     *     title?: string,
+     *     description?: string,
+     *     fields?: Discord.EmbedField[],
+     *     extra?: Record<string, string | number>,
+     *     type?: 'NEUTRAL' | 'POSITIVE' | 'NEGATIVE'
+     * })
+     */
     async sendLog(data: Log): Promise<Discord.Message> {
         const log = new Discord.MessageEmbed({
             title: data.title,
@@ -67,7 +79,8 @@ export default class Client extends Discord.Client {
                 name: data.user.tag,
                 icon_url: data.user.displayAvatarURL({ format: 'png', dynamic: true }),
                 url: `https://discordapp.com/users/${data.user.id}/`
-            }
+            },
+            timestamp: new Date()
         });
 
         switch (data.type) {
