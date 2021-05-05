@@ -1,5 +1,7 @@
 import Discord from 'discord.js';
 import { Connection, createConnection } from 'typeorm';
+import Command from './Command';
+import fs from 'fs/promises';
 
 export type Log = {
     user: Discord.User;
@@ -44,10 +46,12 @@ export type Config = {
 export default class Client extends Discord.Client {
     db: Connection;
     config: Config;
+    commands: Discord.Collection<string, Command>;
 
     constructor(config) {
         super({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
         this.config = config;
+        this.commands = new Discord.Collection<string, Command>();
     }
 
     async initDatabase(): Promise<void> {
@@ -81,5 +85,40 @@ export default class Client extends Discord.Client {
             this.config.ids.channels.logs
         ) as Discord.TextChannel;
         return channel.send(log);
+    }
+
+    async loadEvents(): Promise<void> {
+        return await fs
+            .readdir(__dirname + '/../events/')
+            .then(files => {
+                files.forEach(async file => {
+                    if (!file.endsWith('.js')) return;
+                    const event = (await import(__dirname + `/../events/${file}`))
+                        .default;
+                    let eventName = file.split('.')[0];
+                    this.on(eventName, event.bind(this));
+                    delete require.cache[
+                        require.resolve(__dirname + `/../events/${file}`)
+                    ];
+                });
+            })
+            .catch(console.error);
+    }
+
+    async loadCommands(): Promise<void> {
+        return await fs
+            .readdir(__dirname + '/../commands/')
+            .then(files => {
+                files.forEach(async file => {
+                    if (!file.endsWith('.js')) return;
+                    let command: Command = (
+                        await import(__dirname + '/../commands/' + file)
+                    ).default;
+                    let commandName = file.split('.')[0];
+                    console.log(`Attempting to load command ${commandName}`);
+                    this.commands.set(commandName, command);
+                });
+            })
+            .catch(console.error);
     }
 }
