@@ -7,7 +7,7 @@ export default async function (this: Client, message: Discord.Message): Promise<
 
     const body = message.content.slice(this.config.prefix.length).trim();
     const args = body.split(/ +/g) || [];
-    const commandName = args.shift();
+    const commandName = args.shift().toLowerCase();
     if (!this.commands.has(commandName)) return;
     const command = this.commands.get(commandName);
     command.run(this, message, args);
