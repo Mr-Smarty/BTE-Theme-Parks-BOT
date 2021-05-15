@@ -8,6 +8,7 @@ export default class Command implements CommandProperties {
     permission: string | string[];
     usage: string | string[];
     dms: boolean;
+    channels: string[] | false;
     run: (
         client: Client,
         message: Discord.Message,
@@ -21,6 +22,7 @@ export default class Command implements CommandProperties {
         this.permission = properties.permission;
         this.usage = properties.usage;
         this.dms = properties.dms || false;
+        this.channels = properties.channels || false;
         this.run = properties.run.bind(this);
     }
 }
@@ -32,5 +34,6 @@ export interface CommandProperties {
     description: string;
     usage: string | string[];
     dms?: boolean;
+    channels?: string[] | false;
     run: (client: Client, message: Discord.Message, args: string[]) => void;
 }

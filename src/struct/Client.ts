@@ -2,6 +2,7 @@ import Discord from 'discord.js';
 import { Connection, createConnection } from 'typeorm';
 import Command from './Command';
 import fs from 'fs/promises';
+import Google from 'google-spreadsheet';
 
 export type Log = {
     user: Discord.User;
@@ -11,6 +12,19 @@ export type Log = {
     extra?: Record<string, string | number>;
     type?: 'NEUTRAL' | 'POSITIVE' | 'NEGATIVE';
 };
+
+export type GoogleCredentials = Record<
+    | 'type'
+    | 'project_id'
+    | 'private_key_id'
+    | 'private_key'
+    | 'client_email'
+    | 'client_id'
+    | 'auth_uri'
+    | 'auth_provider_x509_cert_url'
+    | 'client_x509_cert_url',
+    string
+>;
 
 export type Config = {
     token: string;
@@ -24,18 +38,8 @@ export type Config = {
     server: { IP: string; port: number };
     colors: Record<'standard' | 'positive' | 'negative', string>;
     database: Record<'host' | 'port' | 'username' | 'password' | 'name', string>;
-    google: Record<
-        | 'type'
-        | 'project_id'
-        | 'private_key_id'
-        | 'private_key'
-        | 'client_email'
-        | 'client_id'
-        | 'auth_uri'
-        | 'auth_provider_x509_cert_url'
-        | 'client_x509_cert_url',
-        string
-    >;
+    google: GoogleCredentials;
+    builderGoogleSheetsID: string;
     ids: {
         roles: Record<string, string>;
         channels: Record<string, string>;
@@ -109,6 +113,7 @@ export default class Client extends Discord.Client {
                     const event = (await import(__dirname + `/../events/${file}`))
                         .default;
                     let eventName = file.split('.')[0];
+                    console.log(`- Attempting to load event ${eventName}`);
                     this.on(eventName, event.bind(this));
                     delete require.cache[
                         require.resolve(__dirname + `/../events/${file}`)
@@ -128,10 +133,23 @@ export default class Client extends Discord.Client {
                         await import(__dirname + '/../commands/' + file)
                     ).default;
                     let commandName = file.split('.')[0];
-                    console.log(`Attempting to load command ${commandName}`);
+                    console.log(`- Attempting to load command ${commandName}`);
                     this.commands.set(commandName, command);
                 });
             })
             .catch(console.error);
+    }
+
+    async accessSpreadsheet(
+        sheetID: string,
+        credentials: GoogleCredentials
+    ): Promise<Google.GoogleSpreadsheetWorksheet[]> {
+        const doc = new Google.GoogleSpreadsheet(sheetID);
+        await doc.useServiceAccountAuth({
+            client_email: credentials.client_email,
+            private_key: credentials.private_key
+        });
+        await doc.loadInfo();
+        return doc.sheetsByIndex;
     }
 }

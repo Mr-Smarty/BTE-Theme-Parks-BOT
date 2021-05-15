@@ -4,7 +4,7 @@ import Command from '../struct/Command';
 
 export default new Command({
     name: 'ping',
-    aliases: [],
+    aliases: ['piiing'],
     description: 'ping command',
     permission: 'none',
     usage: 't=ping',
