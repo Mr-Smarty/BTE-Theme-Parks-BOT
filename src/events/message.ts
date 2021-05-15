@@ -13,5 +13,6 @@ export default async function (this: Client, message: Discord.Message): Promise<
         this.commands.find(command => {
             return command.aliases.includes(commandName);
         });
+    if (!command) return;
     command.run(this, message, args);
 }
