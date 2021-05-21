@@ -19,6 +19,10 @@ async function main() {
     await client.initDatabase();
     console.log('\x1b[32m' + 'Database connected');
 
+    console.log('\n\x1b[0m' + 'Starting progress update cooldown cycle...');
+    client.cooldownCycle();
+    console.log('\x1b[32m' + 'Progress update cooldown cycle started');
+
     console.log('\n\x1b[0m' + 'Logging in...');
     await client.login(client.config.token);
     console.log('\x1b[32m' + 'Client logged in\n' + '\x1b[0m');

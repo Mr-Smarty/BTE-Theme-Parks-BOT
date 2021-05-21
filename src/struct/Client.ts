@@ -3,49 +3,8 @@ import { Connection, createConnection } from 'typeorm';
 import Command from './Command';
 import fs from 'fs/promises';
 import Google from 'google-spreadsheet';
-
-export type Log = {
-    user: Discord.User;
-    title?: any;
-    description?: any;
-    fields?: Discord.EmbedField[];
-    extra?: Record<string, string | number>;
-    type?: 'NEUTRAL' | 'POSITIVE' | 'NEGATIVE';
-};
-
-export type GoogleCredentials = Record<
-    | 'type'
-    | 'project_id'
-    | 'private_key_id'
-    | 'private_key'
-    | 'client_email'
-    | 'client_id'
-    | 'auth_uri'
-    | 'auth_provider_x509_cert_url'
-    | 'client_x509_cert_url',
-    string
->;
-
-export type Config = {
-    token: string;
-    prefix: string;
-    ownerID: string;
-    iconURL: string;
-    projectRoleStartPos: number;
-    projectChannelStartPos: number;
-    apiKey: string;
-    collabApikeys: Record<string, string>;
-    server: { IP: string; port: number };
-    colors: Record<'standard' | 'positive' | 'negative', string>;
-    database: Record<'host' | 'port' | 'username' | 'password' | 'name', string>;
-    google: GoogleCredentials;
-    builderGoogleSheetsID: string;
-    ids: {
-        roles: Record<string, string>;
-        channels: Record<string, string>;
-        guild: string;
-    };
-};
+import { Log, GoogleCredentials, Config } from '../typings';
+import { UpdateCooldown } from '../entity/UpdateCooldown';
 
 export default class Client extends Discord.Client {
     db: Connection;
@@ -151,5 +110,23 @@ export default class Client extends Discord.Client {
         });
         await doc.loadInfo();
         return doc.sheetsByIndex;
+    }
+
+    async cooldownCycle() {
+        setInterval(async () => {
+            if (new Date().getMinutes() == 45 && new Date().getHours() == 0) {
+                let cooldowns = await UpdateCooldown.find();
+                if (cooldowns.length) {
+                    this.sendLog({
+                        user: this.user,
+                        title: 'Progress Update Cooldown Reset',
+                        description: `Reset the progress update cooldown for the following members:\n\`\`\`${cooldowns
+                            .map(cooldown => this.users.cache.get(cooldown.member).tag)
+                            .join('\n')}\`\`\``
+                    });
+                }
+                UpdateCooldown.clear();
+            }
+        }, 60000);
     }
 }

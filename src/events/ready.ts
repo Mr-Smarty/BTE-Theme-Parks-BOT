@@ -1,3 +1,4 @@
+import { ClientInfo } from '../entity/ClientInfo';
 import Client from '../struct/client';
 
 export default async function (this: Client): Promise<unknown> {
@@ -8,6 +9,9 @@ export default async function (this: Client): Promise<unknown> {
 
     let members = await this.guilds.cache.get(this.config.ids.guild).members.fetch();
     console.log(`Fetched and cached ${members.size} members`);
+
+    const restartMsg = await this.db.manager.findOne(ClientInfo);
+    if (restartMsg) restartMsg.restart(this);
 
     return;
 }
