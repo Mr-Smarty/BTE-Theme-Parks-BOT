@@ -1,4 +1,4 @@
-const { database } = require('./config.json');
+const { database, env } = require('./config.json');
 
 module.exports = {
     type: 'mariadb',
@@ -7,7 +7,8 @@ module.exports = {
     username: database.username,
     password: database.password,
     database: database.name,
-    entities: ['dist/**/*.entity.js'],
+    synchronize: env !== 'production',
+    entities: ['dist/**/*.js'],
     migrations: ['dist/migration/**/*.js'],
     subscribers: ['src/subscriber/**/*.js'],
     cli: {
