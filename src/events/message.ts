@@ -101,5 +101,15 @@ export default async function (this: Client, message: Discord.Message): Promise<
     )
         return;
 
-    command.run(this, message, args);
+    try {
+        command.run(this, message, args);
+    } catch (error) {
+        message.channel.send({
+            embed: {
+                title: 'An error occured!',
+                color: this.config.colors.negative
+            }
+        });
+        console.error(error);
+    }
 }

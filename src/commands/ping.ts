@@ -9,12 +9,8 @@ export default new Command({
     permission: ['any'],
     usage: 't=ping',
     async run(this: Command, _client: Client, message: Discord.Message, args: string[]) {
-        message.channel
-            .send('pong!')
-            .then(m => {
-                var ping = m.createdTimestamp - message.createdTimestamp;
-                m.edit(`pong! \`${ping}ms\` | webscoket: \`${_client.ws.ping}ms\``);
-            })
-            .catch(console.error);
+        let m = await message.channel.send('pong!');
+        let ping = m.createdTimestamp - message.createdTimestamp;
+        m.edit(`pong! \`${ping}ms\` | webscoket: \`${_client.ws.ping}ms\``);
     }
 });
