@@ -57,6 +57,14 @@ export default class Client extends Discord.Client {
                 log.setColor(this.config.colors.standard);
         }
 
+        if (data.extra) {
+            let extra = '';
+            Object.entries(data.extra).forEach(entry => {
+                extra += `${entry[0]}: ${entry[1]} | `;
+            });
+            log.setFooter(extra.replace(/\|\s$/, ''));
+        }
+
         const channel: Discord.TextChannel = this.channels.cache.get(
             this.config.ids.channels.logs
         ) as Discord.TextChannel;
