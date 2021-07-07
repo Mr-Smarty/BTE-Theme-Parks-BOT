@@ -10,11 +10,16 @@ export default class Client extends Discord.Client {
     db: Connection;
     config: Config;
     commands: Discord.Collection<string, Command>;
+    events: Discord.Collection<keyof Discord.ClientEvents, (...args: any[]) => void>;
 
     constructor(config) {
         super({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
         this.config = config;
         this.commands = new Discord.Collection<string, Command>();
+        this.events = new Discord.Collection<
+            keyof Discord.ClientEvents,
+            (...args: any[]) => void
+        >();
     }
 
     async initDatabase(): Promise<void> {
@@ -81,7 +86,14 @@ export default class Client extends Discord.Client {
                         .default;
                     let eventName = file.split('.')[0];
                     console.log(`- Attempting to load event ${eventName}`);
-                    this.on(eventName, event.bind(this));
+                    this.events.set(
+                        eventName as keyof Discord.ClientEvents,
+                        event.bind(this)
+                    );
+                    this.on(
+                        eventName,
+                        this.events.get(eventName as keyof Discord.ClientEvents)
+                    );
                     delete require.cache[
                         require.resolve(__dirname + `/../events/${file}`)
                     ];

@@ -1,8 +1,8 @@
 console.log('\x1b[0m' + 'Starting...');
 
 import 'reflect-metadata';
-import config from '../config.json';
 import Client from './struct/client';
+const config = require('../config.json');
 
 const client = new Client(config);
 
