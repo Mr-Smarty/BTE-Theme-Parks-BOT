@@ -1,4 +1,4 @@
-import Discord from 'discord.js';
+import { Message } from 'discord.js';
 import Client from '../struct/Client';
 import Command from '../struct/Command';
 
@@ -8,7 +8,7 @@ export default new Command({
     description: 'ping command',
     permission: ['any'],
     usage: 't=ping',
-    async run(this: Command, _client: Client, message: Discord.Message, args: string[]) {
+    async run(this: Command, _client: Client, message: Message, args: string[]) {
         let m = await message.channel.send('pong!');
         let ping = m.createdTimestamp - message.createdTimestamp;
         m.edit(`pong! \`${ping}ms\` | webscoket: \`${_client.ws.ping}ms\``);

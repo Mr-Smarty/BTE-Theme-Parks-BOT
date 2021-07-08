@@ -1,4 +1,4 @@
-import Discord from 'discord.js';
+import { Message } from 'discord.js';
 import Client from '../struct/Client';
 import Command from '../struct/Command';
 
@@ -8,7 +8,7 @@ export default new Command({
     description: '¯\\_(ツ)_/¯',
     permission: ['any'],
     usage: 't=smarty',
-    async run(this: Command, _client: Client, message: Discord.Message, args: string[]) {
+    async run(this: Command, _client: Client, message: Message, args: string[]) {
         message.channel.send('The best staff.');
     }
 });

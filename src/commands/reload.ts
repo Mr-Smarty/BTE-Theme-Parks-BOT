@@ -42,7 +42,7 @@ export default new Command({
                         `The command, event, or option \`${args[0]}\` doesn't exist!`
                     );
 
-                if (args[1].toLowerCase() == 'build') {
+                if (args[1]?.toLowerCase() == 'build') {
                     let msg = await message.channel.send('Rebuilding javascript...');
                     execSync('npm run build');
                     msg.edit('Rebuilt javascript.');
