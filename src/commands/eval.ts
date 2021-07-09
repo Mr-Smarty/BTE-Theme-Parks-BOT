@@ -7,7 +7,7 @@ export default new Command({
     aliases: ['run'],
     description: 'Execute javascript code',
     permission: ['dev'],
-    usage: 't=eval <code>',
+    usage: '<code>',
     async run(this: Command, _client: Client, message: Message, args: string[]) {
         const raw = args.join(' ');
 

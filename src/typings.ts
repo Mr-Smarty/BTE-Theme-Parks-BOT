@@ -50,7 +50,7 @@ export interface CommandProperties {
     aliases: string[];
     permission: string[] | ['any'] | ['dev'];
     description: string;
-    usage: string | string[];
+    usage: string | string[] | null;
     dms?: boolean;
     channels?: string[] | false;
     run: (client: Discord.Client, message: Discord.Message, args: string[]) => void;

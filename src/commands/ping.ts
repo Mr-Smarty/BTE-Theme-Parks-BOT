@@ -7,7 +7,7 @@ export default new Command({
     aliases: [],
     description: 'ping command',
     permission: ['any'],
-    usage: 't=ping',
+    usage: null,
     async run(this: Command, _client: Client, message: Message, args: string[]) {
         let m = await message.channel.send('pong!');
         let ping = m.createdTimestamp - message.createdTimestamp;

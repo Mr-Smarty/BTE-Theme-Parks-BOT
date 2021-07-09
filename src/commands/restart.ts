@@ -8,7 +8,7 @@ export default new Command({
     aliases: ['die'],
     description: 'restarts the bot',
     permission: ['dev'],
-    usage: 't=restart',
+    usage: null,
     async run(this: Command, _client: Client, message: Message, args: string[]) {
         const msg = await message.channel.send('Restarting...');
         const info = (await _client.db.manager.findOne(ClientInfo)) || new ClientInfo();

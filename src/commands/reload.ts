@@ -10,7 +10,7 @@ export default new Command({
     aliases: [],
     description: 'reload command, event, or file',
     permission: ['dev'],
-    usage: 't=reload <command | "config" | "count"> ["build"]',
+    usage: '<command | "config" | "count"> ["build"]',
     async run(this: Command, _client: Client, message: Discord.Message, args: string[]) {
         if (!args[0]) return;
         const arg = args[0].toLowerCase();

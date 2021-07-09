@@ -7,7 +7,7 @@ export default new Command({
     aliases: [],
     description: '¯\\_(ツ)_/¯',
     permission: ['any'],
-    usage: 't=smarty',
+    usage: null,
     async run(this: Command, _client: Client, message: Message, args: string[]) {
         message.channel.send('The best staff.');
     }
