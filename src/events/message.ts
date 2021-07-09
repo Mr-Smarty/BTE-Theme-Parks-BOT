@@ -88,7 +88,7 @@ export default async function (this: Client, message: Discord.Message): Promise<
         });
 
     if (!command) return;
-    if (!message.guild && command.dms) return;
+    if (!message.guild && !command.dms) return;
     if (command.channels) {
         if (!command.channels.includes(message.channel.id)) return;
     }

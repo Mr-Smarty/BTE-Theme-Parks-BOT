@@ -22,7 +22,7 @@ export default class Command implements CommandProperties {
         this.description = properties.description;
         this.permission = properties.permission;
         this.usage = properties.usage;
-        this.dms = properties.dms || false;
+        this.dms = properties.dms !== undefined ? properties.dms : true;
         this.channels = properties.channels || false;
         this.run = properties.run.bind(this);
     }
