@@ -17,5 +17,3 @@ module.exports = {
         subscribersDir: 'src/subscriber'
     }
 };
-
-// test
