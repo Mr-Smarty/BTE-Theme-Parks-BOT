@@ -4,7 +4,7 @@
     "description": "Discord bot for the BTE Theme Parks team",
     "scripts": {
         "start": "node dist/index.js --unhandled-rejections=strict",
-        "build": "tsc"
+        "build": "rimraf ./dist/ && tsc"
     },
     "author": "MrSmarty#1732",
     "license": "ISC",
