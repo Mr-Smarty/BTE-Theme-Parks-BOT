@@ -1,6 +1,7 @@
-import { Message } from 'discord.js';
+import { Message, Util } from 'discord.js';
 import Client from '../struct/Client';
 import Command from '../struct/Command';
+import stringifyAnything from '../util/stringifyAnything';
 
 export default new Command({
     name: 'eval',
@@ -19,13 +20,22 @@ export default new Command({
 
         let status = undefined;
         try {
-            const response = await Promise.resolve(eval(code));
+            let response = await Promise.resolve(eval(code));
+            response = Util.splitMessage(stringifyAnything(response), {
+                maxLength: 1990,
+                char: '',
+                append: ' ...'
+            });
             message.channel.send({
-                embed: {
-                    title: 'Response:',
-                    color: _client.config.colors.standard,
-                    description: String(response) || '\u200b'
-                }
+                embeds: [
+                    {
+                        title: 'Response:',
+                        color: _client.config.colors.standard,
+                        description: Array.isArray(response)
+                            ? '```js\n' + response[0] + '\n```'
+                            : '```js\n' + response + '\n```'
+                    }
+                ]
             });
             status = 'Success';
         } catch (error) {
