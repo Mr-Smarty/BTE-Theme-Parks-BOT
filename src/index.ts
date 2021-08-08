@@ -29,7 +29,7 @@ async function main() {
 }
 
 main().catch(err => {
-    console.error('\x1b[32m' + err);
+    console.error('\n\x1b[0m' + err);
     process.exit(1);
 });
 
