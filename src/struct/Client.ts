@@ -13,7 +13,19 @@ export default class Client extends Discord.Client {
     events: Discord.Collection<keyof Discord.ClientEvents, (...args: any[]) => void>;
 
     constructor(config) {
-        super({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+        const Intents = Discord.Intents.FLAGS;
+        super({
+            partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+            intents: [
+                Intents.GUILDS,
+                Intents.GUILD_MEMBERS,
+                Intents.GUILD_INTEGRATIONS,
+                Intents.GUILD_MESSAGES,
+                Intents.GUILD_MESSAGE_REACTIONS,
+                Intents.DIRECT_MESSAGES,
+                Intents.DIRECT_MESSAGE_REACTIONS
+            ]
+        });
         this.config = config;
         this.commands = new Discord.Collection<string, Command>();
         this.events = new Discord.Collection<
@@ -73,7 +85,7 @@ export default class Client extends Discord.Client {
         const channel: Discord.TextChannel = this.channels.cache.get(
             this.config.ids.channels.logs
         ) as Discord.TextChannel;
-        return channel.send(log);
+        return channel.send({ embeds: [log] });
     }
 
     async loadEvents(): Promise<void> {
@@ -120,10 +132,10 @@ export default class Client extends Discord.Client {
     }
 
     async accessSpreadsheet(
-        sheetID: string,
+        sheetId: string,
         credentials: GoogleCredentials
     ): Promise<Google.GoogleSpreadsheetWorksheet[]> {
-        const doc = new Google.GoogleSpreadsheet(sheetID);
+        const doc = new Google.GoogleSpreadsheet(sheetId);
         await doc.useServiceAccountAuth({
             client_email: credentials.client_email,
             private_key: credentials.private_key

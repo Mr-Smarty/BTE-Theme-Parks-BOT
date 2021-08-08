@@ -25,18 +25,18 @@ export type GoogleCredentials = Record<
 export type Config = {
     token: string;
     prefix: string;
-    ownerID: string;
+    ownerId: string;
     iconURL: string;
     env?: 'production';
     projectRoleStartPos: number;
     projectChannelStartPos: number;
     apiKey: string;
     collabApikeys: Record<string, string>;
-    server: { IP: string; port: number };
-    colors: Record<'standard' | 'positive' | 'negative', string>;
+    server: { IP: string; port: number; network: { java: string; bedrock: string } };
+    colors: Record<'standard' | 'positive' | 'negative', Discord.ColorResolvable>;
     database: Record<'host' | 'port' | 'username' | 'password' | 'name', string>;
     google: GoogleCredentials;
-    builderGoogleSheetsID: string;
+    builderGoogleSheetsId: string;
     ids: {
         roles: Record<string, string>;
         channels: Record<string, string>;

@@ -2,6 +2,7 @@ import Discord from 'discord.js';
 import Client from '../struct/client';
 import { UpdateCooldown } from '../entity/UpdateCooldown';
 import msToDuration from '../util/msToDuration';
+import promiseTimeout from '../util/promiseTimeout';
 
 export default async function (this: Client, message: Discord.Message): Promise<unknown> {
     if (message.author.bot) return;
@@ -22,7 +23,7 @@ export default async function (this: Client, message: Discord.Message): Promise<
             const sent = await message.channel.send(
                 `You have already posted a progress update today. Please wait ${duration.hr} hours, ${duration.min} minutes before posting another update.`
             );
-            return sent.delete({ timeout: 10000 });
+            return promiseTimeout(() => sent.delete(), 10000);
         } else {
             let newCooldown = new UpdateCooldown();
             newCooldown.member = message.member.id;
@@ -38,7 +39,7 @@ export default async function (this: Client, message: Discord.Message): Promise<
             let msg = await message.channel.send(
                 'Please Number your suggestion in the format `#number suggestion content`.'
             );
-            return msg.delete({ timeout: 7500 });
+            return promiseTimeout(() => msg.delete(), 7500);
         }
         await message.react(this.config.ids.emojis.upvote);
         await message.react('🤷‍♂️');
@@ -97,7 +98,7 @@ export default async function (this: Client, message: Discord.Message): Promise<
             return (command.permission as string[]).includes(role.name.toLowerCase());
         }) &&
         !(command.permission as string[]).includes('any') &&
-        message.member.id !== this.config.ownerID
+        message.member.id !== this.config.ownerId
     )
         return;
 
@@ -105,10 +106,12 @@ export default async function (this: Client, message: Discord.Message): Promise<
         command.run(this, message, args);
     } catch (error) {
         message.channel.send({
-            embed: {
-                title: 'An error occured!',
-                color: this.config.colors.negative
-            }
+            embeds: [
+                {
+                    title: 'An error occured!',
+                    color: this.config.colors.negative
+                }
+            ]
         });
         console.error(error);
     }
