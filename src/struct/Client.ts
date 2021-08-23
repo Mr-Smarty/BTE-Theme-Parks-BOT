@@ -5,6 +5,7 @@ import fs from 'fs/promises';
 import Google from 'google-spreadsheet';
 import { Log, GoogleCredentials, Config } from '../typings';
 import { UpdateCooldown } from '../entity/UpdateCooldown';
+import stringifyAnything from '../util/stringifyAnything';
 
 export default class Client extends Discord.Client {
     db: Connection;
@@ -52,8 +53,8 @@ export default class Client extends Discord.Client {
      */
     async sendLog(data: Log): Promise<Discord.Message> {
         const log = new Discord.MessageEmbed({
-            title: data.title,
-            description: data.description,
+            title: stringifyAnything(data.title),
+            description: stringifyAnything(data.description),
             fields: data.fields,
             author: {
                 name: data.user.tag,
