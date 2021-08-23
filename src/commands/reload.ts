@@ -3,14 +3,14 @@ import Client from '../struct/Client';
 import Command from '../struct/Command';
 import { Config } from '../typings';
 import events from '../util/events';
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
 
 export default new Command({
     name: 'reload',
     aliases: [],
     description: 'reload command, event, or file',
     permission: ['dev'],
-    usage: '<command | "config" | "count"> ["build"]',
+    usage: "<command | 'config' | 'count'> ['build']",
     async run(this: Command, _client: Client, message: Discord.Message, args: string[]) {
         if (!args[0]) return;
         const arg = args[0].toLowerCase();
