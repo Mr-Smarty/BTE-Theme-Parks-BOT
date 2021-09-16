@@ -11,7 +11,7 @@
     "dependencies": {
         "discord.js": "^13.0.1",
         "google-spreadsheet": "^3.1.15",
-        "minecraft-server-util": "^3.5.1",
+        "minecraft-server-util": "^3.6.0",
         "mysql2": "^2.2.5",
         "node-fetch": "^2.6.1",
         "reflect-metadata": "^0.1.13",
