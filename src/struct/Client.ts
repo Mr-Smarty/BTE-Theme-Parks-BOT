@@ -5,7 +5,6 @@ import fs from 'fs/promises';
 import Google from 'google-spreadsheet';
 import { Log, GoogleCredentials, Config } from '../typings';
 import { UpdateCooldown } from '../entity/UpdateCooldown';
-import stringifyAnything from '../util/stringifyAnything';
 
 export default class Client extends Discord.Client {
     db: Connection;
@@ -41,21 +40,34 @@ export default class Client extends Discord.Client {
 
     /**
      * Sends a log to the log channel
+     * @param {Object} data
+     * @param {Discord.User} data.user
+     * @param {string} [data.title]
+     * @param {string} [data.description]
+     * @param {Discord.EmbedField[]} [data.fields]
+     * @param {Record<string, string | number>} [data.extra]
+     * @param {"NEUTRAL" | "POSITIVE" | "NEGATIVE"} [data.type=NEUTRAL]
      * @example
      * client.sendLog({
      *     user: Discord.User,
-     *     title?: string,
-     *     description?: string,
-     *     fields?: Discord.EmbedField[],
-     *     extra?: Record<string, string | number>,
-     *     type?: 'NEUTRAL' | 'POSITIVE' | 'NEGATIVE'
+     *     title: 'title',
+     *     description: 'string',
+     *     fields: [
+     *         {
+     *             name: 'name',
+     *             value: 'value',
+     *             inline: false
+     *         }
+     *     ],
+     *     extra: {
+     *         string: 'string',
+     *         number: 'number'
+     *     },
+     *     type: 'POSITIVE'
      * })
      */
     async sendLog(data: Log): Promise<Discord.Message> {
         const log = new Discord.MessageEmbed({
-            title: stringifyAnything(data.title),
-            description: stringifyAnything(data.description),
-            fields: data.fields,
             author: {
                 name: data.user.tag,
                 icon_url: data.user.displayAvatarURL({ format: 'png', dynamic: true }),
@@ -63,6 +75,10 @@ export default class Client extends Discord.Client {
             },
             timestamp: new Date()
         });
+
+        if (data.title) log.setTitle(data.title);
+        if (data.description) log.setDescription(data.description);
+        if (data.fields) log.addFields(data.fields);
 
         switch (data.type) {
             case 'POSITIVE':
