@@ -11,6 +11,7 @@ export default class Client extends Discord.Client {
     config: Config;
     commands: Discord.Collection<string, Command>;
     events: Discord.Collection<keyof Discord.ClientEvents, (...args: any[]) => void>;
+    guild: Discord.Guild;
 
     constructor(config) {
         const Intents = Discord.Intents.FLAGS;

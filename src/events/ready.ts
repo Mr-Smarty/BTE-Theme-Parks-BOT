@@ -13,5 +13,7 @@ export default async function (this: Client): Promise<unknown> {
     const restartMsg = await this.db.manager.findOne(ClientInfo);
     if (restartMsg) restartMsg.restart(this);
 
+    this.guild = this.guilds.cache.get(this.config.ids.guild);
+
     return;
 }
