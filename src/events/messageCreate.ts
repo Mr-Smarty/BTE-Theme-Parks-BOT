@@ -94,11 +94,11 @@ export default async function (this: Client, message: Discord.Message): Promise<
         if (!command.channels.includes(message.channel.id)) return;
     }
     if (
-        !message.member.roles.cache.some(role => {
+        !this.anyMessageMember(message).roles.cache.some(role => {
             return (command.permission as string[]).includes(role.name.toLowerCase());
         }) &&
         !(command.permission as string[]).includes('any') &&
-        message.member.id !== this.config.ownerId
+        message.author.id !== this.config.ownerId
     )
         return;
 

@@ -20,9 +20,11 @@ export default new Command({
                     case 'dev':
                         return `<@!${_client.config.ownerId}>`;
                     default:
-                        return `<@&${message.guild.roles.cache.findKey(
-                            role => role.name.toLowerCase() == perm
-                        )}>`;
+                        return `<@&${
+                            message.guild?.roles.cache.findKey(
+                                role => role.name.toLowerCase() == perm
+                            ) || `${perm[0].toUpperCase()}${perm.slice(1)}`
+                        }>`;
                 }
             });
 
@@ -80,19 +82,22 @@ export default new Command({
         let availableCommands = _client.commands.map(command => {
             let permission = <string[]>command.permission;
 
-            if (message.member.id == _client.config.ownerId || permission.includes('any'))
+            if (message.author.id == _client.config.ownerId || permission.includes('any'))
                 return `**-** \`${command.name}\` ${command.description}`;
             if (
-                message.member.roles.cache.some(role =>
-                    permission.includes(role.name.toLowerCase())
-                )
+                _client
+                    .anyMessageMember(message)
+                    .roles.cache.some(role =>
+                        permission.includes(role.name.toLowerCase())
+                    )
             ) {
                 let perms = new Set(permission);
                 return `**-** \`${command.name}\` (${
                     [
                         ...new Set(
-                            message.member.roles.cache
-                                .sort((a, b) => b.position - a.position)
+                            _client
+                                .anyMessageMember(message)
+                                .roles.cache.sort((a, b) => b.position - a.position)
                                 .values()
                         )
                     ].filter(x => perms.has(x.name.toLowerCase()))[0].name
@@ -104,7 +109,7 @@ export default new Command({
             embeds: [
                 {
                     title: `Available Commands${
-                        message.member.id == _client.config.ownerId ? ' - `DEV`' : ''
+                        message.author.id == _client.config.ownerId ? ' - `DEV`' : ''
                     }`,
                     description: availableCommands.filter(c => c).join('\n'),
                     fields: [

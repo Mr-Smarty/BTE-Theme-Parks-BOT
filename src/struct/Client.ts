@@ -179,4 +179,8 @@ export default class Client extends Discord.Client {
             }
         }, 60000);
     }
+
+    anyMessageMember(message: Discord.Message): Discord.GuildMember | undefined {
+        return this.guild.members.cache.get(message.author.id);
+    }
 }

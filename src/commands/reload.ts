@@ -26,11 +26,10 @@ export default new Command({
                 let channel: Discord.GuildChannel = _client.channels.cache.get(
                     _client.config.ids.channels.memberCount
                 ) as Discord.GuildChannel;
-                let guild = await message.guild.fetch();
                 await channel.setName(
                     `Member Count: ${
-                        guild.memberCount -
-                        guild.members.cache.filter(member => member.user.bot).size
+                        _client.guild.memberCount -
+                        _client.guild.members.cache.filter(member => member.user.bot).size
                     }`
                 );
                 message.channel.send('Reloaded the member count.');

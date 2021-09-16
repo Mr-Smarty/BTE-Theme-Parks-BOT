@@ -15,9 +15,9 @@ export class ClientInfo extends BaseEntity {
     lastMessage: string;
 
     async restart(client: Discord.Client): Promise<Discord.Message> {
-        const channel = client.channels.cache.get(
+        const channel = (await client.channels.fetch(
             this.lastChannel
-        ) as Discord.TextChannel;
+        )) as Discord.TextChannel;
         const message = await channel.messages.fetch(this.lastMessage);
         return message.edit('Bot restarted! :white_check_mark:');
     }

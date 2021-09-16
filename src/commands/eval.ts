@@ -44,7 +44,11 @@ export default new Command({
         } finally {
             _client.sendLog({
                 user: _client.user,
-                description: `${message.member}** (${message.author.tag}) attempted to eval the following code:**\n\`\`\`js\n${code}\`\`\`\n[Click here for context.](${message.url})`,
+                description: `${_client.anyMessageMember(message)}** (${
+                    message.author.tag
+                }) attempted to eval the following code:**\n\`\`\`js\n${code}\`\`\`\n[Click here for context.](${
+                    message.url
+                })`,
                 extra: {
                     'Author ID': message.author.id,
                     'Outcome': status
