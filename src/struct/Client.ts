@@ -5,6 +5,7 @@ import fs from 'fs/promises';
 import Google from 'google-spreadsheet';
 import { Log, GoogleCredentials, Config } from '../typings';
 import { UpdateCooldown } from '../entity/UpdateCooldown';
+import { Score } from '../entity/Score';
 
 export default class Client extends Discord.Client {
     db: Connection;
@@ -176,11 +177,40 @@ export default class Client extends Discord.Client {
                     });
                 }
                 UpdateCooldown.clear();
+                Score.clearGarbage();
             }
         }, 60000);
     }
 
     anyMessageMember(message: Discord.Message): Discord.GuildMember | undefined {
         return this.guild.members.cache.get(message.author.id);
+    }
+
+    noPerms(
+        roles: [string, ...string[]],
+        channel: Discord.TextBasedChannels
+    ): Promise<Discord.Message> {
+        let roleList = roles.map(role => `<@&${role}>`);
+        if (roleList.length > 1) roleList.splice(roleList.length - 1, 0, 'or');
+
+        let roleListString = roleList.join(', ').replace('or,', 'or');
+        if (roleList.length == 3) roleListString = roleListString.replace(', or', ' or');
+
+        return channel.send({
+            embeds: [
+                {
+                    title: 'Missing Permissions!',
+                    description: 'This action requires ' + roleListString,
+                    color: this.config.colors.negative,
+                    timestamp: new Date()
+                }
+            ]
+        });
+    }
+
+    hasRole(user: Discord.User, roles: string | string[]): boolean {
+        return Array.isArray(roles)
+            ? this.guild.members.cache.get(user.id).roles.cache.hasAny(...roles)
+            : this.guild.members.cache.get(user.id).roles.cache.has(roles);
     }
 }

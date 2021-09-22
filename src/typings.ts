@@ -43,6 +43,7 @@ export type Config = {
         emojis: Record<string, string>;
         guild: string;
     };
+    builderRewards: { value: number; roles: string[]; message: string }[];
 };
 
 export interface CommandProperties {
