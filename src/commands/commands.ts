@@ -10,8 +10,12 @@ export default new Command({
     usage: '[command]',
     async run(this: Command, _client: Client, message: Message, args: string[]) {
         if (typeof args[0] == 'string') {
-            const command = _client.commands.get(args[0].toLowerCase());
-            if (!command) return;
+            const command =
+                _client.commands.get(args[0].toLowerCase()) ||
+                _client.commands.find(command => {
+                    return command.aliases.includes(args[0].toLowerCase());
+                });
+            if (!command) return message.channel.send('That command does not exist!');
 
             const permissions = command.permission.map(perm => {
                 switch (perm) {
@@ -28,6 +32,16 @@ export default new Command({
                 }
             });
 
+            let channelListString;
+            if (command.channels) {
+                let channelList = command.channels.map(channel => `<#${channel}>`);
+                if (channelList.length > 1)
+                    channelList.splice(channelList.length - 1, 0, 'or');
+                channelListString = channelList.join(', ').replace('or,', 'or');
+                if (channelList.length == 3)
+                    channelListString = channelListString.replace(', or', ' or');
+            }
+
             return message.channel.send({
                 embeds: [
                     {
@@ -38,14 +52,8 @@ export default new Command({
                                 name: 'Required Permissions',
                                 value:
                                     permissions.join(', ') +
-                                    (command.channels
-                                        ? '\n' +
-                                          command.channels
-                                              .map(channel => {
-                                                  return `<#${channel}>`;
-                                              })
-                                              .join(' or ')
-                                        : '')
+                                    '\n' +
+                                    (channelListString || '')
                             },
                             {
                                 name: 'Usage',
