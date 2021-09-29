@@ -5,7 +5,7 @@ import Command from '../struct/Command';
 export default new Command({
     name: 'commands',
     aliases: ['commands'],
-    description: 'help command',
+    description: 'list commands or view info about a specific command',
     permission: ['any'],
     usage: '[command]',
     async run(this: Command, _client: Client, message: Message, args: string[]) {
