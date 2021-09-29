@@ -3,6 +3,7 @@ import Client from '../struct/client';
 import { UpdateCooldown } from '../entity/UpdateCooldown';
 import msToDuration from '../util/msToDuration';
 import promiseTimeout from '../util/promiseTimeout';
+import { Snippet } from '../entity/Snippet';
 
 export default async function (this: Client, message: Discord.Message): Promise<unknown> {
     if (message.author.bot) return;
@@ -82,6 +83,10 @@ export default async function (this: Client, message: Discord.Message): Promise<
     const body = message.content.slice(this.config.prefix.length).trim();
     const args = body.split(/ +/g) || [];
     const commandName = args.shift().toLowerCase();
+
+    let snippet = await this.db.manager.findOne(Snippet, commandName);
+    if (snippet) return message.channel.send(snippet.display(this));
+
     const command =
         this.commands.get(commandName) ||
         this.commands.find(command => {
@@ -89,9 +94,11 @@ export default async function (this: Client, message: Discord.Message): Promise<
         });
 
     if (!command) return;
-    if (!message.guild && !command.dms) return;
+    if (!message.guild && !command.dms)
+        return message.channel.send('This command cannot be used in DMs!');
     if (command.channels) {
-        if (!command.channels.includes(message.channel.id)) return;
+        if (!command.channels.includes(message.channel.id))
+            return message.channel.send('This command cannot be used here!');
     }
     if (
         !this.anyMessageMember(message).roles.cache.some(role => {
