@@ -8,10 +8,10 @@ export class ClientInfo extends BaseEntity {
     @SnowflakePrimaryColumn()
     id: string;
 
-    @SnowflakeColumn()
+    @SnowflakeColumn({ name: 'last_channel' })
     lastChannel: string;
 
-    @SnowflakeColumn()
+    @SnowflakeColumn({ name: 'last_message' })
     lastMessage: string;
 
     async restart(client: Discord.Client): Promise<Discord.Message> {

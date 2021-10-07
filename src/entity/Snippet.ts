@@ -13,10 +13,10 @@ export class Snippet extends BaseEntity {
     @Column()
     embed: boolean;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, name: 'text_content' })
     textContent: string;
 
-    @Column({ type: 'simple-json', nullable: true })
+    @Column({ type: 'simple-json', nullable: true, name: 'embed_content' })
     embedContent: MessageEmbedOptions;
 
     display(client: Client): MessageOptions {
