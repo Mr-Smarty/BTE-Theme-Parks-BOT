@@ -11,9 +11,7 @@ export default async function (this: Client, message: Discord.Message): Promise<
     //================ COOLDOWN ================//
 
     if (message.channel.id == this.config.ids.channels.progressUpdates) {
-        const cooldown = await UpdateCooldown.findOne({
-            where: { member: message.member.id }
-        });
+        const cooldown = await UpdateCooldown.findOne({ member: message.member.id });
 
         if (cooldown) {
             let now = new Date();
