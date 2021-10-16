@@ -127,7 +127,8 @@ export default new Command({
                             Arguments enclosed in \`[square brackets]\` are optional.
                             Arguments in \`'single quotes'\` means that you should type their name to choose an option (instead of coming up with your own value).
                             Arguments separated by \`vertical | bars\` means that you choose one of them.
-                            These formats can be layered such as \`<this | that>\` or \`['enableOption']\`.`
+                            These formats can be layered such as \`<this | that>\` or \`['enableOption']\`.
+                            Descriptions and extra information are inside \`(parantheses)\`.`
                         },
                         {
                             name: 'More Info',
