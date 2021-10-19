@@ -11,6 +11,6 @@ export default new Command({
     async run(this: Command, _client: Client, message: Message, args: string[]) {
         let m = await message.channel.send('pong!');
         let ping = m.createdTimestamp - message.createdTimestamp;
-        m.edit(`pong! \`${ping}ms\` | webscoket: \`${_client.ws.ping}ms\``);
+        m.edit(`pong! \`${ping}ms\` | websocket: \`${_client.ws.ping}ms\``);
     }
 });
