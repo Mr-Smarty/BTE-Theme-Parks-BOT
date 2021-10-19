@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import Client from '../struct/client';
+import Client from '../struct/Client';
 import { UpdateCooldown } from '../entity/UpdateCooldown';
 import msToDuration from '../util/msToDuration';
 import promiseTimeout from '../util/promiseTimeout';

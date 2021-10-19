@@ -1,5 +1,5 @@
 import { Message, MessageEmbed, Util } from 'discord.js';
-import Client from '../struct/client';
+import Client from '../struct/Client';
 import Command from '../struct/Command';
 import { status, statusBedrock } from 'minecraft-server-util';
 

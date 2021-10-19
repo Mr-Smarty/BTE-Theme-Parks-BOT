@@ -1,6 +1,6 @@
 import Discord from 'discord.js';
 import { Score } from '../entity/Score';
-import Client from '../struct/client';
+import Client from '../struct/Client';
 
 export default async function (
     this: Client,

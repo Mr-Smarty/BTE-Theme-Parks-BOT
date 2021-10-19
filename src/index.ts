@@ -1,7 +1,7 @@
 console.log('\x1b[0m' + 'Starting...');
 
 import 'reflect-metadata';
-import Client from './struct/client';
+import Client from './struct/Client';
 const config = require('../config.json');
 
 const client = new Client(config);

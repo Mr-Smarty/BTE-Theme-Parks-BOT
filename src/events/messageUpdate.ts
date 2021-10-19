@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import Client from '../struct/client';
+import Client from '../struct/Client';
 
 export default async function (
     this: Client,

@@ -1,7 +1,7 @@
 import { GuildMember, MessageEmbed, User } from 'discord.js';
 import intersect from '../util/intersect';
 import { BaseEntity, Entity, Column } from 'typeorm';
-import Client from '../struct/client';
+import Client from '../struct/Client';
 import SnowflakePrimaryColumn from './decorators/SnowflakePrimaryColumn';
 
 @Entity()

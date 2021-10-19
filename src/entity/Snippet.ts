@@ -1,6 +1,6 @@
 import { MessageEmbedOptions, MessageOptions } from 'discord.js';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
-import Client from '../struct/client';
+import Client from '../struct/Client';
 
 @Entity()
 export class Snippet extends BaseEntity {

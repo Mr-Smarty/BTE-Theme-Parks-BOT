@@ -1,4 +1,4 @@
-import Client from '../struct/client';
+import Client from '../struct/Client';
 import Discord from 'discord.js';
 import { Score } from '../entity/Score';
 import { Project } from '../entity/Project';

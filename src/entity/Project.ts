@@ -10,7 +10,7 @@ import SnowflakeColumn from './decorators/SnowflakeColumn';
 import emoji from './transformers/emoji';
 import { SubProject } from './SubProject';
 import Discord from 'discord.js';
-import Client from '../struct/client';
+import Client from '../struct/Client';
 
 export enum Visibility {
     ALL = 0,
