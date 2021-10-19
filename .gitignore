@@ -1,5 +1,8 @@
-node_modules
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+dist/
 config.json
-client_secret.json
-data
-.vscode
