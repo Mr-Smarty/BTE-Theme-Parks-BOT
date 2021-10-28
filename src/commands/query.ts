@@ -9,6 +9,7 @@ export default new Command({
     permission: ['dev'],
     usage: '<query>',
     async run(this: Command, _client: Client, message: Message, args: string[]) {
+        if (!args[0]) return message.channel.send('Theres nothing to query!');
         const raw = args.join(' ');
 
         let query = /^```(sql)?(\s+)?.+(\s+)?```$/.test(raw)

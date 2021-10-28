@@ -10,6 +10,7 @@ export default new Command({
     permission: ['dev'],
     usage: '<code>',
     async run(this: Command, _client: Client, message: Message, args: string[]) {
+        if (!args[0]) return message.channel.send('Theres nothing to eval!');
         const raw = args.join(' ');
 
         let code = /^```(js)?(\s+)?.+(\s+)?```$/.test(raw)
