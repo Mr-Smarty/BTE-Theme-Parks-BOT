@@ -104,11 +104,14 @@ export default new Command({
                         'The fifth argument for whether or not the project is hidden on the project list must be `true` or `false`.'
                     );
 
-                if (emojiRegex().test(args[5]) || /^<a?:\w{2,}:\d{18}>$/g.test(args[5])) {
+                if (
+                    emojiRegex().test(args[5]) ||
+                    /^<a?:\w{2,}:\d{18,19}>$/g.test(args[5])
+                ) {
                     if (emojiRegex().test(args[5])) options.emoji = args[5];
                     else if (
-                        _client.guild.emojis.cache.has(args[5].match(/\d{18}/g)[0]) &&
-                        _client.guild.emojis.cache.get(args[5].match(/\d{18}/g)[0])
+                        _client.guild.emojis.cache.has(args[5].match(/\d{18,19}/g)[0]) &&
+                        _client.guild.emojis.cache.get(args[5].match(/\d{18,19}/g)[0])
                             ?.available
                     ) {
                         options.emoji = args[5];

@@ -102,8 +102,8 @@ export class Project extends BaseEntity {
             }
             messages[overflow] += `\n${parkEmojis[key]} : \`${key}\`\n`;
             reactions[overflow][curReactionCount] = parkEmojis[key].replace(
-                /<a?:\w{2,}:\d{18}>/,
-                parkEmojis[key].match(/\d{18}/g)?.[0] || ''
+                /<a?:\w{2,}:\d{18,19}>/,
+                parkEmojis[key].match(/\d{18,19}/g)?.[0] || ''
             );
             curReactionCount++;
         }

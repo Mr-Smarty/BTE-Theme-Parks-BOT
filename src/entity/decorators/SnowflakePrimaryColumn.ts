@@ -6,7 +6,7 @@ export default function SnowflakePrimaryColumn(
     return PrimaryColumn({
         ...options,
         type: 'varchar',
-        length: '18'
+        length: '19'
     } as PrimaryColumnOptions);
 }
 
